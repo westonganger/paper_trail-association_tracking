@@ -26,13 +26,14 @@ paper_trail plugin to track and reify associations
 
 <!-- tocstop -->
 
-### 1.b. Installation
+### 1. Install
 
 1. Add to your `Gemfile`.
 
 ```ruby
 gem 'paper_trail' # Requires v10+
 gem 'paper_trail_associations_tracking'
+```
 
 ### 2. Associations Tracking
 
@@ -246,3 +247,50 @@ See our [contribution guidelines][43]
 Maintained by [Weston Ganger](https://github.com/westonganger)
 
 Associations code originally authored by Ben Atkins, Jared Beck, & more
+
+[1]: http://api.rubyonrails.org/classes/ActiveRecord/Locking/Optimistic.html
+[2]: https://github.com/paper-trail-gem/paper_trail/issues/163
+[3]: http://railscasts.com/episodes/255-undo-with-paper-trail
+[4]: https://api.travis-ci.org/paper-trail-gem/paper_trail.svg?branch=master
+[5]: https://travis-ci.org/paper-trail-gem/paper_trail
+[9]: https://github.com/paper-trail-gem/paper_trail/tree/3.0-stable
+[10]: https://github.com/paper-trail-gem/paper_trail/tree/2.7-stable
+[11]: https://github.com/paper-trail-gem/paper_trail/tree/rails2
+[14]: https://raw.github.com/paper-trail-gem/paper_trail/master/lib/generators/paper_trail/templates/create_versions.rb
+[16]: https://github.com/paper-trail-gem/paper_trail/issues/113
+[17]: https://github.com/rails/protected_attributes
+[18]: https://github.com/rails/strong_parameters
+[19]: http://github.com/myobie/htmldiff
+[20]: http://github.com/pvande/differ
+[21]: https://github.com/halostatue/diff-lcs
+[22]: http://github.com/jeremyw/paper_trail/blob/master/lib/paper_trail/has_paper_trail.rb#L151-156
+[23]: http://github.com/tim/activerecord-diff
+[24]: https://github.com/paper-trail-gem/paper_trail/blob/master/lib/paper_trail/serializers/yaml.rb
+[25]: https://github.com/paper-trail-gem/paper_trail/blob/master/lib/paper_trail/serializers/json.rb
+[26]: http://www.postgresql.org/docs/9.4/static/datatype-json.html
+[27]: https://github.com/rspec/rspec
+[28]: http://cukes.info
+[29]: https://github.com/sporkrb/spork
+[30]: https://github.com/burke/zeus
+[31]: https://github.com/rails/spring
+[32]: http://api.rubyonrails.org/classes/ActiveRecord/AutosaveAssociation.html#method-i-mark_for_destruction
+[33]: https://github.com/paper-trail-gem/paper_trail/wiki/Setting-whodunnit-in-the-rails-console
+[34]: https://github.com/rails/rails/blob/591a0bb87fff7583e01156696fbbf929d48d3e54/activerecord/lib/active_record/fixtures.rb#L142
+[35]: https://dev.mysql.com/doc/refman/5.6/en/fractional-seconds.html
+[36]: http://www.postgresql.org/docs/9.4/interactive/ddl.html
+[37]: https://github.com/ankit1910/paper_trail-globalid
+[38]: https://github.com/sferik/rails_admin
+[39]: http://api.rubyonrails.org/classes/ActiveRecord/Base.html#class-ActiveRecord::Base-label-Single+table+inheritance
+[40]: http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#module-ActiveRecord::Associations::ClassMethods-label-Polymorphic+Associations
+[41]: https://github.com/jaredbeck/paper_trail-sinatra
+[42]: https://github.com/activeadmin/activeadmin/wiki/Auditing-via-paper_trail-%28change-history%29
+[43]: https://github.com/paper-trail-gem/paper_trail/blob/master/.github/CONTRIBUTING.md
+[44]: https://github.com/globalize/globalize-versioning
+[45]: https://github.com/globalize/globalize
+[46]: https://github.com/fusion94/paper_trail_manager
+[47]: https://github.com/solidusio-contrib/solidus_papertrail
+[48]: https://github.com/nielsgl/sequelize-paper-trail
+[49]: https://github.com/ankit1910/paper_trail-globalid
+[50]: https://github.com/izelnakri/paper_trail
+[51]: https://github.com/rikkipitt/rails_admin_history_rollback
+[52]: http://guides.rubyonrails.org/active_record_callbacks.html
