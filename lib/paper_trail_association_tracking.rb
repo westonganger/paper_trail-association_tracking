@@ -2,9 +2,6 @@ require "paper_trail_association_tracking/config"
 require "paper_trail_association_tracking/model_config"
 require "paper_trail_association_tracking/version_concern"
 require "paper_trail_association_tracking/reifier"
-require "paper_trail_association_tracking/reifiers/"
-require "paper_trail_association_tracking/reifiers/"
-
 
 module PaperTrailAssociationTracking
   def self.config

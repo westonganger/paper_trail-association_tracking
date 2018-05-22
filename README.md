@@ -1,8 +1,8 @@
-# [WIP] PaperTrail Association Tracking
+# [WIP] paper_trail-association_tracking
 
 [![Build Status][4]][5] [![Dependency Status][6]][7]
 
-paper_trail plugin to track and reify associations
+Plugin for the PaperTrail gem to track and reify associations
 
 ## TODO
 
@@ -30,7 +30,7 @@ paper_trail plugin to track and reify associations
 
 ```ruby
 gem 'paper_trail' # Requires v10+
-gem 'paper_trail_association_tracking'
+gem 'paper_trail-association_tracking'
 ```
 
 ### 2. Association Tracking
