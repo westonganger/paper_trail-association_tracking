@@ -1,5 +1,6 @@
 *.gem
 *.sqlite3-journal
+.DS_Store
 .bundle
 .byebug_history
 .idea
