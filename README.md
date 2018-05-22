@@ -6,12 +6,11 @@ paper_trail plugin to track and reify associations
 
 ## TODO
 
-- Follow https://github.com/ankit1910/paper_trail-globalid for a Preffered method of implementation for the plugins patching
+- Follow https://github.com/ankit1910/paper_trail-globalid for a preferred
+  method of implementation for the plugins patching
 - Continue removing most-non association specs
-- Decide what to do about transaction_id, It may be nice to leave this in paper_trail itself. Verify no statements regarding `transaction_id` were accidentally lost via initial cleanup commit
 - Improve Readme
-- Add consolidated list of paper trail plugins to offical paper_trail readme
-
+- Add consolidated list of paper trail plugins to official paper_trail readme
 
 ## Table of Contents
 
@@ -228,9 +227,9 @@ See [issue 113][16] for a discussion about this.
 
 ### ActiveRecord Single Table Inheritance (STI)
 
-At this time during `reify` any STI `has_one` associations will raise a `PaperTrail::Reifiers::HasOne::FoundMoreThanOne` error. See https://github.com/airblade/paper_trail/issues/594 
+At this time during `reify` any STI `has_one` associations will raise a `PaperTrail::Reifiers::HasOne::FoundMoreThanOne` error. See https://github.com/airblade/paper_trail/issues/594
 
-Something to note though, is while the offical PaperTrail gem supports [Single Table Inheritance][39], I dont recommend STI ever. Your better off rolling your own solution rather than using STI. 
+Something to note though, is while the offical PaperTrail gem supports [Single Table Inheritance][39], I dont recommend STI ever. Your better off rolling your own solution rather than using STI.
 
 
 ## Articles
