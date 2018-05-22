@@ -1,4 +1,4 @@
-# [WIP] PaperTrail Associations Tracking
+# [WIP] PaperTrail Association Tracking
 
 [![Build Status][4]][5] [![Dependency Status][6]][7]
 
@@ -6,7 +6,6 @@ paper_trail plugin to track and reify associations
 
 ## TODO
 
-- Follow https://github.com/ankit1910/paper_trail-globalid for a Preffered method of implementation for the plugins patching
 - Continue removing most-non association specs
 - Decide what to do about transaction_id, It may be nice to leave this in paper_trail itself. Verify no statements regarding `transaction_id` were accidentally lost via initial cleanup commit
 - Improve Readme
@@ -32,10 +31,10 @@ paper_trail plugin to track and reify associations
 
 ```ruby
 gem 'paper_trail' # Requires v10+
-gem 'paper_trail_associations_tracking'
+gem 'paper_trail_association_tracking'
 ```
 
-### 2. Associations Tracking
+### 2. Association Tracking
 
 This plugin currently can restore three types of associations: Has-One, Has-Many, and
 Has-Many-Through. In order to do this, you will need to do two things:
