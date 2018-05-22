@@ -3,7 +3,7 @@
 require "rails/generators"
 require "rails/generators/active_record"
 
-module PaperTrail
+module PaperTrailAssociationTracking
   # Installs PaperTrail in a rails app.
   class InstallGenerator < ::Rails::Generators::Base
     include ::Rails::Generators::Migration

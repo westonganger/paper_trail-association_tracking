@@ -4,7 +4,7 @@ $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
 require "paper_trail/version_number"
 
 Gem::Specification.new do |s|
-  s.name = "paper_trail"
+  s.name = "paper_trail_association_tracking"
   s.version = PaperTrail::VERSION::STRING
   s.platform = Gem::Platform::RUBY
   s.summary = "Track changes to your models."
@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = ">= 2.3.0"
 
   # Rails does not follow semver, makes breaking changes in minor versions.
-  s.add_dependency "paper_trail", ">= 10"
+  s.add_dependency "paper_trail"#, ">= 10"
   #s.add_dependency "activerecord", [">= 4.2", "< 5.2"]
 
   s.add_development_dependency "appraisal", "~> 2.2"
