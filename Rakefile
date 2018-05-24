@@ -35,13 +35,15 @@ end
 
 task :autocorrect do
   rules = [
-    'Layout/EmptyLinesAroundMethodBody',
-    'Layout/EmptyLinesAroundModuleBody',
-    'Layout/EmptyLinesAroundBlockBody',
     'FrozenStringLiteralComment',
     'Layout/EmptyLineAfterMagicComment',
+    'Layout/EmptyLinesAroundBlockBody',
     'Layout/EmptyLinesAroundClassBody',
-    'Style/EmptyMethod'
+    'Layout/EmptyLinesAroundMethodBody',
+    'Layout/EmptyLinesAroundModuleBody',
+    'Layout/TrailingWhitespace',
+    'Style/EmptyMethod',
+    'Style/TrailingCommaInArguments',
   ]
   `bundle exec rubocop --auto-correct --only  #{rules.join(' --only ')}`
 end

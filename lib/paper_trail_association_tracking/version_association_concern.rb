@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module PaperTrail
+module PaperTrailAssociationTracking
   # Functionality for `PaperTrail::VersionAssociation`. Exists in a module
   # for the same reasons outlined in version_concern.rb.
   module VersionAssociationConcern

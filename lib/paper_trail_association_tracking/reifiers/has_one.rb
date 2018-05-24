@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module PaperTrail
+module PaperTrailAssociationTracking
   module Reifiers
     # Reify a single `has_one` association of `model`.
     # @api private

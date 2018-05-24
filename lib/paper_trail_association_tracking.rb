@@ -6,16 +6,6 @@ require "paper_trail_association_tracking/version_concern"
 require "paper_trail_association_tracking/reifier"
 
 module PaperTrailAssociationTracking
-  def self.config
-    @config ||= PaperTrail::AssociationTracking::Config.instance
-
-    if block_given?
-      yield @config
-    end
-
-    return @config
-  end
-
   def self.version
     VERSION::STRING
   end

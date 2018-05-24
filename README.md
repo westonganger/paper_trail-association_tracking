@@ -6,10 +6,11 @@ Plugin for the PaperTrail gem to track and reify associations
 
 ## TODO
 
-- Continue removing most-non association specs
+- Add association error behaviour PR - https://github.com/paper-trail-gem/paper_trail/pull/1091
 - Ensure all references to be `transaction_id` are properly patched.
+- Continue removing most-non association specs
 - Improve Readme
-- Add consolidated list of paper trail plugins to official paper_trail readme
+- Add consolidated list of paper trail plugins to paper_trail core readme
 
 ## Table of Contents
 
@@ -228,7 +229,7 @@ See [issue 113][16] for a discussion about this.
 
 At this time during `reify` any STI `has_one` associations will raise a `PaperTrail::Reifiers::HasOne::FoundMoreThanOne` error. See https://github.com/airblade/paper_trail/issues/594
 
-Something to note though, is while the offical PaperTrail gem supports [Single Table Inheritance][39], I dont recommend STI ever. Your better off rolling your own solution rather than using STI.
+Something to note though, is while the PaperTrail gem supports [Single Table Inheritance][39], I dont recommend STI ever. Your better off rolling your own solution rather than using STI.
 
 
 ## Articles

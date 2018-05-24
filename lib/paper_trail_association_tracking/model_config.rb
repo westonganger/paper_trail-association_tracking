@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module PaperTrail
+module PaperTrailAssociationTracking
   # Configures an ActiveRecord model, mostly at application boot time, but also
   # sometimes mid-request, with methods like enable/disable.
   class ModelConfig
@@ -8,13 +8,10 @@ module PaperTrail
     # "class attributes", instance methods, and more.
     # @api private
     def setup(options = {})
-      options[:on] ||= %i[create update destroy touch]
-      options[:on] = Array(options[:on]) # Support single symbol
-      @model_class.send :include, ::PaperTrail::Model::InstanceMethods
-      setup_options(options)
+      super
+
       setup_associations(options)
       setup_transaction_callbacks
-      setup_callbacks_from_options options[:on]
       setup_callbacks_for_habtm options[:join_tables]
     end
 

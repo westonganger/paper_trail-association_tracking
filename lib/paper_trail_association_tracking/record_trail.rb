@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module PaperTrail
+module PaperTrailAssociationTracking
   # Represents the "paper trail" for a single record.
   class RecordTrail
     # Saves associations if the join table for `VersionAssociation` exists.
