@@ -6,7 +6,6 @@ Plugin for the PaperTrail gem to track and reify associations
 
 ## TODO
 
-- Add association error behaviour PR - https://github.com/paper-trail-gem/paper_trail/pull/1091
 - Ensure all references to be `transaction_id` are properly patched.
 - Continue removing most-non association specs
 - Improve Readme
