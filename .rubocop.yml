@@ -129,6 +129,12 @@ Style/DoubleNegation:
 Style/EmptyMethod:
   EnforcedStyle: expanded
 
+RSpec/FilePath:
+  Exclude:
+    - spec/paper_trail/association_reify_error_behaviour/error.rb
+    - spec/paper_trail/association_reify_error_behaviour/warn.rb
+    - spec/paper_trail/association_reify_error_behaviour/ignore.rb
+
 # The decision of when to use a guard clause to improve readability is subtle,
 # and it's not clear that it can be linted. Certainly, the default
 # `MinBodyLength` of 1 can actually hurt readability.

@@ -28,7 +28,8 @@ module PaperTrailAssociationTracking
     def create_initializer
       create_file(
         "config/initializers/paper_trail.rb",
-        "PaperTrail.config.track_associations = #{!!options.with_associations?}\nPaperTrail.config.association_reify_error_behaviour = :error"
+        "PaperTrail.config.track_associations = #{!!options.with_associations?}\n",
+        "PaperTrail.config.association_reify_error_behaviour = :error"
       )
     end
 

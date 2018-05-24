@@ -1,6 +1,6 @@
 # [WIP] paper_trail-association_tracking
 
-[![Build Status][4]][5] [![Dependency Status][6]][7]
+[![Build Status][1]][2]
 
 Plugin for the PaperTrail gem to track and reify associations
 
@@ -109,7 +109,7 @@ the time the version was created. This is usually what you want if you just want
 to look at the reified version. But if you want to persist it, it would be
 better to pass in option `mark_for_destruction: true` so that the associated
 record is included and marked for destruction. Note that `mark_for_destruction`
-only has [an effect on associations marked with `autosave: true`][32].
+only has [an effect on associations marked with `autosave: true`](http://api.rubyonrails.org/classes/ActiveRecord/AutosaveAssociation.html#method-i-mark_for_destruction).
 
 ```ruby
 class Widget < ActiveRecord::Base
@@ -141,13 +141,14 @@ Associations are an **experimental feature** and have the following known
 issues, in order of descending importance. Use in Production at your own risk.
 
 1. PaperTrail only reifies the first level of associations.
-1. Does not fully support STI (For example, see `spec/models/person_spec.rb` and
-   `PaperTrail::Reifiers::HasOne::FoundMoreThanOne` error)
+1. Sometimes the has_one association will find more than one possible candidate and will raise a `PaperTrail::Reifiers::HasOne::FoundMoreThanOne` error. For example, see `spec/models/person_spec.rb`
+  - If you are not using STI, you may want to just assume the first result (of multiple) is the correct one and continue. Versions pre v8.1.2 and below did this without error or warning. To do so add the following line to your initializer: `PaperTrail.config.association_reify_error_behaviour = :warn`. Valid options are: `[:error, :warn, :ignore]`
+  - When using STI, even if you enable `:warn` you will likely still end up recieving an `ActiveRecord::AssociationTypeMismatch` error.
 1. [#542](https://github.com/airblade/paper_trail/issues/542) -
-   Not compatible with [transactional tests][34], aka. transactional fixtures.
+   Not compatible with [transactional tests](https://github.com/rails/rails/blob/591a0bb87fff7583e01156696fbbf929d48d3e54/activerecord/lib/active_record/fixtures.rb#L142), aka. transactional fixtures.
 1. Requires database timestamp columns with fractional second precision.
    - Sqlite and postgres timestamps have fractional second precision by default.
-   [MySQL timestamps do not][35]. Furthermore, MySQL 5.5 and earlier do not
+   [MySQL timestamps do not](https://dev.mysql.com/doc/refman/5.6/en/fractional-seconds.html). Furthermore, MySQL 5.5 and earlier do not
    support fractional second precision at all.
    - Also, support for fractional seconds in MySQL was not added to
    rails until ActiveRecord 4.2 (https://github.com/rails/rails/pull/14359).
@@ -222,14 +223,14 @@ module ActiveRecord
 end
 ```
 
-See [issue 113][16] for a discussion about this.
+See [issue 113](https://github.com/paper-trail-gem/paper_trail/issues/113) for a discussion about this.
 
 
 ### ActiveRecord Single Table Inheritance (STI)
 
 At this time during `reify` any STI `has_one` associations will raise a `PaperTrail::Reifiers::HasOne::FoundMoreThanOne` error. See https://github.com/airblade/paper_trail/issues/594
 
-Something to note though, is while the PaperTrail gem supports [Single Table Inheritance][39], I dont recommend STI ever. Your better off rolling your own solution rather than using STI.
+Something to note though, is while the PaperTrail gem supports [Single Table Inheritance](http://api.rubyonrails.org/classes/ActiveRecord/Base.html#class-ActiveRecord::Base-label-Single+table+inheritance), I dont recommend STI ever. Your better off rolling your own solution rather than using STI.
 
 
 ## Articles
@@ -239,7 +240,7 @@ Something to note though, is while the PaperTrail gem supports [Single Table Inh
 
 ## Contributing
 
-See our [contribution guidelines][43]
+See our [contribution guidelines](https://github.com/paper-trail-gem/paper_trail/blob/master/.github/CONTRIBUTING.md)
 
 ## Credits
 
@@ -247,49 +248,5 @@ Maintained by [Weston Ganger](https://github.com/westonganger)
 
 Associations code originally authored by Ben Atkins, Jared Beck, & more
 
-[1]: http://api.rubyonrails.org/classes/ActiveRecord/Locking/Optimistic.html
-[2]: https://github.com/paper-trail-gem/paper_trail/issues/163
-[3]: http://railscasts.com/episodes/255-undo-with-paper-trail
-[4]: https://api.travis-ci.org/paper-trail-gem/paper_trail.svg?branch=master
-[5]: https://travis-ci.org/paper-trail-gem/paper_trail
-[9]: https://github.com/paper-trail-gem/paper_trail/tree/3.0-stable
-[10]: https://github.com/paper-trail-gem/paper_trail/tree/2.7-stable
-[11]: https://github.com/paper-trail-gem/paper_trail/tree/rails2
-[14]: https://raw.github.com/paper-trail-gem/paper_trail/master/lib/generators/paper_trail/templates/create_versions.rb
-[16]: https://github.com/paper-trail-gem/paper_trail/issues/113
-[17]: https://github.com/rails/protected_attributes
-[18]: https://github.com/rails/strong_parameters
-[19]: http://github.com/myobie/htmldiff
-[20]: http://github.com/pvande/differ
-[21]: https://github.com/halostatue/diff-lcs
-[22]: http://github.com/jeremyw/paper_trail/blob/master/lib/paper_trail/has_paper_trail.rb#L151-156
-[23]: http://github.com/tim/activerecord-diff
-[24]: https://github.com/paper-trail-gem/paper_trail/blob/master/lib/paper_trail/serializers/yaml.rb
-[25]: https://github.com/paper-trail-gem/paper_trail/blob/master/lib/paper_trail/serializers/json.rb
-[26]: http://www.postgresql.org/docs/9.4/static/datatype-json.html
-[27]: https://github.com/rspec/rspec
-[28]: http://cukes.info
-[29]: https://github.com/sporkrb/spork
-[30]: https://github.com/burke/zeus
-[31]: https://github.com/rails/spring
-[32]: http://api.rubyonrails.org/classes/ActiveRecord/AutosaveAssociation.html#method-i-mark_for_destruction
-[33]: https://github.com/paper-trail-gem/paper_trail/wiki/Setting-whodunnit-in-the-rails-console
-[34]: https://github.com/rails/rails/blob/591a0bb87fff7583e01156696fbbf929d48d3e54/activerecord/lib/active_record/fixtures.rb#L142
-[35]: https://dev.mysql.com/doc/refman/5.6/en/fractional-seconds.html
-[36]: http://www.postgresql.org/docs/9.4/interactive/ddl.html
-[37]: https://github.com/ankit1910/paper_trail-globalid
-[38]: https://github.com/sferik/rails_admin
-[39]: http://api.rubyonrails.org/classes/ActiveRecord/Base.html#class-ActiveRecord::Base-label-Single+table+inheritance
-[40]: http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#module-ActiveRecord::Associations::ClassMethods-label-Polymorphic+Associations
-[41]: https://github.com/jaredbeck/paper_trail-sinatra
-[42]: https://github.com/activeadmin/activeadmin/wiki/Auditing-via-paper_trail-%28change-history%29
-[43]: https://github.com/paper-trail-gem/paper_trail/blob/master/.github/CONTRIBUTING.md
-[44]: https://github.com/globalize/globalize-versioning
-[45]: https://github.com/globalize/globalize
-[46]: https://github.com/fusion94/paper_trail_manager
-[47]: https://github.com/solidusio-contrib/solidus_papertrail
-[48]: https://github.com/nielsgl/sequelize-paper-trail
-[49]: https://github.com/ankit1910/paper_trail-globalid
-[50]: https://github.com/izelnakri/paper_trail
-[51]: https://github.com/rikkipitt/rails_admin_history_rollback
-[52]: http://guides.rubyonrails.org/active_record_callbacks.html
+[1]: https://api.travis-ci.org/westonganger/paper_trail-association_tracking.svg?branch=master
+[2]: https://travis-ci.org/westonganger/paper_trail-association_tracking

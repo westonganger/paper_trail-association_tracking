@@ -2,6 +2,7 @@
 
 module PaperTrailAssociationTracking
   class Config
+    attr_accessor :association_reify_error_behaviour
     attr_writer :track_associations
 
     def initialize
