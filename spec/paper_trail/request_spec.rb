@@ -35,25 +35,6 @@ module PaperTrail
       end
     end
 
-    describe ".enabled_for_controller?" do
-      it "returns true" do
-        expect(PaperTrail.request.enabled_for_controller?).to eq(true)
-      end
-    end
-
-    describe ".enabled_for_controller=" do
-      it "sets enabled_for_controller? to true" do
-        PaperTrail.request.enabled_for_controller = true
-        expect(PaperTrail.request.enabled_for_controller?).to eq(true)
-        PaperTrail.request.enabled_for_controller = false
-        expect(PaperTrail.request.enabled_for_controller?).to eq(false)
-      end
-
-      after do
-        PaperTrail.request.enabled_for_controller = true
-      end
-    end
-
     describe ".controller_info" do
       it "returns an empty hash" do
         expect(PaperTrail.request.controller_info).to eq({})

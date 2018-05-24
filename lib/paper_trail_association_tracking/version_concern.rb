@@ -59,6 +59,5 @@ module PaperTrail
       return nil if object.nil?
       ::PaperTrail::Reifier.reify(self, options)
     end
-
   end
 end

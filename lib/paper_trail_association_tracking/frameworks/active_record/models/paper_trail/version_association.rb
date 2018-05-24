@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "paper_trail/version_association_concern"
+require "paper_trail_association_tracking/version_association_concern"
 
 module PaperTrail
   # This is the default ActiveRecord model provided by PaperTrail. Most simple

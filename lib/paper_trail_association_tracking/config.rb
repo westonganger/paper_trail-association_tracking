@@ -5,7 +5,6 @@ module PaperTrailAssociationTracking
     attr_writer :track_associations
 
     def initialize
-
     end
 
     def track_associations?

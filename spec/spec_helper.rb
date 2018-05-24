@@ -62,7 +62,11 @@ require "ffaker"
 require "timecop"
 
 # Run any available migration
-ActiveRecord::Migrator.migrate File.expand_path("dummy_app/db/migrate/", __dir__)
+if ActiveRecord.gem_version >= Gem::Version.new("5.2")
+  ActiveRecord::MigrationContext.new(File.expand_path("dummy_app/db/migrate/", __dir__)).migrate
+else
+  ActiveRecord::Migrator.migrate File.expand_path("dummy_app/db/migrate/", __dir__)
+end
 
 RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"

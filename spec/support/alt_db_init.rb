@@ -34,7 +34,12 @@ end
 Foo::Base.configurations = configs
 Foo::Base.establish_connection(:foo)
 ActiveRecord::Base.establish_connection(:foo)
-ActiveRecord::Migrator.migrate File.expand_path("#{db_directory}/migrate/", __FILE__)
+
+if ActiveRecord.gem_version >= Gem::Version.new("5.2")
+  ActiveRecord::MigrationContext.new(File.expand_path("#{db_directory}/migrate/", __dir__)).migrate
+else
+  ActiveRecord::Migrator.migrate File.expand_path("#{db_directory}/migrate/", __dir__)
+end
 
 module Bar
   class Base < ActiveRecord::Base
@@ -54,4 +59,8 @@ Bar::Base.configurations = configs
 Bar::Base.establish_connection(:bar)
 ActiveRecord::Base.establish_connection(:bar)
 
-ActiveRecord::Migrator.migrate File.expand_path("#{db_directory}/migrate/", __FILE__)
+if ActiveRecord.gem_version >= Gem::Version.new("5.2")
+  ActiveRecord::MigrationContext.new(File.expand_path("#{db_directory}/migrate/", __dir__)).migrate
+else
+  ActiveRecord::Migrator.migrate File.expand_path("#{db_directory}/migrate/", __dir__)
+end

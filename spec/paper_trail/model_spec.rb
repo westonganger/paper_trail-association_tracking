@@ -388,10 +388,10 @@ RSpec.describe(::PaperTrail, versioning: true) do
           it "does not create a new version" do
             allow(::ActiveSupport::Deprecation).to receive(:warn)
             @widget.paper_trail.without_versioning(:touch_with_version)
-            expect(::ActiveSupport::Deprecation).to have_received(:warn).once
+            expect(::ActiveSupport::Deprecation).to have_received(:warn).twice
             expect(@widget.versions.length).to(eq(@count))
             expect(::PaperTrail.request.enabled_for_model?(Widget)).to eq(true)
-            expect(::ActiveSupport::Deprecation).to have_received(:warn).once
+            expect(::ActiveSupport::Deprecation).to have_received(:warn).twice
           end
         end
       end
@@ -994,19 +994,6 @@ RSpec.describe(::PaperTrail, versioning: true) do
     end
 
     it "not have a version created on destroy" do
-      expect(@widget.versions.empty?).to(eq(true))
-    end
-  end
-
-  context "a model" do
-    before do
-      @widget = Widget.new
-    end
-
-    it "not have a version when used within without_versioning" do
-      Widget.paper_trail.without_versioning do
-        @widget.save!
-      end
       expect(@widget.versions.empty?).to(eq(true))
     end
   end

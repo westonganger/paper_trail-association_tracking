@@ -33,8 +33,21 @@ RSpec::Core::RakeTask.new(:spec) do |t|
   t.verbose = false # hide list of specs bit.ly/1nVq3Jn
 end
 
+task :autocorrect do
+  rules = [
+    'Layout/EmptyLinesAroundMethodBody',
+    'Layout/EmptyLinesAroundModuleBody',
+    'Layout/EmptyLinesAroundBlockBody',
+    'FrozenStringLiteralComment',
+    'Layout/EmptyLineAfterMagicComment',
+    'Layout/EmptyLinesAroundClassBody',
+    'Style/EmptyMethod'
+  ]
+  `bundle exec rubocop --auto-correct --only  #{rules.join(' --only ')}`
+end
+
 require "rubocop/rake_task"
 RuboCop::RakeTask.new
 
 desc "Default: run all available test suites"
-task default: %i[rubocop prepare test spec]
+task default: %i[autocorrect rubocop prepare test spec]

@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require "paper_trail/reifiers/belongs_to"
-require "paper_trail/reifiers/has_and_belongs_to_many"
-require "paper_trail/reifiers/has_many"
-require "paper_trail/reifiers/has_many_through"
-require "paper_trail/reifiers/has_one"
+require "paper_trail_association_tracking/reifiers/belongs_to"
+require "paper_trail_association_tracking/reifiers/has_and_belongs_to_many"
+require "paper_trail_association_tracking/reifiers/has_many"
+require "paper_trail_association_tracking/reifiers/has_many_through"
+require "paper_trail_association_tracking/reifiers/has_one"
 
 module PaperTrail
   # Given a version record and some options, builds a new model object.

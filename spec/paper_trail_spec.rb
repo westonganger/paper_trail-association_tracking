@@ -115,7 +115,6 @@ RSpec.describe PaperTrail do
     end
 
     it_behaves_like "it delegates to request", :clear_transaction_id, nil
-    it_behaves_like "it delegates to request", :enabled_for_controller=, [true]
     it_behaves_like "it delegates to request", :enabled_for_model, [Widget, true]
     it_behaves_like "it delegates to request", :enabled_for_model?, [Widget]
     it_behaves_like "it delegates to request", :whodunnit=, [:some_whodunnit]

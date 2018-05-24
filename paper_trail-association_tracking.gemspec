@@ -5,7 +5,7 @@ require "paper_trail_association_tracking/version"
 
 Gem::Specification.new do |s|
   s.name = "paper_trail-association_tracking"
-  s.version = PaperTrail::VERSION
+  s.version = PaperTrailAssociationTracking::VERSION
   s.platform = Gem::Platform::RUBY
   s.summary = "Plugin for the PaperTrail gem to track and reify associations"
   s.description = "Plugin for the PaperTrail gem to track and reify associations"
@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.email = "weston@westonganger.com"
   s.license = "MIT"
 
-  s.files = Dir.glob("{lib/**/*}") + %w{ LICENSE README.md Rakefile CHANGELOG.md }
+  s.files = Dir.glob("{lib/**/*}") + ['LICENSE', 'README.md', 'Rakefile', 'CHANGELOG.md']
 
   s.executables = []
   s.require_paths = ["lib"]
@@ -23,8 +23,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = ">= 2.3.0"
 
   # Rails does not follow semver, makes breaking changes in minor versions.
-  s.add_dependency "paper_trail", ">= 10"
-  #s.add_dependency "activerecord", [">= 4.2", "< 5.2"]
+  s.add_dependency "paper_trail"#, ">= 10"
 
   s.add_development_dependency "appraisal", "~> 2.2"
   s.add_development_dependency "byebug", "~> 9.1"
