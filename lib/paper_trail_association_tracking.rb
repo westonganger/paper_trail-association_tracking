@@ -16,9 +16,9 @@ module PaperTrailAssociationTracking
 end
 
 module PaperTrail
-  #class << self
-  #  prepend ::PaperTrailAssociationTracking::PaperTrail
-  #end
+  class << self
+    prepend ::PaperTrailAssociationTracking::PaperTrail
+  end
 
   class Config
     prepend ::PaperTrailAssociationTracking::Config

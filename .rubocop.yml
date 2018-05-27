@@ -45,6 +45,12 @@ Layout/MultilineOperationIndentation:
 Layout/SpaceBeforeComment:
   Enabled: false
 
+Layout/SpaceBeforeBlockBraces:
+  Enabled: false
+
+Layout/SpaceAroundBlockParameters:
+  Enabled: false
+
 LeadingCommentSpace:
   Enabled: false
 
@@ -156,6 +162,9 @@ Style/LineEndConcatenation:
   Enabled: false
 
 Style/RedundantReturn:
+  Enabled: false
+
+Style/Proc:
   Enabled: false
 
 # The Ruby Style Guide does not prescribe a particular quote character, only

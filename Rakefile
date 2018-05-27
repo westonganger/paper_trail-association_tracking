@@ -45,11 +45,17 @@ task :autocorrect do
     'Style/EmptyMethod',
     'Style/TrailingCommaInArguments',
   ]
-  `bundle exec rubocop --auto-correct --only  #{rules.join(' --only ')}`
+
+  rules.each do |rule|
+    `bundle exec rubocop --auto-correct --only #{rule}`
+  end
+
+  Rake::Task['rubocop'].invoke
 end
 
 require "rubocop/rake_task"
 RuboCop::RakeTask.new
 
+### TODO: Allow rubocop to fail, but still continue
 desc "Default: run all available test suites"
-task default: %i[autocorrect rubocop prepare test spec]
+task default: %i[rubocop prepare test spec]
