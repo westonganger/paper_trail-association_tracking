@@ -58,4 +58,4 @@ RuboCop::RakeTask.new
 
 ### TODO: Allow rubocop to fail, but still continue
 desc "Default: run all available test suites"
-task default: %i[rubocop prepare test spec]
+task default: %i[prepare test spec]

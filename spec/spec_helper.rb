@@ -55,9 +55,13 @@ def params_wrapper(args)
   end
 end
 
+require 'paper_trail'
+require File.expand_path("./lib/paper_trail_association_tracking")
+
 require File.expand_path("../dummy_app/config/environment", __FILE__)
 require "rspec/rails"
 require "paper_trail/frameworks/rspec"
+require "paper_trail-association_tracking/frameworks/rspec"
 require "ffaker"
 require "timecop"
 

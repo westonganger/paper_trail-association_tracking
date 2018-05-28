@@ -3,7 +3,7 @@
 module PaperTrailAssociationTracking
   # Configures an ActiveRecord model, mostly at application boot time, but also
   # sometimes mid-request, with methods like enable/disable.
-  class ModelConfig
+  module ModelConfig
     # Set up `@model_class` for PaperTrail. Installs callbacks, associations,
     # "class attributes", instance methods, and more.
     # @api private

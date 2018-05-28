@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module PaperTrailAssociationTracking
-  class RecordTrail
+  module RecordTrail
     # Utility method for reifying. Anything executed inside the block will
     # appear like a new record.
     #

@@ -2,8 +2,11 @@
 
 require "paper_trail_association_tracking/config"
 require "paper_trail_association_tracking/model_config"
-require "paper_trail_association_tracking/version_concern"
 require "paper_trail_association_tracking/reifier"
+require "paper_trail_association_tracking/record_trail"
+require "paper_trail_association_tracking/paper_trail"
+require "paper_trail_association_tracking/version_concern"
+require "paper_trail_association_tracking/version_association_concern"
 
 module PaperTrailAssociationTracking
   def self.version
@@ -40,7 +43,7 @@ module PaperTrail
     include ::PaperTrailAssociationTracking::VersionConcern
   end
 
-  module VersionAssociationConcern
-    include ::PaperTrailAssociationTracking::VersionAssociationConcern
-  end
+  #module VersionAssociationConcern
+  #  include ::PaperTrailAssociationTracking::VersionAssociationConcern
+  #end
 end
