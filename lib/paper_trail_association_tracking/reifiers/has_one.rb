@@ -74,7 +74,7 @@ module PaperTrailAssociationTracking
           when 1
             versions.first
           else
-            case PaperTrail.config.association_reify_error_behaviour.to_s
+            case ::PaperTrail.config.association_reify_error_behaviour
             when "warn"
               version = versions.first
               version.logger&.warn(

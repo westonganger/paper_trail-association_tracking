@@ -16,19 +16,19 @@ module PaperTrailAssociationTracking
     # > -Sean Griffin (https://github.com/paper-trail-gem/paper_trail/pull/899)
     #
     # @api private
-    # def appear_as_new_record
-    #   @record.instance_eval {
-    #     alias :old_new_record? :new_record?
-    #     alias :new_record? :present?
-    #     alias :old_persisted? :persisted?
-    #     alias :persisted? :nil?
-    #   }
-    #   yield
-    #   @record.instance_eval {
-    #     alias :new_record? :old_new_record?
-    #     alias :persisted? :old_persisted?
-    #   }
-    # end
+    def appear_as_new_record
+      @record.instance_eval {
+        alias :old_new_record? :new_record?
+        alias :new_record? :present?
+        alias :old_persisted? :persisted?
+        alias :persisted? :nil?
+      }
+      yield
+      @record.instance_eval {
+        alias :new_record? :old_new_record?
+        alias :persisted? :old_persisted?
+      }
+    end
 
     def record_create
       @in_after_callback = true
@@ -127,7 +127,7 @@ module PaperTrailAssociationTracking
 
     # Saves associations if the join table for `VersionAssociation` exists.
     def save_associations(version)
-      return unless PaperTrail.config.track_associations?
+      return unless ::PaperTrail.config.track_associations?
       save_bt_associations(version)
       save_habtm_associations(version)
     end
@@ -149,7 +149,7 @@ module PaperTrailAssociationTracking
       @record.class.reflect_on_all_associations(:has_and_belongs_to_many).each do |a|
         next unless save_habtm_association?(a)
         habtm_assoc_ids(a).each do |id|
-          PaperTrail::VersionAssociation.create(
+          ::PaperTrail::VersionAssociation.create(
             version_id: version.transaction_id,
             foreign_key_name: a.name,
             foreign_key_id: id
@@ -162,7 +162,7 @@ module PaperTrailAssociationTracking
 
     def add_transaction_id_to(data)
       return unless @record.class.paper_trail.version_class.column_names.include?("transaction_id")
-      data[:transaction_id] = PaperTrail.request.transaction_id
+      data[:transaction_id] = ::PaperTrail.request.transaction_id
     end
 
     # Given a HABTM association, returns an array of ids.
@@ -185,15 +185,15 @@ module PaperTrailAssociationTracking
 
       if assoc.options[:polymorphic]
         associated_record = @record.send(assoc.name) if @record.send(assoc.foreign_type)
-        if associated_record && PaperTrail.request.enabled_for_model?(associated_record.class)
+        if associated_record && ::PaperTrail.request.enabled_for_model?(associated_record.class)
           assoc_version_args[:foreign_key_id] = associated_record.id
         end
-      elsif PaperTrail.request.enabled_for_model?(assoc.klass)
+      elsif ::PaperTrail.request.enabled_for_model?(assoc.klass)
         assoc_version_args[:foreign_key_id] = @record.send(assoc.foreign_key)
       end
 
       if assoc_version_args.key?(:foreign_key_id)
-        PaperTrail::VersionAssociation.create(assoc_version_args)
+        ::PaperTrail::VersionAssociation.create(assoc_version_args)
       end
     end
 
@@ -201,13 +201,13 @@ module PaperTrailAssociationTracking
     # @api private
     def save_habtm_association?(assoc)
       @record.class.paper_trail_save_join_tables.include?(assoc.name) ||
-        PaperTrail.request.enabled_for_model?(assoc.klass)
+        ::PaperTrail.request.enabled_for_model?(assoc.klass)
     end
 
     def update_transaction_id(version)
       return unless @record.class.paper_trail.version_class.column_names.include?("transaction_id")
-      if PaperTrail.transaction? && PaperTrail.request.transaction_id.nil?
-        PaperTrail.request.transaction_id = version.id
+      if ::PaperTrail.transaction? && ::PaperTrail.request.transaction_id.nil?
+        ::PaperTrail.request.transaction_id = version.id
         version.transaction_id = version.id
         version.save
       end

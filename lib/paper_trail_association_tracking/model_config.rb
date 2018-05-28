@@ -78,8 +78,8 @@ module PaperTrailAssociationTracking
 
     # Reset the transaction id when the transaction is closed.
     def setup_transaction_callbacks
-      @model_class.after_commit { PaperTrail.request.clear_transaction_id }
-      @model_class.after_rollback { PaperTrail.request.clear_transaction_id }
+      @model_class.after_commit { ::PaperTrail.request.clear_transaction_id }
+      @model_class.after_rollback { ::PaperTrail.request.clear_transaction_id }
       @model_class.after_rollback { paper_trail.clear_rolled_back_versions }
     end
 

@@ -27,7 +27,7 @@ RSpec.describe Person, type: :model, versioning: true do
       expect {
         person.reload.versions.second.reify(has_one: true)
       }.to(
-        raise_error(::PaperTrail::Reifiers::HasOne::FoundMoreThanOne) do |err|
+        raise_error(::PaperTrailAssociationTracking::Reifiers::HasOne::FoundMoreThanOne) do |err|
           expect(err.message.squish).to match(
             /Expected to find one Vehicle, but found 2/
           )

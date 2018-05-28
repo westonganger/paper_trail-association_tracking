@@ -10,7 +10,7 @@ module PaperTrailAssociationTracking
   # Given a version record and some options, builds a new model object.
   # @api private
   module Reifier
-    class << self
+    module ClassMethods
       # See `VersionConcern#reify` for documentation.
       # @api private
       def reify(version, options)

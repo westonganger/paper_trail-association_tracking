@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module PaperTrail
+module PaperTrailAssociationTracking
   module Rails
     # See http://guides.rubyonrails.org/engines.html
     class Engine < ::Rails::Engine

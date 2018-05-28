@@ -64,7 +64,7 @@ module PaperTrailAssociationTracking
           }
           versions = load_versions_for_hmt_association(assoc, ids, tx_id, options[:version_at])
           collection = Array.new assoc.klass.where(assoc.klass.primary_key => ids)
-          Reifiers::HasMany.prepare_array(collection, options, versions)
+          ::PaperTrailAssociationTracking::Reifiers::HasMany.prepare_array(collection, options, versions)
           collection
         end
 
@@ -84,7 +84,7 @@ module PaperTrailAssociationTracking
             ).
             group("item_id").
             to_sql
-          Reifiers::HasMany.versions_by_id(assoc.klass, version_id_subquery)
+          ::PaperTrailAssociationTracking::Reifiers::HasMany.versions_by_id(assoc.klass, version_id_subquery)
         end
       end
     end
