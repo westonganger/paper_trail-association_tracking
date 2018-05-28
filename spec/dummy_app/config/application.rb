@@ -41,8 +41,9 @@ module Dummy
         config.load_defaults "5.1"
         config.active_record.time_zone_aware_types = [:datetime]
       end
+      if v >= Gem::Version.new("5.2")
+        config.active_record.sqlite3.represent_boolean_as_integer = true
+      end
     end
-
-    Rails.application.config.active_record.sqlite3.represent_boolean_as_integer = true
   end
 end
