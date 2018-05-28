@@ -14,16 +14,13 @@ module PaperTrailAssociationTracking
       # See `VersionConcern#reify` for documentation.
       # @api private
       def reify(version, options)
-        super
-
         options = apply_defaults_to(options, version)
         attrs = version.object_deserialized
         model = init_model(attrs, options, version)
-
+        reify_attributes(model, version, attrs)
         model.send "#{model.class.version_association_name}=", version
         reify_associations(model, options, version)
-
-        return model
+        model
       end
 
       # Restore the `model`'s has_many associations as they were at version_at

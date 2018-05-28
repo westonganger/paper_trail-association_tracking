@@ -6,8 +6,11 @@ Plugin for the PaperTrail gem to track and reify associations
 
 ## TODO
 
-- Ensure all references to be `transaction_id` are properly patched.
+- Verify patches in RecordTrail for `record_*` methods, would prefer an approach that utilizes super
+- Verify patch of `Reifier#reify`, would prefer an approach that utilizes super
+- Verify patch of `ModelConfig#setup` still works correctly given method ordering differences (Diff: https://github.com/paper-trail-gem/paper_trail/compare/master...remove_association_tracking)
 - Continue removing most-non association specs
+- Suppress deprecations in specs output
 - Improve Readme
 - Add consolidated list of paper trail plugins to paper_trail core readme
 

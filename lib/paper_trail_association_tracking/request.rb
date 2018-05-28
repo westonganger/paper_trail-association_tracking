@@ -17,6 +17,16 @@ module PaperTrailAssociationTracking
       def transaction_id=(id)
         store[:transaction_id] = id
       end
+
+      private
+
+      def validate_public_options(options)
+        if options.keys.include?(:transaction_id)
+          raise ::PaperTrail::Request::InvalidOption, "Cannot set private option: transaction_id"
+        else
+          super
+        end
+      end
     end
   end
 end

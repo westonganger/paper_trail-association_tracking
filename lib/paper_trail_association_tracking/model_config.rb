@@ -21,7 +21,7 @@ module PaperTrailAssociationTracking
     # @api private
     def assert_concrete_activerecord_class(class_name)
       if class_name.constantize.abstract_class?
-        raise format(E_HPT_ABSTRACT_CLASS, @model_class, class_name)
+        raise format(::PaperTrail::ModelConfig::E_HPT_ABSTRACT_CLASS, @model_class, class_name)
       end
     end
 

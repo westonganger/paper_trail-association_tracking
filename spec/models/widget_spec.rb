@@ -259,14 +259,6 @@ RSpec.describe Widget, type: :model do
         widget.versions.count
       }.by(+1)
     end
-
-    it "does not create a version using without_versioning" do
-      count = widget.versions.count
-      widget.paper_trail.without_versioning do
-        widget.touch
-      end
-      expect(count).to eq(count)
-    end
   end
 
   describe ".paper_trail.update_columns", versioning: true do

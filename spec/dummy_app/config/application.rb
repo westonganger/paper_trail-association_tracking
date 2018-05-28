@@ -42,5 +42,7 @@ module Dummy
         config.active_record.time_zone_aware_types = [:datetime]
       end
     end
+
+    Rails.application.config.active_record.sqlite3.represent_boolean_as_integer = true
   end
 end
