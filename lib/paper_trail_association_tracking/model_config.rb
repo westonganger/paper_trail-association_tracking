@@ -10,9 +10,8 @@ module PaperTrailAssociationTracking
     def setup(options = {})
       super
 
-      setup_associations(options)
       setup_transaction_callbacks
-      setup_callbacks_for_habtm options[:join_tables]
+      setup_callbacks_for_habtm(options[:join_tables])
     end
 
     private
@@ -28,31 +27,6 @@ module PaperTrailAssociationTracking
     def habtm_assocs_not_skipped
       @model_class.reflect_on_all_associations(:has_and_belongs_to_many).
         reject { |a| @model_class.paper_trail_options[:skip].include?(a.name.to_s) }
-    end
-
-    def setup_associations(options)
-      @model_class.class_attribute :version_association_name
-      @model_class.version_association_name = options[:version] || :version
-
-      # The version this instance was reified from.
-      @model_class.send :attr_accessor, @model_class.version_association_name
-
-      @model_class.class_attribute :version_class_name
-      @model_class.version_class_name = options[:class_name] || "PaperTrail::Version"
-
-      @model_class.class_attribute :versions_association_name
-      @model_class.versions_association_name = options[:versions] || :versions
-
-      @model_class.send :attr_accessor, :paper_trail_event
-
-      assert_concrete_activerecord_class(@model_class.version_class_name)
-
-      @model_class.has_many(
-        @model_class.versions_association_name,
-        -> { order(model.timestamp_sort_order) },
-        class_name: @model_class.version_class_name,
-        as: :item
-      )
     end
 
     # Adds callbacks to record changes to habtm associations such that on save
@@ -80,7 +54,6 @@ module PaperTrailAssociationTracking
     def setup_transaction_callbacks
       @model_class.after_commit { ::PaperTrail.request.clear_transaction_id }
       @model_class.after_rollback { ::PaperTrail.request.clear_transaction_id }
-      @model_class.after_rollback { paper_trail.clear_rolled_back_versions }
     end
 
     def update_habtm_state(name, callback, model, assoc)

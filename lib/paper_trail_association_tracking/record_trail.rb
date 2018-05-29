@@ -30,40 +30,33 @@ module PaperTrailAssociationTracking
       }
     end
 
+    # @api private
     def record_create
-      @in_after_callback = true
-      return unless enabled?
-      versions_assoc = @record.send(@record.class.versions_association_name)
-      version = versions_assoc.create! data_for_create
-      update_transaction_id(version)
-      save_associations(version)
-    ensure
-      @in_after_callback = false
+      version = super
+      if version
+        update_transaction_id(version)
+        save_associations(version)
+      end
     end
 
+    # @api private
     def data_for_create
       data = super
       add_transaction_id_to(data)
       data
     end
 
-    def record_destroy(recording_order)
-      @in_after_callback = recording_order == "after"
-      if enabled? && !@record.new_record?
-        version = @record.class.paper_trail.version_class.create(data_for_destroy)
-        if version.errors.any?
-          log_version_errors(version, :destroy)
-        else
-          @record.send("#{@record.class.version_association_name}=", version)
-          @record.send(@record.class.versions_association_name).reset
-          update_transaction_id(version)
-          save_associations(version)
-        end
+    # @api private
+    def record_destroy(*args)
+      version = super
+      if version && version.respond_to?(:errors) && version.errors.empty?
+        update_transaction_id(version)
+        save_associations(version)
       end
-    ensure
-      @in_after_callback = false
+      version
     end
 
+    # @api private
     def data_for_destroy
       data = super
       add_transaction_id_to(data)
@@ -78,48 +71,39 @@ module PaperTrailAssociationTracking
         @record.class.paper_trail.version_class.column_names.include?("object_changes")
     end
 
-    def record_update(force:, in_after_callback:, is_touch:)
-      @in_after_callback = in_after_callback
-      if enabled? && (force || changed_notably?)
-        versions_assoc = @record.send(@record.class.versions_association_name)
-        version = versions_assoc.create(data_for_update(is_touch))
-        if version.errors.any?
-          log_version_errors(version, :update)
-        else
-          update_transaction_id(version)
-          save_associations(version)
-        end
+    # @api private
+    def record_update(**opts)
+      version = super
+      if version && version.respond_to?(:errors) && version.errors.empty?
+        update_transaction_id(version)
+        save_associations(version)
       end
-    ensure
-      @in_after_callback = false
+      version
     end
 
     # Used during `record_update`, returns a hash of data suitable for an AR
     # `create`. That is, all the attributes of the nascent `Version` record.
     #
     # @api private
-    def data_for_update(is_touch)
+    def data_for_update(*args)
       data = super
       add_transaction_id_to(data)
       data
     end
 
     # @api private
-    def record_update_columns(changes)
-      return unless enabled?
-      versions_assoc = @record.send(@record.class.versions_association_name)
-      version = versions_assoc.create(data_for_update_columns(changes))
-      if version.errors.any?
-        log_version_errors(version, :update)
-      else
+    def record_update_columns(*args)
+      version = super
+      if version && version.respond_to?(:errors) && version.errors.empty?
         update_transaction_id(version)
         save_associations(version)
       end
+      version
     end
 
     # Returns data for record_update_columns
     # @api private
-    def data_for_update_columns(changes)
+    def data_for_update_columns(*args)
       data = super
       add_transaction_id_to(data)
       data

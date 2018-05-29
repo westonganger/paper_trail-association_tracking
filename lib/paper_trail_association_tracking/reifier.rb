@@ -15,10 +15,7 @@ module PaperTrailAssociationTracking
       # @api private
       def reify(version, options)
         options = apply_defaults_to(options, version)
-        attrs = version.object_deserialized
-        model = init_model(attrs, options, version)
-        reify_attributes(model, version, attrs)
-        model.send "#{model.class.version_association_name}=", version
+        model = super
         reify_associations(model, options, version)
         model
       end

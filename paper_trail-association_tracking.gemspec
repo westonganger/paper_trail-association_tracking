@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
   s.required_ruby_version = ">= 2.3.0"
 
-  # Rails does not follow semver, makes breaking changes in minor versions.
+  ENV['PT_ASSOCIATION_TRACKING'] = 'false'
   s.add_dependency "paper_trail"#, ">= 10"
 
   s.add_development_dependency "appraisal", "~> 2.2"
