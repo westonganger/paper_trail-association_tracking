@@ -6,7 +6,7 @@ Plugin for the [PaperTrail](https://github.com/paper-trail-gem/paper_trail.git) 
 
 **PR's will happily be accepted**
 
-This gem was extracted from PaperTrail in v10 to simplify things in PaperTrail and association tracking seperately. 
+This gem was extracted from PaperTrail in v9.2 to simplify things in PaperTrail and association tracking seperately. 
 At this time, `paper_trail` has a runtime dependency on this gem and will keep running the existing tests related 
 to association tracking. This arrangement will be maintained for a few years, if practical.
 
@@ -36,7 +36,7 @@ maintains a list of known issues and we hope the community can help remove some 
 ```ruby
 # Gemfile
 
-gem 'paper_trail' # Requires v10+
+gem 'paper_trail' # Requires v9.2+
 gem 'paper_trail-association_tracking'
 ```
 
