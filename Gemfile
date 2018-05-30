@@ -6,4 +6,4 @@ gemspec
 
 gem 'rails-controller-testing'
 
-gem 'paper_trail', git: 'https://github.com/westonganger/paper_trail.git', branch: 'remove_association_tracking'
+gem 'paper_trail', git: 'https://github.com/paper-trail-gem/paper_trail.git', branch: 'remove_association_tracking'

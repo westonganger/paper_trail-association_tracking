@@ -3,7 +3,7 @@
 source "https://rubygems.org"
 
 ### TEMPORARY
-gem 'paper_trail', git: 'https://github.com/westonganger/paper_trail.git', branch: 'remove_association_tracking'
+gem 'paper_trail', git: 'https://github.com/paper-trail-gem/paper_trail.git', branch: 'remove_association_tracking'
 
 gem "activerecord", "~> 5.2.0"
 gem "rails-controller-testing"

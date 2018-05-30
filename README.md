@@ -150,11 +150,10 @@ Associations have the following known issues, in order of descending importance.
 If you notice anything here that should be updated/removed/edited feel free to create an issue.
 
 1. PaperTrail-AssociationTracking only reifies the first level of associations.
-1. Sometimes the has_one association will find more than one possible candidate and will raise a `PaperTrail::Reifiers::HasOne::FoundMoreThanOne` error. For example, see `spec/models/person_spec.rb`
-  - If you are not using STI, you may want to just assume the first result (of multiple) is the correct one and continue. PaperTrail <= v8 did this without error or warning. To do so add the following line to your initializer: `PaperTrail.config.association_reify_error_behaviour = :warn`. Valid options are: `[:error, :warn, :ignore]`
-  - When using STI, even if you enable `:warn` you will likely still end up recieving an `ActiveRecord::AssociationTypeMismatch` error.
-1. [PT Issue #542](https://github.com/airblade/paper_trail/issues/542) -
-   Not compatible with [transactional tests](https://github.com/rails/rails/blob/591a0bb87fff7583e01156696fbbf929d48d3e54/activerecord/lib/active_record/fixtures.rb#L142), aka. transactional fixtures.
+1. Sometimes the has_one association will find more than one possible candidate and will raise a `PaperTrailAssociationTracking::Reifiers::HasOne::FoundMoreThanOne` error. For example, see `spec/models/person_spec.rb`
+    - If you are not using STI, you may want to just assume the first result (of multiple) is the correct one and continue. PaperTrail <= v8 did this without error or warning. To do so add the following line to your initializer: `PaperTrail.config.association_reify_error_behaviour = :warn`. Valid options are: `[:error, :warn, :ignore]`
+    - When using STI, even if you enable `:warn` you will likely still end up recieving an `ActiveRecord::AssociationTypeMismatch` error.
+1. Not compatible with [transactional tests](https://github.com/rails/rails/blob/591a0bb87fff7583e01156696fbbf929d48d3e54/activerecord/lib/active_record/fixtures.rb#L142), aka. transactional fixtures. - [PT Issue #542](https://github.com/airblade/paper_trail/issues/542)
 1. Requires database timestamp columns with fractional second precision.
    - Sqlite and postgres timestamps have fractional second precision by default.
    [MySQL timestamps do not](https://dev.mysql.com/doc/refman/5.6/en/fractional-seconds.html). Furthermore, MySQL 5.5 and earlier do not
@@ -233,7 +232,7 @@ If you notice anything here that should be updated/removed/edited feel free to c
 
 ### Regarding ActiveRecord Single Table Inheritance (STI)
 
-At this time during `reify` any STI `has_one` associations will raise a `PaperTrail::Reifiers::HasOne::FoundMoreThanOne` error. See [PT Issue #594](https://github.com/airblade/paper_trail/issues/594)
+At this time during `reify` any STI `has_one` associations will raise a `PaperTrailAssociationTracking::Reifiers::HasOne::FoundMoreThanOne` error. See [PT Issue #594](https://github.com/airblade/paper_trail/issues/594)
 
 Something to note though, is while the PaperTrail gem supports [Single Table Inheritance](http://api.rubyonrails.org/classes/ActiveRecord/Base.html#class-ActiveRecord::Base-label-Single+table+inheritance), I do NOT recommend STI ever. Your better off rolling your own solution rather than using STI.
 

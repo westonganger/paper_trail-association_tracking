@@ -22,9 +22,6 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
   s.required_ruby_version = ">= 2.3.0"
 
-  ENV['PT_ASSOCIATION_TRACKING'] = 'false'
-  s.add_dependency "paper_trail"#, ">= 10"
-
   s.add_development_dependency "appraisal", "~> 2.2"
   s.add_development_dependency "byebug", "~> 9.1"
   s.add_development_dependency "ffaker", "~> 2.7"
