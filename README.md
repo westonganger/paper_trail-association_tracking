@@ -14,10 +14,6 @@ A little history lesson, discussed as early as 2009, and first implemented in la
 tracking was part of PT core until 2018 as an experimental feature and was use at your own risk. This gem now
 maintains a list of known issues and we hope the community can help remove some of them via PR's.
 
-## TODO
-
-- Continue removing most-non association specs
-
 ## Table of Contents
 
 <!-- toc -->

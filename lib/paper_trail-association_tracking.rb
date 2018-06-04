@@ -11,11 +11,11 @@ require "paper_trail_association_tracking/version_concern"
 
 module PaperTrailAssociationTracking
   def self.version
-    VERSION::STRING
+    VERSION
   end
 
   def self.gem_version
-    ::Gem::Version.new(VERSION::STRING)
+    ::Gem::Version.new(VERSION)
   end
 end
 

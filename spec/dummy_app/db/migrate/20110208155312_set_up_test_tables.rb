@@ -20,38 +20,12 @@ class SetUpTestTables < (
   TEXT_BYTES = 1_073_741_823
 
   def up
-    create_table :on_create, force: true do |t|
-      t.string :name, null: false
-    end
-
-    create_table :on_destroy, force: true do |t|
-      t.string :name, null: false
-    end
-
-    create_table :on_empty_array, force: true do |t|
-      t.string :name, null: false
-    end
-
-    create_table :on_touch, force: true do |t|
-      t.string :name, null: false
-    end
-
-    create_table :on_update, force: true do |t|
-      t.string :name, null: false
-    end
-
     # Classes: Vehicle, Car
     create_table :vehicles, force: true do |t|
       t.string :name, null: false
       t.string :type, null: false
       t.integer :owner_id
       t.timestamps null: false, limit: 6
-    end
-
-    create_table :skippers, force: true do |t|
-      t.string     :name
-      t.datetime   :another_timestamp, limit: 6
-      t.timestamps null: true, limit: 6
     end
 
     create_table :widgets, force: true do |t|
@@ -110,51 +84,6 @@ class SetUpTestTables < (
       %i[foreign_key_name foreign_key_id],
       name: "index_version_associations_on_foreign_key"
 
-    create_table :post_versions, force: true do |t|
-      t.string   :item_type, null: false
-      t.integer  :item_id,   null: false
-      t.string   :event,     null: false
-      t.string   :whodunnit
-      t.text     :object
-      t.datetime :created_at, limit: 6
-
-      # Controller info columns.
-      t.string :ip
-      t.string :user_agent
-    end
-    add_index :post_versions, %i[item_type item_id]
-
-    if ENV["DB"] == "postgres" && ::ActiveRecord::VERSION::MAJOR >= 4
-      create_table :json_versions, force: true do |t|
-        t.string   :item_type, null: false
-        t.integer  :item_id,   null: false
-        t.string   :event,     null: false
-        t.string   :whodunnit
-        t.json     :object
-        t.json     :object_changes
-        t.datetime :created_at, limit: 6
-      end
-      add_index :json_versions, %i[item_type item_id]
-    end
-
-    create_table :not_on_updates, force: true do |t|
-      t.timestamps null: true, limit: 6
-    end
-
-    create_table :bananas, force: true do |t|
-      t.timestamps null: true, limit: 6
-    end
-
-    create_table :banana_versions, force: true do |t|
-      t.string   :item_type, null: false
-      t.integer  :item_id,   null: false
-      t.string   :event,     null: false
-      t.string   :whodunnit
-      t.text     :object
-      t.datetime :created_at, limit: 6
-    end
-    add_index :banana_versions, %i[item_type item_id]
-
     create_table :wotsits, force: true do |t|
       t.integer :widget_id
       t.string  :name
@@ -203,20 +132,6 @@ class SetUpTestTables < (
       t.string :name
     end
 
-    create_table :songs, force: true do |t|
-      t.integer :length
-    end
-
-    create_table :posts, force: true do |t|
-      t.string :title
-      t.string :content
-    end
-
-    create_table :post_with_statuses, force: true do |t|
-      t.integer :status
-      t.timestamps null: false, limit: 6
-    end
-
     create_table :animals, force: true do |t|
       t.string :name
       t.string :species # single table inheritance column
@@ -227,25 +142,9 @@ class SetUpTestTables < (
       t.integer :animal_id
     end
 
-    create_table :documents, force: true do |t|
-      t.string :name
-    end
-
-    create_table :legacy_widgets, force: true do |t|
-      t.string    :name
-      t.integer   :version
-    end
-
     create_table :things, force: true do |t|
       t.string    :name
       t.references :person
-    end
-
-    create_table :translations, force: true do |t|
-      t.string    :headline
-      t.string    :content
-      t.string    :language_code
-      t.string    :type
     end
 
     create_table :gadgets, force: true do |t|
@@ -258,24 +157,14 @@ class SetUpTestTables < (
       t.string :name
     end
 
+    create_table :orders, force: true do |t|
+      t.integer :customer_id
+      t.string  :order_date
+    end
+
     create_table :line_items, force: true do |t|
       t.integer :order_id
       t.string  :product
-    end
-
-    create_table :fruits, force: true do |t|
-      t.string :name
-      t.string :color
-    end
-
-    create_table :boolits, force: true do |t|
-      t.string :name
-      t.boolean :scoped, default: true
-    end
-
-    create_table :callback_modifiers, force: true do |t|
-      t.string  :some_content
-      t.boolean :deleted, default: false
     end
 
     create_table :chapters, force: true do |t|
@@ -314,24 +203,6 @@ class SetUpTestTables < (
     end
     add_index :bar_habtms_foo_habtms, [:foo_habtm_id]
     add_index :bar_habtms_foo_habtms, [:bar_habtm_id]
-
-    # custom_primary_key_records use a uuid column (string)
-    create_table :custom_primary_key_records, id: false, force: true do |t|
-      t.column :uuid, :string, primary_key: true
-      t.string :name
-      t.timestamps null: true, limit: 6
-    end
-
-    # and custom_primary_key_record_versions stores the uuid in item_id, a string
-    create_table :custom_primary_key_record_versions, force: true do |t|
-      t.string   :item_type, null: false
-      t.string   :item_id,   null: false
-      t.string   :event,     null: false
-      t.string   :whodunnit
-      t.text     :object
-      t.datetime :created_at, limit: 6
-    end
-    add_index :custom_primary_key_record_versions, %i[item_type item_id], name: "idx_cust_pk_item"
 
     create_table :family_lines do |t|
       t.integer :parent_id
