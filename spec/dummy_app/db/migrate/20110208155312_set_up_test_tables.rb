@@ -40,7 +40,7 @@ class SetUpTestTables < (
       t.string :name, null: false
     end
 
-    # Classes: Vehicle, Car, Truck
+    # Classes: Vehicle, Car
     create_table :vehicles, force: true do |t|
       t.string :name, null: false
       t.string :type, null: false
@@ -256,11 +256,6 @@ class SetUpTestTables < (
 
     create_table :customers, force: true do |t|
       t.string :name
-    end
-
-    create_table :orders, force: true do |t|
-      t.integer :customer_id
-      t.string  :order_date
     end
 
     create_table :line_items, force: true do |t|
