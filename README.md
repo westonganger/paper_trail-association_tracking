@@ -17,7 +17,6 @@ maintains a list of known issues and we hope the community can help remove some 
 ## TODO
 
 - Continue removing most-non association specs
-- Add consolidated list of paper trail plugins to paper_trail core readme
 
 ## Table of Contents
 
