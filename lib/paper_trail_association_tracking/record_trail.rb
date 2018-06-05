@@ -153,7 +153,7 @@ module PaperTrailAssociationTracking
     #
     # @api private
     def habtm_assoc_ids(habtm_assoc)
-      current = @record.send(habtm_assoc.name).to_a.map(&:id) # TODO: `pluck` would use less memory
+      current = @record.send("#{habtm_assoc.name.to_s.singularize}_ids")
       removed = @record.paper_trail_habtm.try(:[], habtm_assoc.name).try(:[], :removed) || []
       added = @record.paper_trail_habtm.try(:[], habtm_assoc.name).try(:[], :added) || []
       current + removed - added
