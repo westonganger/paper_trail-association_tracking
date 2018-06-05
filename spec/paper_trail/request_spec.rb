@@ -4,6 +4,5 @@ require "spec_helper"
 
 module PaperTrail
   ::RSpec.describe(Request, versioning: true) do
-
   end
 end

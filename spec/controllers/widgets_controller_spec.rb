@@ -4,7 +4,6 @@ require "spec_helper"
 
 RSpec.describe WidgetsController, type: :controller, versioning: true do
   before do
-
   end
 
   after do

@@ -3,5 +3,4 @@
 require "spec_helper"
 
 RSpec.describe PaperTrail::VersionConcern do
-
 end

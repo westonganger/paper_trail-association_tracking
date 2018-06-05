@@ -147,6 +147,10 @@ RSpec/FilePath:
 Style/GuardClause:
   Enabled: false
 
+Style/FileName:
+  Exclude:
+    - lib/paper_trail-association_tracking.rb
+
 # Use postfix (modifier) conditionals for one-liners, unless doing so would
 # exceed 60 characters.
 Style/IfUnlessModifier:
@@ -161,6 +165,10 @@ Style/IfUnlessModifier:
 Style/LineEndConcatenation:
   Enabled: false
 
+Style/RaiseArgs:
+  EnforcedStyle: compact
+  Enabled: false
+
 Style/RedundantReturn:
   Enabled: false
 
@@ -173,6 +181,9 @@ Style/Proc:
 Style/StringLiterals:
   Enabled: false
   EnforcedStyle: single_quotes
+
+Style/WordArray:
+  Enabled: false
 
 ### TEMPORARY
 Style/TrailingCommaInLiteral:
@@ -193,6 +204,9 @@ Metrics/CyclomaticComplexity:
 
 Metrics/PerceivedComplexity:
   Max: 9 # Goal: 7
+
+RSpec/EmptyExampleGroup:
+  Enabled: false
 
 RSpec/InstanceVariable:
   Exclude:

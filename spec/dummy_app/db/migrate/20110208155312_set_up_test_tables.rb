@@ -143,7 +143,7 @@ class SetUpTestTables < (
     end
 
     create_table :things, force: true do |t|
-      t.string    :name
+      t.string :name
       t.references :person
     end
 

@@ -53,7 +53,6 @@ module PaperTrail
   end
 end
 
-
 # Require frameworks
 if defined?(::Rails)
   # Rails module is sometimes defined by gems like rails-html-sanitizer

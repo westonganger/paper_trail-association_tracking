@@ -14,10 +14,10 @@ module PaperTrailAssociationTracking
     def association_reify_error_behaviour
       @association_reify_error_behaviour ||= "error"
     end
-    
+
     def track_associations=(val)
       @track_associations = !!val
-    end 
+    end
 
     def track_associations?
       !!@track_associations
