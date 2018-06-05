@@ -27,13 +27,13 @@ module PaperTrailAssociationTracking
           and see spec/models/person_spec.rb
         STR
 
-        def initialize(base_class_name, num_records_found)
-          @base_class_name = base_class_name.to_s
+        def initialize(class_name, num_records_found)
+          @class_name = class_name.to_s
           @num_records_found = num_records_found.to_i
         end
 
         def message
-          format(MESSAGE_FMT, @base_class_name, @num_records_found)
+          format(MESSAGE_FMT, @class_name, @num_records_found)
         end
       end
 
@@ -66,8 +66,8 @@ module PaperTrailAssociationTracking
         # record from the point in time identified by `transaction_id` or `version_at`.
         # @api private
         def load_version(assoc, model, transaction_id, version_at)
-          base_class_name = assoc.klass.base_class.name
-          versions = load_versions(assoc, model, transaction_id, version_at, base_class_name)
+          class_name = assoc.klass.name
+          versions = load_versions(assoc, model, transaction_id, version_at, class_name)
           case versions.length
           when 0
             nil
@@ -78,24 +78,24 @@ module PaperTrailAssociationTracking
             when "warn"
               version = versions.first
               version.logger&.warn(
-                FoundMoreThanOne.new(base_class_name, versions.length).message
+                FoundMoreThanOne.new(class_name, versions.length).message
               )
               version
             when "ignore"
               versions.first
             else # "error"
-              raise FoundMoreThanOne.new(base_class_name, versions.length)
+              raise FoundMoreThanOne.new(class_name, versions.length)
             end
           end
         end
 
         # @api private
-        def load_versions(assoc, model, transaction_id, version_at, base_class_name)
+        def load_versions(assoc, model, transaction_id, version_at, class_name)
           version_table_name = model.class.paper_trail.version_class.table_name
           model.class.paper_trail.version_class.joins(:version_associations).
             where("version_associations.foreign_key_name = ?", assoc.foreign_key).
             where("version_associations.foreign_key_id = ?", model.id).
-            where("#{version_table_name}.item_type = ?", base_class_name).
+            where("#{version_table_name}.item_type = ?", class_name).
             where("created_at >= ? OR transaction_id = ?", version_at, transaction_id).
             order("#{version_table_name}.id ASC").
             load

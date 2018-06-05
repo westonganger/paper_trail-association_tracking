@@ -7,6 +7,9 @@ RSpec.describe Person, type: :model, versioning: true do
     expect(Person.new).to be_versioned
   end
 
+  # Was originally a skipped example from Issue #594.  See:
+  #   https://github.com/airblade/paper_trail/issues/594
+  # Fixed by utilising the correct sub type of the STI model.
   describe "#cars and bicycles" do
     it "can be reified" do
       person = Person.create(name: "Frank")
@@ -23,16 +26,9 @@ RSpec.describe Person, type: :model, versioning: true do
 
       expect(person.reload.versions.length).to(eq(3))
 
-      # See https://github.com/airblade/paper_trail/issues/594
-      expect {
-        person.reload.versions.second.reify(has_one: true)
-      }.to(
-        raise_error(::PaperTrailAssociationTracking::Reifiers::HasOne::FoundMoreThanOne) do |err|
-          expect(err.message.squish).to match(
-            /Expected to find one Vehicle, but found 2/
-          )
-        end
-      )
+      second_version = person.reload.versions.second.reify(has_one: true)
+      expect(second_version.car.name).to(eq("BMW 325"))
+      expect(second_version.bicycle.name).to(eq("BMX 1.0"))
     end
   end
 end
