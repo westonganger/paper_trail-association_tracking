@@ -43,9 +43,8 @@ Has-Many-Through. In order to do this, you will need to do two things:
 1. Create a `version_associations` table
 2. Set `PaperTrail.config.track_associations = true` (e.g. in an initializer)
 
-Both will be done for you automatically if you install PaperTrail with the
-`--with_associations` option
-(e.g. `rails generate paper_trail:install --with-associations`)
+
+Both will be done for you automatically if you run the PaperTrail-AssociationTracking generator (e.g. `rails generate paper_trail_association_tracking:install`)
 
 If you want to add this functionality after the initial installation, you will
 need to create the `version_associations` table manually, and you will need to
