@@ -1,5 +1,17 @@
 language: ruby
 cache: bundler
+sudo: false
+
+notifications:
+  email:
+    on_success: never
+    on_failure: never
+
+addons:
+  postgresql: "9.4"
+
+matrix:
+  fast_finish: true
 
 # For ruby compatibility, we test the highest and lowest minor versions only.
 # For example, if our gemspec says `required_ruby_version = ">= 2.3.0"`, and
@@ -7,6 +19,12 @@ cache: bundler
 rvm:
   - 2.5.1
   - 2.3.6
+   
+gemfile:
+  - gemfiles/ar_4.2.gemfile
+  - gemfiles/ar_5.0.gemfile
+  - gemfiles/ar_5.1.gemfile
+  - gemfiles/ar_5.2.gemfile
 
 env:
   global:
@@ -15,8 +33,6 @@ env:
     - DB=mysql
     - DB=postgres
     - DB=sqlite
-
-sudo: false
 
 before_script:
   - mysql --version
@@ -27,15 +43,3 @@ before_script:
   - sh -c "if [ \"$DB\" = 'postgres' ]; then psql -c 'create database paper_trail_test;' -U postgres; fi"
   - sh -c "if [ \"$DB\" = 'postgres' ]; then psql -c 'create database paper_trail_bar;'  -U postgres; fi"
   - sh -c "if [ \"$DB\" = 'postgres' ]; then psql -c 'create database paper_trail_foo;'  -U postgres; fi"
-
-gemfile:
-  - gemfiles/ar_4.2.gemfile
-  - gemfiles/ar_5.0.gemfile
-  - gemfiles/ar_5.1.gemfile
-  - gemfiles/ar_5.2.gemfile
-
-matrix:
-  fast_finish: true
-
-addons:
-  postgresql: "9.4"
