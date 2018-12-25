@@ -208,8 +208,30 @@ RSpec.describe(::PaperTrail, versioning: true) do
           expect(@widget.versions.last.item).to(be_nil)
         end
 
-        it "not have changes" do
-          expect(@widget.versions.last.changeset).to(eq({}))
+        it "have changes" do
+          changeset = @widget.versions.last.changeset
+          expect(changeset["id"][0]).to(eq(@widget.id))
+          expect(changeset["id"][1]).to(be_nil)
+          expect(changeset["name"][0]).to(eq(@widget.name))
+          expect(changeset["name"][1]).to(be_nil)
+          expect(changeset["a_text"][0]).to(eq(@widget.a_text))
+          expect(changeset["a_text"][1]).to(be_nil)
+          expect(changeset["an_integer"][0]).to(eq(@widget.an_integer))
+          expect(changeset["an_integer"][1]).to(be_nil)
+          expect(changeset["a_float"][0]).to(eq(@widget.a_float))
+          expect(changeset["a_float"][1]).to(be_nil)
+          expect(changeset["a_decimal"][0]).to(eq(@widget.a_decimal))
+          expect(changeset["a_decimal"][1]).to(be_nil)
+          expect(changeset["a_datetime"][0].to_i).to(eq(@widget.a_datetime.to_i))
+          expect(changeset["a_datetime"][1]).to(be_nil)
+          expect(changeset["a_time"][0].to_i).to(eq(@widget.a_time.to_i))
+          expect(changeset["a_time"][1]).to(be_nil)
+          expect(changeset["a_date"][0].to_i).to(eq(@widget.a_date.to_i))
+          expect(changeset["a_date"][1]).to(be_nil)
+          expect(changeset["a_boolean"][0]).to(eq(@widget.a_boolean))
+          expect(changeset["a_boolean"][1]).to(be_nil)
+          expect(changeset["type"][0]).to(eq(@widget.type))
+          expect(changeset["type"][1]).to(be_nil)
         end
       end
     end
