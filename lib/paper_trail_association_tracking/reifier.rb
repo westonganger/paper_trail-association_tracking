@@ -50,9 +50,11 @@ module PaperTrailAssociationTracking
       end
 
       # @api private
-      def each_enabled_association(associations)
+      def each_enabled_association(associations, model)
         associations.each do |assoc|
-          next unless ::PaperTrail.request.enabled_for_model?(assoc.klass)
+          assoc_klass = assoc.polymorphic? ?
+                          model.send(assoc.foreign_type).constantize : assoc.klass
+          next unless ::PaperTrail.request.enabled_for_model?(assoc_klass)
           yield assoc
         end
       end
@@ -79,7 +81,7 @@ module PaperTrailAssociationTracking
       # @api private
       def reify_has_one_associations(transaction_id, model, options = {})
         associations = model.class.reflect_on_all_associations(:has_one)
-        each_enabled_association(associations) do |assoc|
+        each_enabled_association(associations, model) do |assoc|
           ::PaperTrailAssociationTracking::Reifiers::HasOne.reify(assoc, model, options, transaction_id)
         end
       end
@@ -88,7 +90,7 @@ module PaperTrailAssociationTracking
       # @api private
       def reify_belongs_to_associations(transaction_id, model, options = {})
         associations = model.class.reflect_on_all_associations(:belongs_to)
-        each_enabled_association(associations) do |assoc|
+        each_enabled_association(associations, model) do |assoc|
           ::PaperTrailAssociationTracking::Reifiers::BelongsTo.reify(assoc, model, options, transaction_id)
         end
       end
@@ -97,7 +99,7 @@ module PaperTrailAssociationTracking
       # @api private
       def reify_has_many_associations(transaction_id, associations, model, options = {})
         version_table_name = model.class.paper_trail.version_class.table_name
-        each_enabled_association(associations) do |assoc|
+        each_enabled_association(associations, model) do |assoc|
           ::PaperTrailAssociationTracking::Reifiers::HasMany.reify(assoc, model, options, transaction_id, version_table_name)
         end
       end
@@ -106,7 +108,7 @@ module PaperTrailAssociationTracking
       # direct (non-`through`) has_manys have been reified.
       # @api private
       def reify_has_many_through_associations(transaction_id, associations, model, options = {})
-        each_enabled_association(associations) do |assoc|
+        each_enabled_association(associations, model) do |assoc|
           ::PaperTrailAssociationTracking::Reifiers::HasManyThrough.reify(assoc, model, options, transaction_id)
         end
       end
