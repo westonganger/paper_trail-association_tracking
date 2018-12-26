@@ -35,4 +35,21 @@ RSpec.describe Person, type: :model, versioning: true do
       )
     end
   end
+
+  describe "#notes" do
+    it "can be reified" do
+      person = Person.create!(id: 1, name: "Jessica")
+      book = Book.create!(id: 1, title: "La Chute")
+      person_note = Note.create!(body: "Some note on person", object: person)
+      book_note = Note.create!(body: "Some note on book", object: book)
+
+      person.update_attributes!(name: "Jennyfer")
+      book_note.update_attributes!(body: "Modified note on book")
+      person_note.update_attributes!(body: "Modified note on person")
+
+      reified_person = person.versions.last.reify(has_many: true)
+      expect(reified_person.notes.length).to eq(1)
+      expect(reified_person.notes.first.body).to eq("Some note on person")
+    end
+  end
 end
