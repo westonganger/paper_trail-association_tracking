@@ -7,5 +7,7 @@ class Book < ActiveRecord::Base
   has_many :editorships, dependent: :destroy
   has_many :editors, through: :editorships
 
+  has_many :notes, as: :object
+
   has_paper_trail
 end

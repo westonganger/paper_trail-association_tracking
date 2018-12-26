@@ -78,10 +78,11 @@ class SetUpTestTables < (
       t.integer  :version_id
       t.string   :foreign_key_name, null: false
       t.integer  :foreign_key_id
+      t.string   :foreign_type, null: false
     end
     add_index :version_associations, [:version_id]
     add_index :version_associations,
-      %i[foreign_key_name foreign_key_id],
+      %i[foreign_key_name foreign_key_id foreign_type],
       name: "index_version_associations_on_foreign_key"
 
     create_table :wotsits, force: true do |t|
@@ -213,6 +214,12 @@ class SetUpTestTables < (
       t.string :name
       t.integer :parent_id
       t.integer :partner_id
+    end
+
+    create_table :notes, force: true do |t|
+      t.string :body
+      t.string :object_type
+      t.integer :object_id
     end
   end
 

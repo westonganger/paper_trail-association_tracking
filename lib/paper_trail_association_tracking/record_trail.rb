@@ -136,7 +136,8 @@ module PaperTrailAssociationTracking
           ::PaperTrail::VersionAssociation.create(
             version_id: version.transaction_id,
             foreign_key_name: a.name,
-            foreign_key_id: id
+            foreign_key_id: id,
+            foreign_type: a.klass
           )
         end
       end
@@ -168,12 +169,14 @@ module PaperTrailAssociationTracking
       }
 
       if assoc.options[:polymorphic]
-        associated_record = @record.send(assoc.name) if @record.send(assoc.foreign_type)
-        if associated_record && ::PaperTrail.request.enabled_for_model?(associated_record.class)
-          assoc_version_args[:foreign_key_id] = associated_record.id
+        foreign_type = @record.send(assoc.foreign_type)
+        if foreign_type && ::PaperTrail.request.enabled_for_model?(foreign_type.constantize)
+          assoc_version_args[:foreign_key_id] = @record.send(assoc.foreign_key)
+          assoc_version_args[:foreign_type] = foreign_type
         end
       elsif ::PaperTrail.request.enabled_for_model?(assoc.klass)
         assoc_version_args[:foreign_key_id] = @record.send(assoc.foreign_key)
+        assoc_version_args[:foreign_type] = assoc.klass
       end
 
       if assoc_version_args.key?(:foreign_key_id)
