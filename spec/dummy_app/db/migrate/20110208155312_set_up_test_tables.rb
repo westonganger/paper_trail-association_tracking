@@ -214,6 +214,12 @@ class SetUpTestTables < (
       t.integer :parent_id
       t.integer :partner_id
     end
+
+    create_table :notes, force: true do |t|
+      t.string :body
+      t.string :object_type
+      t.integer :object_id
+    end
   end
 
   def down
