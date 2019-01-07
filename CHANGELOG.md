@@ -1,8 +1,13 @@
 # CHANGELOG
 
-## Unreleased
+## 1.1.1 - Unreleased
 
-- None
+- [#11](https://github.com/westonganger/paper_trail-association_tracking/issues/11) - Remove null constraint on `version_associations.foreign_type` column which was added in `v1.1.0`. This fixes issues adding the column to existing projects who are upgrading.
+- Add generator `rails g paper_trail_association_tracking:add_foreign_type_to_version_associations` for `versions_associations.foreign_type` column for upgrading applications from `v1.0.0` or earlier.
+
+### How to Upgrade from v1.0.0 or earlier
+
+- Run `rails g paper_trail_association_tracking:add_foreign_type_to_version_associations` and then migrate your database.
 
 ## 1.1.0 - 2018-12-28
 

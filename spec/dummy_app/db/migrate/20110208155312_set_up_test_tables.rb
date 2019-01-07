@@ -78,7 +78,7 @@ class SetUpTestTables < (
       t.integer  :version_id
       t.string   :foreign_key_name, null: false
       t.integer  :foreign_key_id
-      t.string   :foreign_type, null: false
+      t.string   :foreign_type
     end
     add_index :version_associations, [:version_id]
     add_index :version_associations,
