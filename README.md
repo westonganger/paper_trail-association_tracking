@@ -8,7 +8,7 @@ Plugin for the [PaperTrail](https://github.com/paper-trail-gem/paper_trail.git) 
 
 **PR's will happily be accepted**
 
-This gem was extracted from PaperTrail in v9.2 to simplify things in PaperTrail and association tracking seperately. 
+This gem was extracted from PaperTrail in v9.2 to simplify things in PaperTrail and association tracking separately. 
 At this time, `paper_trail` only has a development dependency in order to run the tests. If you want use this gem in your project you must add it to your own Gemfile.
 
 A little history lesson, discussed as early as 2009, and first implemented in late 2014, association
@@ -20,7 +20,7 @@ maintains a list of known issues and we hope the community can help remove some 
 <!-- toc -->
 
 - [Install](#install)
-- [Associations](#associations)
+- [Association Tracking](#association-tracking)
 - [Known Issues](#known-issues)
 - [Contributing](#contributing)
 - [Credits](#credits)
