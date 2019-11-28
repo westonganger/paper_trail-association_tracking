@@ -12,8 +12,8 @@ RSpec.describe Note, type: :model, versioning: true do
       person = Person.create!(name: "Marielle")
       note = Note.create!(body: "Note on Marielle", object: person)
 
-      note.update_attributes!(body: "Modified note")
-      person.update_attributes!(name: "Modified")
+      note.update!(body: "Modified note")
+      person.update!(name: "Modified")
 
       reified_note = note.versions.last.reify(belongs_to: true)
       expect(reified_note.body).to eq("Note on Marielle")

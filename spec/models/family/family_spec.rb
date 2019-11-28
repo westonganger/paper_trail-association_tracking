@@ -11,7 +11,7 @@ module Family
           parent.children.build(name: "child1")
           parent.save!
           Timecop.travel(1.second.since)
-          parent.update_attributes!(
+          parent.update!(
             name: "parent2",
             children_attributes: { id: parent.children.first.id, name: "child2" }
           )
@@ -68,7 +68,7 @@ module Family
           parent.build_mentee(name: "partner1")
           parent.save!
           Timecop.travel(1.second.since)
-          parent.update_attributes(
+          parent.update(
             name: "parent2",
             mentee_attributes: { id: parent.mentee.id, name: "partner2" }
           )

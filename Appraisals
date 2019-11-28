@@ -9,11 +9,6 @@
 # > the version from the appraisal takes precedence.
 # > https://github.com/thoughtbot/appraisal
 
-appraise "ar-4.2" do
-  gem "activerecord", "~> 4.2.10"
-  gem "database_cleaner", "~> 1.6"
-end
-
 appraise "ar-5.0" do
   gem "activerecord", "~> 5.0.6"
   gem "rails-controller-testing"
@@ -25,6 +20,6 @@ appraise "ar-5.1" do
 end
 
 appraise "ar-6.0" do
-  gem "activerecord", [">= 6.0.0.rc1", "< 6.1"]
+  gem "activerecord", ["~> 6.0.0"]
   gem "rails-controller-testing"
 end

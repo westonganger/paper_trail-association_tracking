@@ -2,10 +2,8 @@
 
 source "https://rubygems.org"
 
-gem "activerecord", [">= 6.0.0.rc1", "< 6.1"]
 gem "rails-controller-testing"
+gem "paper_trail", git: "https://github.com/paper-trail-gem/paper_trail.git"
+gem "activerecord", ["~> 6.0.0"]
 
 gemspec path: "../"
-
-ENV['PT_ASSOCIATION_TRACKING'] = 'false' ### to skip the dependency on this gem, solely for testing purposes 
-gem 'paper_trail', git: 'https://github.com/paper-trail-gem/paper_trail.git'

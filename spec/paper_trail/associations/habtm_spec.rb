@@ -15,7 +15,7 @@ RSpec.describe(::PaperTrail, versioning: true) do
 
     context "where the association is created between model versions" do
       before do
-        @foo.update_attributes(name: "foo1", bar_habtms: [BarHabtm.create(name: "bar")])
+        @foo.update(name: "foo1", bar_habtms: [BarHabtm.create(name: "bar")])
       end
 
       context "when reified" do
@@ -35,9 +35,9 @@ RSpec.describe(::PaperTrail, versioning: true) do
 
     context "where the association is changed between model versions" do
       before do
-        @foo.update_attributes(name: "foo2", bar_habtms: [BarHabtm.create(name: "bar2")])
+        @foo.update(name: "foo2", bar_habtms: [BarHabtm.create(name: "bar2")])
         Timecop.travel(1.second.since)
-        @foo.update_attributes(name: "foo3", bar_habtms: [BarHabtm.create(name: "bar3")])
+        @foo.update(name: "foo3", bar_habtms: [BarHabtm.create(name: "bar3")])
       end
 
       context "when reified" do
@@ -65,9 +65,9 @@ RSpec.describe(::PaperTrail, versioning: true) do
 
     context "where the association is destroyed between model versions" do
       before do
-        @foo.update_attributes(name: "foo2", bar_habtms: [BarHabtm.create(name: "bar2")])
+        @foo.update(name: "foo2", bar_habtms: [BarHabtm.create(name: "bar2")])
         Timecop.travel(1.second.since)
-        @foo.update_attributes(name: "foo3", bar_habtms: [])
+        @foo.update(name: "foo3", bar_habtms: [])
       end
 
       context "when reified" do
@@ -88,11 +88,11 @@ RSpec.describe(::PaperTrail, versioning: true) do
     context "where the unassociated model changes" do
       before do
         @bar = BarHabtm.create(name: "bar2")
-        @foo.update_attributes(name: "foo2", bar_habtms: [@bar])
+        @foo.update(name: "foo2", bar_habtms: [@bar])
         Timecop.travel(1.second.since)
-        @foo.update_attributes(name: "foo3", bar_habtms: [BarHabtm.create(name: "bar4")])
+        @foo.update(name: "foo3", bar_habtms: [BarHabtm.create(name: "bar4")])
         Timecop.travel(1.second.since)
-        @bar.update_attributes(name: "bar3")
+        @bar.update(name: "bar3")
       end
 
       context "when reified" do
@@ -115,7 +115,7 @@ RSpec.describe(::PaperTrail, versioning: true) do
     before do
       @foo = FooHabtm.create(name: "foo", bar_habtms_attributes: [{ name: "bar" }])
       Timecop.travel(1.second.since)
-      @foo.update_attributes(
+      @foo.update(
         name: "foo2",
         bar_habtms_attributes: [{ id: @foo.bar_habtms.first.id, name: "bar2" }]
       )

@@ -41,7 +41,7 @@ module Dummy
         config.load_defaults "5.1"
         config.active_record.time_zone_aware_types = [:datetime]
       end
-      if v >= Gem::Version.new("5.2")
+      if v >= Gem::Version.new("5.2") && v < Gem::Version.new("6.0")
         config.active_record.sqlite3.represent_boolean_as_integer = true
       end
     end

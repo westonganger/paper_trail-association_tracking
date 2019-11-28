@@ -78,8 +78,8 @@ end
 treasure.amount                  # 100
 treasure.location.latitude       # 12.345
 
-treasure.update_attributes amount: 153
-treasure.location.update_attributes latitude: 54.321
+treasure.update amount: 153
+treasure.location.update latitude: 54.321
 
 t = treasure.versions.last.reify(has_one: true)
 t.amount                         # 100
@@ -95,8 +95,8 @@ treasure.amount                  # 100
 treasure.location.latitude       # 12.345
 
 Treasure.transaction do
-treasure.location.update_attributes latitude: 54.321
-treasure.update_attributes amount: 153
+treasure.location.update latitude: 54.321
+treasure.update amount: 153
 end
 
 t = treasure.versions.last.reify(has_one: true)
@@ -124,7 +124,7 @@ class Wotsit < ActiveRecord::Base
 end
 
 widget = Widget.create(name: 'widget_0')
-widget.update_attributes(name: 'widget_1')
+widget.update(name: 'widget_1')
 widget.create_wotsit(name: 'wotsit')
 
 widget_0 = widget.versions.last.reify(has_one: true)

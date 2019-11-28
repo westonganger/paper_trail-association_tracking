@@ -62,7 +62,7 @@ RSpec.describe(::PaperTrail, versioning: true) do
     end
 
     context "and then updated with changes" do
-      before { @widget.update_attributes(name: "Harry") }
+      before { @widget.update(name: "Harry") }
 
       it "have three previous versions" do
         expect(@widget.versions.length).to(eq(2))

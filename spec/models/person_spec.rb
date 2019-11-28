@@ -15,11 +15,11 @@ RSpec.describe Person, type: :model, versioning: true do
 
       person.car = car
       person.bicycle = bicycle
-      person.update_attributes(name: "Steve")
+      person.update(name: "Steve")
 
-      car.update_attributes(name: "BMW 330")
-      bicycle.update_attributes(name: "BMX 2.0")
-      person.update_attributes(name: "Peter")
+      car.update(name: "BMW 330")
+      bicycle.update(name: "BMX 2.0")
+      person.update(name: "Peter")
 
       expect(person.reload.versions.length).to(eq(3))
 
@@ -43,9 +43,9 @@ RSpec.describe Person, type: :model, versioning: true do
       person_note = Note.create!(body: "Some note on person", object: person)
       book_note = Note.create!(body: "Some note on book", object: book)
 
-      person.update_attributes!(name: "Jennyfer")
-      book_note.update_attributes!(body: "Modified note on book")
-      person_note.update_attributes!(body: "Modified note on person")
+      person.update!(name: "Jennyfer")
+      book_note.update!(body: "Modified note on book")
+      person_note.update!(body: "Modified note on person")
 
       reified_person = person.versions.last.reify(has_many: true)
       expect(reified_person.notes.length).to eq(1)

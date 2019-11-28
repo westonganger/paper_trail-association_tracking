@@ -14,11 +14,11 @@ RSpec.describe Pet, type: :model, versioning: true do
 
     person.pets << Pet.create(animal: dog)
     person.pets << Pet.create(animal: cat)
-    person.update_attributes(name: "Steve")
+    person.update(name: "Steve")
 
-    dog.update_attributes(name: "Beethoven")
-    cat.update_attributes(name: "Sylvester")
-    person.update_attributes(name: "Peter")
+    dog.update(name: "Beethoven")
+    cat.update(name: "Sylvester")
+    person.update(name: "Peter")
 
     expect(person.reload.versions.length).to(eq(3))
 

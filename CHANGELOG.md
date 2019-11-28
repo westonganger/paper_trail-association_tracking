@@ -3,6 +3,7 @@
 ## Unreleased
 
 - [PR #15](https://github.com/westonganger/paper_trail-association_tracking/pull/15) - Recreate `version_associations.foreign_key` index to utilize the new `version_associations.foreign_type` column
+- Drop support for Rails 4.x
 
 ## 2.0.0 - 2019-01-22
 

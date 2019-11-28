@@ -63,7 +63,9 @@ require "ffaker"
 require "timecop"
 
 # Run any available migration
-if ActiveRecord.gem_version >= Gem::Version.new("5.2")
+if ActiveRecord.gem_version >= Gem::Version.new("6.0")
+  ActiveRecord::MigrationContext.new(File.expand_path("dummy_app/db/migrate/", __dir__), ActiveRecord::SchemaMigration).migrate
+elsif ActiveRecord.gem_version >= Gem::Version.new("5.2")
   ActiveRecord::MigrationContext.new(File.expand_path("dummy_app/db/migrate/", __dir__)).migrate
 else
   ActiveRecord::Migrator.migrate File.expand_path("dummy_app/db/migrate/", __dir__)
