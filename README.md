@@ -1,7 +1,7 @@
 # PaperTrail-AssociationTracking
 
 <a href="https://badge.fury.io/rb/paper_trail-association_tracking" target="_blank"><img height="21" style='border:0px;height:21px;' border='0' src="https://badge.fury.io/rb/paper_trail-association_tracking.svg" alt="Gem Version"></a>
-<a href='https://travis-ci.org/westonganger/paper_trail-association_tracking' target='_blank'><img height='21' style='border:0px;height:21px;' src='https://api.travis-ci.org/westonganger/paper_trail-association_tracking.svg?branch=master' border='0' alt='Build Status' /></a>
+<a href='https://travis-ci.com/westonganger/paper_trail-association_tracking' target='_blank'><img height='21' style='border:0px;height:21px;' src='https://api.travis-ci.com/westonganger/paper_trail-association_tracking.svg?branch=master' border='0' alt='Build Status' /></a>
 <a href='https://rubygems.org/gems/paper_trail-association_tracking' target='_blank'><img height='21' style='border:0px;height:21px;' src='https://ruby-gem-downloads-badge.herokuapp.com/paper_trail-association_tracking?label=rubygems&type=total&total_label=downloads&color=brightgreen' border='0' alt='RubyGems Downloads' /></a>
 
 Plugin for the [PaperTrail](https://github.com/paper-trail-gem/paper_trail.git) gem to track and reify associations.
