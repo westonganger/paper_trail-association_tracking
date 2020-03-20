@@ -17,20 +17,19 @@ matrix:
   fast_finish: true
   exclude:
     # Rails 6 requires ruby >= 2.5.0
-    - rvm: 2.3.8
+    - rvm: 2.3
+      gemfile: gemfiles/ar_6.0.gemfile
+    - rvm: 2.4
       gemfile: gemfiles/ar_6.0.gemfile
 
-# For ruby compatibility, we test the highest and lowest minor versions only.
-# For example, if our gemspec says `required_ruby_version = ">= 2.3.0"`, and
-# ruby 2.5.0 has just been released, then we test 2.3 and 2.5, but not 2.4.
 rvm:
-  - 2.5.1
-  - 2.3.8
+  - 2.3
+  - 2.4
+  - 2.5
+  - 2.6
+  - 2.7
    
 gemfile:
-  - gemfiles/ar_4.2.gemfile
-  - gemfiles/ar_5.0.gemfile
-  - gemfiles/ar_5.1.gemfile
   - gemfiles/ar_5.2.gemfile
   - gemfiles/ar_6.0.gemfile
 
