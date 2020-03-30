@@ -155,6 +155,7 @@ If you notice anything here that should be updated/removed/edited feel free to c
 1. Currently PaperTrail-AssociationTracking only supports a single `version_associations` table.
    Therefore, you can only use a single table to store the versions for
    all related models. Sorry for those who use multiple version tables.
+1. At this time during `reify` on any STI (Single Table Inheritance) `has_one` associations will raise a `PaperTrailAssociationTracking::Reifiers::HasOne::FoundMoreThanOne` error. See [PT Issue #594](https://github.com/airblade/paper_trail/issues/594). Something to note though, is while the PaperTrail gem supports [Single Table Inheritance](http://api.rubyonrails.org/classes/ActiveRecord/Base.html#class-ActiveRecord::Base-label-Single+table+inheritance), I do NOT recommend STI ever due to the various problems it causes in many applications. Your better off rolling your own solution rather than using STI.
 1. PaperTrail-AssociationTracking relies on the callbacks on the association model (and the :through
    association model for Has-Many-Through associations) to record the versions
    and the relationship between the versions. If the association is changed
@@ -220,20 +221,17 @@ If you notice anything here that should be updated/removed/edited feel free to c
     See [PT Issue #113](https://github.com/paper-trail-gem/paper_trail/issues/113) for a discussion about this.
 
 
-### Regarding ActiveRecord Single Table Inheritance (STI)
-
-At this time during `reify` any STI `has_one` associations will raise a `PaperTrailAssociationTracking::Reifiers::HasOne::FoundMoreThanOne` error. See [PT Issue #594](https://github.com/airblade/paper_trail/issues/594)
-
-Something to note though, is while the PaperTrail gem supports [Single Table Inheritance](http://api.rubyonrails.org/classes/ActiveRecord/Base.html#class-ActiveRecord::Base-label-Single+table+inheritance), I do NOT recommend STI ever. Your better off rolling your own solution rather than using STI.
-
 # Contributing
 
-See the paper_trail [contribution guidelines](https://github.com/paper-trail-gem/paper_trail/blob/master/.github/CONTRIBUTING.md)
+We use the `appraisal` gem for testing multiple versions of `paper_trail` and `activerecord`. Please use the following steps to test using `appraisal`.
+
+1. `bundle exec appraisal install`
+2. `bundle exec appraisal rake test`
 
 # Credits
 
-Plugin authored by [Weston Ganger](https://github.com/westonganger)
+Maintained by [Weston Ganger](https://westonganger.com) - [@westonganger](https://github.com/westonganger)
 
-Maintained by [Weston Ganger](https://github.com/westonganger)
+Plugin authored by [Weston Ganger](https://westonganger.com) - [@westonganger](https://github.com/westonganger)
 
 Associations code originally contributed by Ben Atkins, Jared Beck, Andy Stewart & more
