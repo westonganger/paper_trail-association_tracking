@@ -9,12 +9,26 @@
 # > the version from the appraisal takes precedence.
 # > https://github.com/thoughtbot/appraisal
 
-appraise "ar-5.2" do
-  gem "activerecord", "~> 5.2.0"
-  gem "rails-controller-testing"
-end
+pt_versions = [
+  '~>9.2', 
+  '~>10.2', 
+]
 
-appraise "ar-6.0" do
-  gem "activerecord", ["~> 6.0.0"]
-  gem "rails-controller-testing"
+ar_versions = [
+  ['~>5.2.0', pt_versions[0..-1]],
+  ['~>6.0.0', pt_versions[0..-1]],
+]
+
+ar_versions.each do |ar_ver, compatible_pt_versions|
+  compatible_pt_versions.each do |y|
+
+    appraise "ar#{x} pt#{y}" do
+      gem "paper_trail", y
+
+      gem "activerecord", x
+
+      gem "rails-controller-testing"
+    end
+
+  end
 end

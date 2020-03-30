@@ -8,12 +8,7 @@ Plugin for the [PaperTrail](https://github.com/paper-trail-gem/paper_trail.git) 
 
 **PR's will happily be accepted**
 
-This gem was extracted from PaperTrail in v9.2 to simplify things in PaperTrail and association tracking separately. 
-At this time, `paper_trail` only has a development dependency in order to run the tests. If you want use this gem in your project you must add it to your own Gemfile.
-
-A little history lesson, discussed as early as 2009, and first implemented in late 2014, association
-tracking was part of PT core until 2018 as an experimental feature and was use at your own risk. This gem now
-maintains a list of known issues and we hope the community can help remove some of them via PR's.
+This gem was extracted from PaperTrail for v9.2.0 to simplify things in PaperTrail and association tracking separately. 
 
 ## Table of Contents
 
@@ -237,8 +232,8 @@ See the paper_trail [contribution guidelines](https://github.com/paper-trail-gem
 
 # Credits
 
-Plugin authored by [Weston Ganger](https://github.com/westonganger) & Jared Beck
+Plugin authored by [Weston Ganger](https://github.com/westonganger)
 
-Maintained by [Weston Ganger](https://github.com/westonganger) & [Jared Beck](https://github.com/jaredbeck) 
+Maintained by [Weston Ganger](https://github.com/westonganger)
 
 Associations code originally contributed by Ben Atkins, Jared Beck, Andy Stewart & more

@@ -10,21 +10,10 @@ notifications:
     on_success: never
     on_failure: never
 
-addons:
-  postgresql: "9.4"
-
 matrix:
   fast_finish: true
-  exclude:
-    # Rails 6 requires ruby >= 2.5.0
-    - rvm: 2.3
-      gemfile: gemfiles/ar_6.0.gemfile
-    - rvm: 2.4
-      gemfile: gemfiles/ar_6.0.gemfile
 
 rvm:
-  - 2.3
-  - 2.4
   - 2.5
   - 2.6
   - 2.7

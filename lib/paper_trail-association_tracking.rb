@@ -55,8 +55,7 @@ end
 
 # Require frameworks
 if defined?(::Rails)
-  # Rails module is sometimes defined by gems like rails-html-sanitizer
-  # so we check for presence of Rails.application.
+  # Rails module is sometimes defined by gems like rails-html-sanitizer so we check for presence of Rails.application.
   if defined?(::Rails.application)
     require "paper_trail_association_tracking/frameworks/rails"
   else
