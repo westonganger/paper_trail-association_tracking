@@ -6,161 +6,101 @@
 
 Plugin for the [PaperTrail](https://github.com/paper-trail-gem/paper_trail.git) gem to track and reify associations.
 
+PaperTrail-AssociationTracking can restore three types of associations: Has-One, Has-Many, and Has-Many-Through. 
+
+It will store in the `version_associations` table additional information to correlate versions of the association and versions of the model when the associated record is changed. When reifying the model, it will utilize this table, together with the `transaction_id` to find the correct version of the association and reify it. The `transaction_id` is a unique id for version records created in the same transaction. It is used to associate the version of the model and the version of the association that are created in the same transaction.
+
 **PR's will happily be accepted**
 
 This gem was extracted from PaperTrail for v9.2.0 to simplify things in PaperTrail and association tracking separately. 
 
+
 ## Table of Contents
 
-<!-- toc -->
-
 - [Install](#install)
-- [Association Tracking](#association-tracking)
+- [Usage](#usage)
+- [Limitations](#limitations)
 - [Known Issues](#known-issues)
 - [Contributing](#contributing)
 - [Credits](#credits)
 
-<!-- tocstop -->
 
 # Install
 
 ```ruby
 # Gemfile
 
-gem 'paper_trail' # Requires v9.2+
+gem 'paper_trail' # Minimum required version is v9.2.0
 gem 'paper_trail-association_tracking'
 ```
 
-# Association Tracking
-
-This plugin currently can restore three types of associations: Has-One, Has-Many, and
-Has-Many-Through. In order to do this, you will need to do two things:
+Then run `rails generate paper_trail_association_tracking:install` which will do the following two things for you:
 
 1. Create a `version_associations` table
-2. Set `PaperTrail.config.track_associations = true` (e.g. in an initializer)
+2. Set `PaperTrail.config.track_associations = true` in an initializer
 
+# Usage
 
-Both will be done for you automatically if you run the PaperTrail-AssociationTracking generator (e.g. `rails generate paper_trail_association_tracking:install`)
+To restore associations as they were at the time you must pass any of the following options to the `reify` method.
 
-If you want to add this functionality after the initial installation, you will
-need to create the `version_associations` table manually, and you will need to
-ensure that `PaperTrail.config.track_associations = true` is set.
+- To restore Has-Many and Has-Many-Through associations, use option `has_many: true`
+- To restore Has-One associations , use option `has_one: true` to `reify`
+- To restore Belongs-To associations, use option `belongs_to: true`
 
-PaperTrail will store in the `version_associations` table additional information
-to correlate versions of the association and versions of the model when the
-associated record is changed. When reifying the model, PaperTrail can use this
-table, together with the `transaction_id` to find the correct version of the
-association and reify it. The `transaction_id` is a unique id for version records
-created in the same transaction. It is used to associate the version of the model
-and the version of the association that are created in the same transaction.
-
-To restore Has-One associations as they were at the time, pass option `has_one:
-true` to `reify`. To restore Has-Many and Has-Many-Through associations, use
-option `has_many: true`. To restore Belongs-To association, use
-option `belongs_to: true`. For example:
+For example:
 
 ```ruby
-class Location < ActiveRecord::Base
-  belongs_to :treasure
-  has_paper_trail
-end
-
-class Treasure < ActiveRecord::Base
-  has_one :location
-  has_paper_trail
-end
-
-treasure.amount                  # 100
-treasure.location.latitude       # 12.345
-
-treasure.update amount: 153
-treasure.location.update latitude: 54.321
-
-t = treasure.versions.last.reify(has_one: true)
-t.amount                         # 100
-t.location.latitude              # 12.345
+item.versions.last.reify(has_many: true, has_one: true, belongs_to: false)
 ```
 
-If the parent and child are updated in one go, PaperTrail-AssociationTracking can use the
-aforementioned `transaction_id` to reify the models as they were before the
-transaction (instead of before the update to the model).
+If the parent and child are updated in one go, it will utilize the aforementioned `transaction_id` to reify the models as they were before the transaction (instead of before the update to the model).
 
 ```ruby
-treasure.amount                  # 100
-treasure.location.latitude       # 12.345
+item.amount                  # 100
+item.location.latitude       # 12.345
 
-Treasure.transaction do
-treasure.location.update latitude: 54.321
-treasure.update amount: 153
+Item.transaction do
+  item.location.update(latitude: 54.321)
+  item.update(amount: 153)
 end
 
-t = treasure.versions.last.reify(has_one: true)
+t = item.versions.last.reify(has_one: true)
 t.amount                         # 100
 t.location.latitude              # 12.345, instead of 54.321
 ```
 
-By default, PaperTrail-AssociationTracking excludes an associated record from the reified parent
-model if the associated record exists in the live model but did not exist as at
-the time the version was created. This is usually what you want if you just want
-to look at the reified version. But if you want to persist it, it would be
-better to pass in option `mark_for_destruction: true` so that the associated
-record is included and marked for destruction. Note that `mark_for_destruction`
-only has [an effect on associations marked with `autosave: true`](http://api.rubyonrails.org/classes/ActiveRecord/AutosaveAssociation.html#method-i-mark_for_destruction).
+By default, it excludes an associated record from the reified parent model if the associated record exists in the live model but did not exist as at the time the version was created. This is usually what you want if you just want to look at the reified version. But if you want to persist it, it would be better to pass in option `mark_for_destruction: true` so that the associated record is included and marked for destruction. Note that `mark_for_destruction` only has [an effect on associations marked with `autosave: true`](http://api.rubyonrails.org/classes/ActiveRecord/AutosaveAssociation.html#method-i-mark_for_destruction).
 
 ```ruby
-class Widget < ActiveRecord::Base
+class Product < ActiveRecord::Base
   has_paper_trail
-  has_one :wotsit, autosave: true
+  has_one :photo, autosave: true
 end
 
-class Wotsit < ActiveRecord::Base
+class Photo < ActiveRecord::Base
   has_paper_trail
-  belongs_to :widget
+  belongs_to :product
 end
 
-widget = Widget.create(name: 'widget_0')
-widget.update(name: 'widget_1')
-widget.create_wotsit(name: 'wotsit')
+product = Product.create(name: 'product_0')
+product.update(name: 'product_1')
+product.create_photo(name: 'photo')
 
-widget_0 = widget.versions.last.reify(has_one: true)
-widget_0.wotsit                                  # nil
+product_0 = product.versions.last.reify(has_one: true)
+product_0.photo                                  # nil
 
-widget_0 = widget.versions.last.reify(has_one: true, mark_for_destruction: true)
-widget_0.wotsit.marked_for_destruction?          # true
-widget_0.save!
-widget.reload.wotsit                             # nil
+product_0 = product.versions.last.reify(has_one: true, mark_for_destruction: true)
+product_0.photo.marked_for_destruction?          # true
+product_0.save!
+product.reload.photo                             # nil
 ```
 
-# Known Issues
 
-Associations have the following known issues, in order of descending importance. Use in Production at your own risk. 
+# Limitations
 
-**PR's for these issues will happily be accepted**
-
-If you notice anything here that should be updated/removed/edited feel free to create an issue.
-
-1. PaperTrail-AssociationTracking only reifies the first level of associations.
-1. Sometimes the has_one association will find more than one possible candidate and will raise a `PaperTrailAssociationTracking::Reifiers::HasOne::FoundMoreThanOne` error. For example, see `spec/models/person_spec.rb`
-    - If you are not using STI, you may want to just assume the first result (of multiple) is the correct one and continue. PaperTrail <= v8 did this without error or warning. To do so add the following line to your initializer: `PaperTrail.config.association_reify_error_behaviour = :warn`. Valid options are: `[:error, :warn, :ignore]`
-    - When using STI, even if you enable `:warn` you will likely still end up recieving an `ActiveRecord::AssociationTypeMismatch` error.
-1. Not compatible with [transactional tests](https://github.com/rails/rails/blob/591a0bb87fff7583e01156696fbbf929d48d3e54/activerecord/lib/active_record/fixtures.rb#L142), aka. transactional fixtures. - [PT Issue #542](https://github.com/airblade/paper_trail/issues/542)
-1. Requires database timestamp columns with fractional second precision.
-   - Sqlite and postgres timestamps have fractional second precision by default.
-   [MySQL timestamps do not](https://dev.mysql.com/doc/refman/5.6/en/fractional-seconds.html). Furthermore, MySQL 5.5 and earlier do not
-   support fractional second precision at all.
-   - Also, support for fractional seconds in MySQL was not added to
-   rails until ActiveRecord 4.2 (https://github.com/rails/rails/pull/14359).
-1. PaperTrail-AssociationTracking can't restore an association properly if the association record
-   can be updated to replace its parent model (by replacing the foreign key)
-1. Currently PaperTrail-AssociationTracking only supports a single `version_associations` table.
-   Therefore, you can only use a single table to store the versions for
-   all related models. Sorry for those who use multiple version tables.
-1. At this time during `reify` on any STI (Single Table Inheritance) `has_one` associations will raise a `PaperTrailAssociationTracking::Reifiers::HasOne::FoundMoreThanOne` error. See [PT Issue #594](https://github.com/airblade/paper_trail/issues/594). Something to note though, is while the PaperTrail gem supports [Single Table Inheritance](http://api.rubyonrails.org/classes/ActiveRecord/Base.html#class-ActiveRecord::Base-label-Single+table+inheritance), I do NOT recommend STI ever due to the various problems it causes in many applications. Your better off rolling your own solution rather than using STI.
-1. PaperTrail-AssociationTracking relies on the callbacks on the association model (and the :through
-   association model for Has-Many-Through associations) to record the versions
-   and the relationship between the versions. If the association is changed
-   without invoking the callbacks, Reification won't work. Below are some
-   examples:
+1. Only reifies the first level of associations. If you want to include nested associations simply add :through relationships to your model.
+1. Currently we only supports a single `version_associations` table. Therefore, you can only use a single table to store the versions for all related models.
+1. Relies on the callbacks on the association model (and the :through association model for Has-Many-Through associations) to record the versions and the relationship between the versions. If the association is changed without invoking the callbacks, Reification won't work. Below are some examples:
 
     Given these models:
 
@@ -188,7 +128,7 @@ If you notice anything here that should be updated/removed/edited feel free to c
 
     ```ruby
     @book.authors << @dostoyevsky
-    @book.authors.create name: 'Tolstoy'
+    @book.authors.create(name: 'Tolstoy')
     @book.authorships.last.destroy
     @book.authorships.clear
     @book.author_ids = [@solzhenistyn.id, @dostoyevsky.id]
@@ -202,23 +142,13 @@ If you notice anything here that should be updated/removed/edited feel free to c
     @book.authors = []
     ```
 
-    Having said that, you can apparently get all these working (I haven't tested it
-    myself) with this patch:
 
-    ```ruby
-    # config/initializers/active_record_patch.rb
+# Known Issues
 
-    class HasManyThroughAssociationPatch
-      def delete_records(records, method)
-        method ||= :destroy
-        super
-      end
-    end
-
-    ActiveRecord::Associations::HasManyThroughAssociation.prepend(HasManyThroughAssociationPatch)
-    ```
-
-    See [PT Issue #113](https://github.com/paper-trail-gem/paper_trail/issues/113) for a discussion about this.
+1. Sometimes the has_one association will find more than one possible candidate and will raise a `PaperTrailAssociationTracking::Reifiers::HasOne::FoundMoreThanOne` error. For example, see `spec/models/person_spec.rb`
+    - If you are not using STI, you may want to just assume the first result of multiple is the correct one and continue. PaperTrail <= v8 did this without error or warning. To do so add the following line to your initializer: `PaperTrail.config.association_reify_error_behaviour = :warn`. Valid options are: `[:error, :warn, :ignore]`
+    - When using STI, even if you enable `:warn` you will likely still end up recieving an `ActiveRecord::AssociationTypeMismatch` error. See [PT Issue #594](https://github.com/airblade/paper_trail/issues/594). I recommend that you never use STI in any Rails application due to the problems they cause.
+1. Not compatible with transactional tests, see [PT Issue #542](https://github.com/airblade/paper_trail/issues/542). However, apparently there has been some success by using the [transactional_capybara](https://rubygems.org/gems/transactional_capybara) gem.
 
 
 # Contributing
@@ -227,6 +157,7 @@ We use the `appraisal` gem for testing multiple versions of `paper_trail` and `a
 
 1. `bundle exec appraisal install`
 2. `bundle exec appraisal rake test`
+
 
 # Credits
 
