@@ -17,11 +17,7 @@ class Person < ActiveRecord::Base
 
   has_many :notes, as: :object
 
-  if ActiveRecord.gem_version >= Gem::Version.new("5.0")
-    belongs_to :mentor, class_name: "Person", foreign_key: :mentor_id, optional: true
-  else
-    belongs_to :mentor, class_name: "Person", foreign_key: :mentor_id
-  end
+  belongs_to :mentor, class_name: "Person", foreign_key: :mentor_id, optional: true
 
   has_paper_trail
 

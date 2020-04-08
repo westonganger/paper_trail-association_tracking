@@ -33,26 +33,13 @@ RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
   config.disable_monkey_patching!
   config.warnings = false
+
   if config.files_to_run.one?
     config.default_formatter = "doc"
   end
   config.order = :random
-  Kernel.srand config.seed
-end
 
-def active_record_gem_version
-  Gem::Version.new(ActiveRecord::VERSION::STRING)
-end
-
-# Wrap args in a hash to support the ActionController::TestCase and
-# ActionDispatch::Integration HTTP request method switch to keyword args
-# (see https://github.com/rails/rails/blob/master/actionpack/CHANGELOG.md)
-def params_wrapper(args)
-  if defined?(::Rails) && active_record_gem_version >= Gem::Version.new("5.0.0.beta1")
-    { params: args }
-  else
-    args
-  end
+  Kernel.srand(config.seed)
 end
 
 require File.expand_path("../dummy_app/config/environment", __FILE__)
@@ -73,21 +60,5 @@ end
 
 RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
-end
-
-# In rails < 5, some tests seem to require DatabaseCleaner-truncation.
-# Truncation is about three times slower than transaction rollback, so it'll
-# be nice when we can drop support for rails < 5.
-if active_record_gem_version < ::Gem::Version.new("5")
-  require "database_cleaner"
-  DatabaseCleaner.strategy = :truncation
-  RSpec.configure do |config|
-    config.use_transactional_fixtures = false
-    config.before { DatabaseCleaner.start }
-    config.after { DatabaseCleaner.clean }
-  end
-else
-  RSpec.configure do |config|
-    config.use_transactional_fixtures = true
-  end
+  config.use_transactional_fixtures = true
 end

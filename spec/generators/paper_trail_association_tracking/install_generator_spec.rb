@@ -20,13 +20,8 @@ RSpec.describe PaperTrailAssociationTracking::InstallGenerator, type: :generator
 
     it "generates a migration for creating the 'versions' table" do
       expected_parent_class = lambda {
-        old_school = "ActiveRecord::Migration"
         ar_version = ActiveRecord::VERSION
-        if ar_version::MAJOR >= 5
-          format("%s[%d.%d]", old_school, ar_version::MAJOR, ar_version::MINOR)
-        else
-          old_school
-        end
+        format("%s[%d.%d]", "ActiveRecord::Migration", ar_version::MAJOR, ar_version::MINOR)
       }.call
 
       expect(destination_root).to(
