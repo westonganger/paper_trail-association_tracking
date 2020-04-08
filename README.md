@@ -4,15 +4,15 @@
 <a href='https://travis-ci.com/westonganger/paper_trail-association_tracking' target='_blank'><img height='21' style='border:0px;height:21px;' src='https://api.travis-ci.com/westonganger/paper_trail-association_tracking.svg?branch=master' border='0' alt='Build Status' /></a>
 <a href='https://rubygems.org/gems/paper_trail-association_tracking' target='_blank'><img height='21' style='border:0px;height:21px;' src='https://ruby-gem-downloads-badge.herokuapp.com/paper_trail-association_tracking?label=rubygems&type=total&total_label=downloads&color=brightgreen' border='0' alt='RubyGems Downloads' /></a>
 
-Plugin for the [PaperTrail](https://github.com/paper-trail-gem/paper_trail.git) gem to track and reify associations.
+Plugin for the [PaperTrail](https://github.com/paper-trail-gem/paper_trail.git) gem to track and reify associations. This gem was extracted from PaperTrail for v9.2.0 to simplify things in PaperTrail and association tracking separately. 
+
+**PR's will happily be accepted**
 
 PaperTrail-AssociationTracking can restore three types of associations: Has-One, Has-Many, and Has-Many-Through. 
 
 It will store in the `version_associations` table additional information to correlate versions of the association and versions of the model when the associated record is changed. When reifying the model, it will utilize this table, together with the `transaction_id` to find the correct version of the association and reify it. The `transaction_id` is a unique id for version records created in the same transaction. It is used to associate the version of the model and the version of the association that are created in the same transaction.
 
-**PR's will happily be accepted**
 
-This gem was extracted from PaperTrail for v9.2.0 to simplify things in PaperTrail and association tracking separately. 
 
 
 ## Table of Contents
