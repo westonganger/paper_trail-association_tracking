@@ -209,29 +209,19 @@ RSpec.describe(::PaperTrail, versioning: true) do
         end
 
         it "have changes" do
-          changeset = @widget.versions.last.changeset
-          expect(changeset["id"][0]).to(eq(@widget.id))
-          expect(changeset["id"][1]).to(be_nil)
-          expect(changeset["name"][0]).to(eq(@widget.name))
-          expect(changeset["name"][1]).to(be_nil)
-          expect(changeset["a_text"][0]).to(eq(@widget.a_text))
-          expect(changeset["a_text"][1]).to(be_nil)
-          expect(changeset["an_integer"][0]).to(eq(@widget.an_integer))
-          expect(changeset["an_integer"][1]).to(be_nil)
-          expect(changeset["a_float"][0]).to(eq(@widget.a_float))
-          expect(changeset["a_float"][1]).to(be_nil)
-          expect(changeset["a_decimal"][0]).to(eq(@widget.a_decimal))
-          expect(changeset["a_decimal"][1]).to(be_nil)
-          expect(changeset["a_datetime"][0].to_i).to(eq(@widget.a_datetime.to_i))
-          expect(changeset["a_datetime"][1]).to(be_nil)
-          expect(changeset["a_time"][0].to_i).to(eq(@widget.a_time.to_i))
-          expect(changeset["a_time"][1]).to(be_nil)
-          expect(changeset["a_date"][0].to_i).to(eq(@widget.a_date.to_i))
-          expect(changeset["a_date"][1]).to(be_nil)
-          expect(changeset["a_boolean"][0]).to(eq(@widget.a_boolean))
-          expect(changeset["a_boolean"][1]).to(be_nil)
-          expect(changeset["type"][0]).to(eq(@widget.type))
-          expect(changeset["type"][1]).to(be_nil)
+          book = Book.create! title: "A"
+          changes = YAML.load book.versions.last.attributes["object_changes"]
+          expect(changes).to eq("id" => [nil, book.id], "title" => [nil, "A"])
+
+          book.update! title: "B"
+          changes = YAML.load book.versions.last.attributes["object_changes"]
+          expect(changes).to eq("title" => %w[A B])
+
+          if PaperTrail::VERSION::MAJOR >= 10
+            book.destroy
+            changes = YAML.load book.versions.last.attributes["object_changes"]
+            expect(changes).to eq("id" => [book.id, nil], "title" => ["B", nil])
+          end
         end
       end
     end

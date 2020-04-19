@@ -19,20 +19,17 @@ Gem::Specification.new do |s|
   s.executables = []
   s.require_paths = ["lib"]
 
-  s.required_rubygems_version = ">= 1.3.6"
   s.required_ruby_version = ">= 2.3.0"
 
-  s.add_development_dependency "appraisal", "~> 2.2"
-  s.add_development_dependency "byebug", "~> 9.1"
-  s.add_development_dependency "ffaker", "~> 2.7"
-  s.add_development_dependency "generator_spec", "~> 0.9.4"
-  s.add_development_dependency "mysql2", "~> 0.4.10"
-  s.add_development_dependency "pg", "~> 0.21.0"
-  s.add_development_dependency "rack-test", [">= 0.6.3", "< 0.9"]
-  s.add_development_dependency "rake", "~> 12.3"
-  s.add_development_dependency "rspec-rails", "~> 3.8"
-  s.add_development_dependency "rubocop", "~> 0.71.0"
-  s.add_development_dependency "rubocop-rspec", "~> 1.33.0"
-  s.add_development_dependency "sqlite3", "~> 1.3"
-  s.add_development_dependency "timecop", "~> 0.9.1"
+  s.add_development_dependency "appraisal"
+  s.add_development_dependency "byebug"
+  s.add_development_dependency "ffaker"
+  s.add_development_dependency "generator_spec"
+  s.add_development_dependency "mysql2"
+  s.add_development_dependency "pg"
+  s.add_development_dependency "rack-test"
+  s.add_development_dependency "rake"
+  s.add_development_dependency "rspec-rails"
+  s.add_development_dependency "sqlite3"
+  s.add_development_dependency "timecop"
 end

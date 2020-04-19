@@ -1,13 +1,4 @@
-Thanks for your interest in PaperTrail! Our volunteers' time is limited, so we
-can only respond on GitHub to *bug reports* and *feature requests*.
+Thanks for your interest in PaperTrail-AssociationTracking!
 
-Please ask *usage questions* on StackOverflow:
-https://stackoverflow.com/tags/paper-trail-gem
-
-Bug reports must use this template:
-https://github.com/airblade/paper_trail/blob/master/doc/bug_report_template.rb
-
-For other questions, please see our contributing guide:
-https://github.com/airblade/paper_trail/blob/master/.github/CONTRIBUTING.md
-
-Thanks for your contribution!
+Where applicable, please use the following template to report any bugs:
+https://github.com/westonganger/paper_trail-association_tracking/blob/master/doc/bug_report_template.rb

@@ -1,16 +1,15 @@
-# frozen_string_literal: true
+### Bug Report Template
 
-# Use this template to report PaperTrail bugs.
-# Please include only the minimum code necessary to reproduce your issue.
 require "bundler/inline"
 
 # STEP ONE: What versions are you using?
 gemfile(true) do
-  ruby "2.4.2"
+  ruby "2.6"
   source "https://rubygems.org"
-  gem "activerecord", "5.1.4"
-  gem "minitest", "5.10.3"
-  gem "paper_trail", "8.0.0", require: false
+  gem "activerecord", "6.0.2"
+  gem "minitest"
+  gem "paper_trail", "~>10.3.0"
+  gem "paper_trail-association_tracking"
   gem "sqlite3"
 end
 
@@ -20,7 +19,9 @@ require "logger"
 
 # Please use sqlite for your bug reports, if possible.
 ActiveRecord::Base.establish_connection(adapter: "sqlite3", database: ":memory:")
+
 ActiveRecord::Base.logger = nil
+
 ActiveRecord::Schema.define do
   # STEP TWO: Define your tables here.
   create_table :users, force: true do |t|
@@ -50,13 +51,13 @@ ActiveRecord::Schema.define do
   add_index :version_associations, %i[foreign_key_name foreign_key_id],
     name: "index_version_associations_on_foreign_key"
 end
-ActiveRecord::Base.logger = Logger.new(STDOUT)
-require "paper_trail/config"
 
-# STEP THREE: Configure PaperTrail as you would in your initializer
-PaperTrail::Config.instance.track_associations = true
+ActiveRecord::Base.logger = Logger.new(STDOUT)
 
 require "paper_trail"
+require "paper_trail-association_tracking"
+
+PaperTrail.config.track_associations = true
 
 # STEP FOUR: Define your AR models here.
 class User < ActiveRecord::Base
