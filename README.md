@@ -41,6 +41,8 @@ Then run `rails generate paper_trail_association_tracking:install` which will do
 
 # Usage
 
+Ensure that you have added `has_paper_trail` to your main model and all associated models that are to be tracked.
+
 To restore associations as they were at the time you must pass any of the following options to the `reify` method.
 
 - To restore Has-Many and Has-Many-Through associations, use option `has_many: true`
