@@ -78,14 +78,13 @@ module PaperTrailAssociationTracking
         #
         # @api private
         # @param klass - An ActiveRecord class.
-        # @param version_id_subquery - String. A SQL subquery that selects
-        #   the IDs of version records.
+        # @param version_ids - Array. The IDs of version records.
         # @return A `Hash` mapping IDs to `Version`s
         #
-        def versions_by_id(klass, version_id_subquery)
+        def versions_by_id(klass, version_ids)
           klass.
             paper_trail.version_class.
-            where("id IN (#{version_id_subquery})").
+            where(id: version_ids).
             inject({}) { |a, e| a.merge!(e.item_id => e) }
         end
 
@@ -95,17 +94,17 @@ module PaperTrailAssociationTracking
         # from the point in time identified by `tx_id` or `version_at`.
         # @api private
         def load_versions_for_hm_association(assoc, model, version_table, tx_id, version_at)
-          version_id_subquery = ::PaperTrail::VersionAssociation.
+          version_ids = ::PaperTrail::VersionAssociation.
             joins(model.class.version_association_name).
-            select("MIN(version_id)").
+            select("MIN(version_id) as version_id").
             where("foreign_key_name = ?", assoc.foreign_key).
             where("foreign_key_id = ?", model.id).
             where(foreign_type: [model.class.name, nil]).
             where("#{version_table}.item_type = ?", assoc.klass.base_class.name).
             where("created_at >= ? OR transaction_id = ?", version_at, tx_id).
             group("item_id").
-            to_sql
-          versions_by_id(model.class, version_id_subquery)
+            map{|e| e.version_id}
+          versions_by_id(model.class, version_ids)
         end
       end
     end

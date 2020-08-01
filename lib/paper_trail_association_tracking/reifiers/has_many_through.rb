@@ -73,8 +73,8 @@ module PaperTrailAssociationTracking
         # `version_at`.
         # @api private
         def load_versions_for_hmt_association(assoc, ids, tx_id, version_at)
-          version_id_subquery = assoc.klass.paper_trail.version_class.
-            select("MIN(id)").
+          version_ids = assoc.klass.paper_trail.version_class.
+            select("MIN(id) as id").
             where("item_type = ?", assoc.klass.base_class.name).
             where("item_id IN (?)", ids).
             where(
@@ -83,8 +83,8 @@ module PaperTrailAssociationTracking
               tx_id
             ).
             group("item_id").
-            to_sql
-          ::PaperTrailAssociationTracking::Reifiers::HasMany.versions_by_id(assoc.klass, version_id_subquery)
+            map{|e| e.id}
+          ::PaperTrailAssociationTracking::Reifiers::HasMany.versions_by_id(assoc.klass, version_ids)
         end
       end
     end
