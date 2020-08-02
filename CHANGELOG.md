@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- [PR 18](https://github.com/westonganger/paper_trail-association_tracking/pull/18) - Improve performance for `Model.reify(has_many: true)` by separating the SQL subquery.
 - [PR #15](https://github.com/westonganger/paper_trail-association_tracking/pull/15) - Recreate `version_associations.foreign_key` index to utilize the new `version_associations.foreign_type` column
 - Update test matrix to support multiple versions of PT-core and ActiveRecord
 - Remove deprecated methods `clear_transaction_id`, `transaction_id` and `transaction_id=`
