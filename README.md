@@ -55,7 +55,56 @@ For example:
 item.versions.last.reify(has_many: true, has_one: true, belongs_to: false)
 ```
 
-If the parent and child are updated in one go, it will utilize the aforementioned `transaction_id` to reify the models as they were before the transaction (instead of before the update to the model).
+If you want the reified associations to be saved upon calling `save` on the parent model then you must set `autosave: true` on all required associations. A little tip, `accepts_nested_attributes` automatically sets `autosave` to true but you should probably still state it explicitly.
+
+For example:
+
+```ruby
+class Product
+  has_many :photos, autosave: true
+end
+
+product = Product.first.versions.last.reify(has_many: true, has_one: true, belongs_to: false)
+product.save! ### now this will also save all reified photos
+```
+
+If you do not set `autosave: true` true on the association then you will have to save/delete them manually. 
+
+For example:
+
+```ruby
+class Product < ActiveRecord::Base
+  has_paper_trail
+  has_many :photos, autosave: false ### or if autosave not set
+end
+
+product = Product.create(name: 'product_0')
+product.photos.create(name: 'photo')
+product.update(name: 'product_a')
+product.photos.create(name: 'photo')
+
+reified_product = product.versions.last.reify(has_many: true, mark_for_destruction: true)
+reified_product.save!
+reified_product.name # product_a
+reified_product.photos.size # 2
+reified_product.photos.reload
+reified_product.photos.size # 1 ### bad, didnt save the associations
+
+product = Product.create(name: 'product_1')
+product.update(name: 'product_b')
+product.photos.create(name: 'photo')
+
+reified_product = product.versions.last.reify(has_many: true, mark_for_destruction: true)
+reified_product.save!
+reified_product.name # product_b
+reified_product.photos.size # 1
+reified_product.photos.each{|x| x.marked_for_destruction? ? x.destroy! : x.save! }
+reified_product.photos.size # 0
+```
+
+It will also respect AR transactions by utilizing the aforementioned `transaction_id` to reify the models as they were before the transaction (instead of before the update to the model).
+
+For example:
 
 ```ruby
 item.amount                  # 100
@@ -71,40 +120,11 @@ t.amount                         # 100
 t.location.latitude              # 12.345, instead of 54.321
 ```
 
-By default, it excludes an associated record from the reified parent model if the associated record exists in the live model but did not exist as at the time the version was created. This is usually what you want if you just want to look at the reified version. But if you want to persist it, it would be better to pass in option `mark_for_destruction: true` so that the associated record is included and marked for destruction. Note that `mark_for_destruction` only has [an effect on associations marked with `autosave: true`](http://api.rubyonrails.org/classes/ActiveRecord/AutosaveAssociation.html#method-i-mark_for_destruction).
-
-```ruby
-class Product < ActiveRecord::Base
-  has_paper_trail
-  has_one :photo, autosave: true
-end
-
-class Photo < ActiveRecord::Base
-  has_paper_trail
-  belongs_to :product
-end
-
-product = Product.create(name: 'product_0')
-product.update(name: 'product_1')
-product.create_photo(name: 'photo')
-
-product_0 = product.versions.last.reify(has_one: true)
-product_0.photo                                  # nil
-
-product_0 = product.versions.last.reify(has_one: true, mark_for_destruction: true)
-product_0.photo.marked_for_destruction?          # true
-product_0.save!
-product.reload.photo                             # nil
-```
-
-
 # Limitations
 
-1. Only reifies the first level of associations. If you want to include nested associations simply add :through relationships to your model.
+1. Only reifies the first level of associations. If you want to include nested associations simply add `:through` relationships to your model.
 1. Currently we only supports a single `version_associations` table. Therefore, you can only use a single table to store the versions for all related models.
-1. Relies on the callbacks on the association model (and the :through association model for Has-Many-Through associations) to record the versions and the relationship between the versions. If the association is changed without invoking the callbacks, Reification won't work. Below are some examples:
-
-    Given these models:
+1. Relies on the callbacks on the association model (and the `:through` association model for Has-Many-Through associations) to record the versions and the relationship between the versions. If the association is changed without invoking the callbacks, then reification won't work. Example:
 
     ```ruby
     class Book < ActiveRecord::Base
@@ -124,22 +144,16 @@ product.reload.photo                             # nil
       has_many :books, through: :authorships
       has_paper_trail
     end
-    ```
-
-    Then each of the following will store authorship versions:
-
-    ```ruby
-    @book.authors << @dostoyevsky
-    @book.authors.create(name: 'Tolstoy')
+    
+    ### Each of the following will store authorship versions:
+    @book.authors << @john
+    @book.authors.create(name: 'Jack')
     @book.authorships.last.destroy
     @book.authorships.clear
-    @book.author_ids = [@solzhenistyn.id, @dostoyevsky.id]
-    ```
-
-    But none of these will:
-
-    ```ruby
-    @book.authors.delete @tolstoy
+    @book.author_ids = [@john.id, @joe.id]
+    
+    ### But none of these will:
+    @book.authors.delete @john
     @book.author_ids = []
     @book.authors = []
     ```
@@ -149,7 +163,7 @@ product.reload.photo                             # nil
 
 1. Sometimes the has_one association will find more than one possible candidate and will raise a `PaperTrailAssociationTracking::Reifiers::HasOne::FoundMoreThanOne` error. For example, see `spec/models/person_spec.rb`
     - If you are not using STI, you may want to just assume the first result of multiple is the correct one and continue. PaperTrail <= v8 did this without error or warning. To do so add the following line to your initializer: `PaperTrail.config.association_reify_error_behaviour = :warn`. Valid options are: `[:error, :warn, :ignore]`
-    - When using STI, even if you enable `:warn` you will likely still end up recieving an `ActiveRecord::AssociationTypeMismatch` error. See [PT Issue #594](https://github.com/airblade/paper_trail/issues/594). I recommend that you never use STI in any Rails application due to the problems they cause.
+    - When using STI, even if you enable `:warn` you will likely still end up recieving an `ActiveRecord::AssociationTypeMismatch` error. See [PT Issue #594](https://github.com/airblade/paper_trail/issues/594). I strongly recommend that you do not use STI, however if you do need to decide to use STI, please see https://github.com/paper-trail-gem/paper_trail#4b1-the-optional-item_subtype-column
 1. Not compatible with transactional tests, see [PT Issue #542](https://github.com/airblade/paper_trail/issues/542). However, apparently there has been some success by using the [transactional_capybara](https://rubygems.org/gems/transactional_capybara) gem.
 
 
