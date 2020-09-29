@@ -26,6 +26,8 @@ module Dummy
 
     config.secret_key_base = "A fox regularly kicked the screaming pile of biscuits."
 
-    config.active_record.sqlite3.represent_boolean_as_integer = true
+    if Rails::VERSION::MAJOR < 6
+      config.active_record.sqlite3.represent_boolean_as_integer = true
+    end
   end
 end
