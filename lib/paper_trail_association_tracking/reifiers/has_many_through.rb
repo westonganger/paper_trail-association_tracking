@@ -53,7 +53,16 @@ module PaperTrailAssociationTracking
           # association, that is, `model.paragraphs`, has not been loaded. So,
           # we do that now.
           through_collection.flat_map { |through_model|
-            through_model.public_send(assoc.name.to_sym).to_a
+            records = through_model.public_send(assoc.source_reflection_name)
+            
+            if records.respond_to?(:to_a)
+              # Has Many association
+              records = records.to_a
+            else
+              # Has One association - Nothing more to do
+            end
+            
+            records
           }
         end
 

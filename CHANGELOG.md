@@ -2,7 +2,8 @@
 
 ## Unreleased
 
-- Nothing yet
+- Bug fix for reify on `has_many :through` relationships when `:source` is specified
+- Bug fix for reify on `has_many :through` relationships where the association is a has_one on the through model
 
 ## 2.1.0 - 2020-08-14
 
