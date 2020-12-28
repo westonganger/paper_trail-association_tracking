@@ -33,5 +33,87 @@ module PaperTrailAssociationTracking
     #def reify(options = {})
     #  super
     #end
+
+    module ClassMethods
+      def changeset(options = {})
+        super()
+        return @changeset unless ::PaperTrail.config.track_associations?
+
+        @changeset = load_changeset_has_many_through(@changeset) if options[:has_many_through]
+        @changeset
+      end
+
+      private
+
+      def load_changeset_has_many_through(changes)
+        has_many_through_assocs
+          .reduce(changes) do |acc, assoc|
+              assoc_changes = has_many_through_changes(assoc)
+              acc.merge!(assoc_changes) if assoc_changes.any?
+
+              acc
+          end
+
+        changes
+      end
+
+      def has_many_assocs
+        item_type.to_s.classify.constantize
+          .reflect_on_all_associations(:has_many)
+      end
+
+      def has_many_through_assocs
+        has_many_assocs
+          .select { |assoc| assoc.through_reflection? }
+      end
+
+      def paper_trail_enabled?(assoc)
+        ::PaperTrail.request.enabled_for_model?(assoc.klass) ||
+          (assoc.through_reflection? && ::PaperTrail.request.enabled_for_model?(assoc.through_reflection.klass))
+      end
+
+      def has_many_through_changes(assoc)
+        return {} unless object_changes.present?
+
+        versions = find_associated_versions(assoc.through_reflection)
+
+        return { "#{assoc.name}": updated_changes(assoc, versions) } if updated_changes(assoc, versions).any?
+
+        { "#{assoc.name}": [removed_changes(assoc, versions), added_changes(assoc, versions)] }
+      end
+
+      def find_associated_versions(assoc)
+        ::PaperTrail::Version.where(item_type: assoc.class_name, transaction_id: transaction_id)
+          .joins(:version_associations)
+          .where(version_associations: { foreign_key_name: assoc.foreign_key, foreign_key_id: item_id })
+          .order('versions.created_at desc')
+      end
+
+      def updated_changes(assoc, versions)
+        versions.select { |version| version.event == "update" }
+          .map(&:changeset)
+          .pluck(assoc.foreign_key)
+          .flat_map do |change|
+            [
+              assoc.klass.find_by(id: change.first),
+              assoc.klass.find_by(id: change.second)
+            ]
+          end
+      end
+
+      def added_changes(assoc, versions)
+        versions.select { |version| version.event == "create" }
+          .map(&:changeset)
+          .pluck(assoc.foreign_key)
+          .map { |change| assoc.klass.find_by(id: change.second) }
+      end
+
+      def removed_changes(assoc, versions)
+        versions.select { |version| version.event == "destroy" }
+          .map(&:changeset)
+          .pluck(assoc.foreign_key)
+          .map { |change| assoc.klass.find_by(id: change.first) }
+      end
+    end
   end
 end

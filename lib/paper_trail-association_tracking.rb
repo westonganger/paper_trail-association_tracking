@@ -50,6 +50,7 @@ module PaperTrail
 
   module VersionConcern
     include ::PaperTrailAssociationTracking::VersionConcern
+    prepend ::PaperTrailAssociationTracking::VersionConcern::ClassMethods
   end
 end
 
