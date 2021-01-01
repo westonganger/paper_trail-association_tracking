@@ -97,7 +97,7 @@ module PaperTrailAssociationTracking
           # For STI models, associations may be defined to reference superclasses, so looking up 
           # based on only the child-most class is not appropriate.
           sti_model_names =  model.class.ancestors
-                                  .filter { |x| x <= model.class.base_class && x.method_defined?(assoc.name) }
+                                  .select { |x| x <= model.class.base_class && x.method_defined?(assoc.name) }
                                   .map(&:name)
 
           version_ids = ::PaperTrail::VersionAssociation.
