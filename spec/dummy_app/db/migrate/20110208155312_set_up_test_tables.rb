@@ -215,6 +215,11 @@ class SetUpTestTables < ::ActiveRecord::Migration::Current
       t.string :object_type
       t.integer :object_id
     end
+
+    create_table :hunts, force: true do |t|
+      t.integer :predator_id
+      t.integer :prey_id
+    end
   end
 
   def down
