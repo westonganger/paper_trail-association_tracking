@@ -120,6 +120,16 @@ t.amount                         # 100
 t.location.latitude              # 12.345, instead of 54.321
 ```
 
+When calling `changeset` on a `version` you can include changes to associations by specifying the following options 
+
+- To restore Has-Many-Through associations, use option `has_many_through: true`
+
+For example:
+
+```ruby
+item.versions.last.changeset(has_many_through: true)
+```
+
 # Limitations
 
 1. Only reifies the first level of associations. If you want to include nested associations simply add `:through` relationships to your model.
