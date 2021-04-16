@@ -41,12 +41,13 @@ RSpec.configure do |config|
   Kernel.srand(config.seed)
 end
 
-require File.expand_path("../dummy_app/config/environment", __FILE__)
+require "active_record/railtie"
+
 require "rspec/rails"
-require "paper_trail/frameworks/rspec"
-require "paper_trail_association_tracking/frameworks/rspec"
 require "ffaker"
 require "timecop"
+
+require File.expand_path("../dummy_app/config/environment", __FILE__)
 
 # Run any available migration
 if ActiveRecord.gem_version >= Gem::Version.new("6.0")
@@ -55,6 +56,25 @@ elsif ActiveRecord.gem_version >= Gem::Version.new("5.2")
   ActiveRecord::MigrationContext.new(File.expand_path("dummy_app/db/migrate/", __dir__)).migrate
 else
   ActiveRecord::Migrator.migrate File.expand_path("dummy_app/db/migrate/", __dir__)
+end
+
+require "rspec/core"
+require "rspec/matchers"
+
+RSpec::Matchers.define :have_a_version_with do |attributes|
+  # check if the model has a version with the specified attributes
+  match do |actual|
+    versions_association = actual.class.versions_association_name
+    actual.send(versions_association).where_object(attributes).any?
+  end
+end
+
+RSpec::Matchers.define :have_a_version_with_changes do |attributes|
+  # check if the model has a version changes with the specified attributes
+  match do |actual|
+    versions_association = actual.class.versions_association_name
+    actual.send(versions_association).where_object_changes(attributes).any?
+  end
 end
 
 RSpec.configure do |config|
