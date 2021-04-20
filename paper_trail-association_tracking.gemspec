@@ -21,6 +21,8 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = ">= 2.3.0"
 
+  s.add_dependency "paper_trail", "< 12.0"
+
   s.add_development_dependency "appraisal"
   s.add_development_dependency "byebug"
   s.add_development_dependency "ffaker"

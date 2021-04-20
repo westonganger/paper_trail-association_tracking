@@ -1,6 +1,12 @@
 # CHANGELOG
 
-### Unreleased - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.1.1...master)
+### Unreleased - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.1.2...master)
+- Nothing yet
+
+### 2.1.2 - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.1.1...v2.1.2)
+
+- [PR #24](https://github.com/westonganger/paper_trail-association_tracking/pull/24) - Fix reification on STI models that have parent child relationships
+- Last version that is compatible with `paper_trail` due to the change in the loading mechanism
 
 - [PR #24](https://github.com/westonganger/paper_trail-association_tracking/pull/24) - Fix reification on STI models that have parent child relationships
 
