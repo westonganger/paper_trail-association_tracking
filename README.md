@@ -23,6 +23,7 @@ It will store in the `version_associations` table additional information to corr
 - [Known Issues](#known-issues)
 - [Contributing](#contributing)
 - [Credits](#credits)
+- [Alternative Solution](#alternative-solution)
 
 
 # Install
