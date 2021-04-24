@@ -4,6 +4,6 @@ source "https://rubygems.org"
 
 gem "rails-controller-testing"
 gem "paper_trail", git: "https://github.com/paper-trail-gem/paper_trail.git"
-gem "activerecord", "~> 5.0.6"
+gem "activerecord", "~>6.1.0"
 
 gemspec path: "../"

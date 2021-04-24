@@ -7,8 +7,7 @@
 # > https://github.com/thoughtbot/appraisal
 
 pt_versions = [
-  '~>9.0', 
-  '~>10.0', 
+  '~>12.0', 
   'master',
 ]
 
@@ -19,6 +18,10 @@ ar_versions = [
   ],
   [
     '~>6.0.0', 
+    pt_versions.select{|x| x.sub('~>', '').to_f >= 10 || x == 'master' },
+  ],
+  [
+    '~>6.1.0', 
     pt_versions.select{|x| x.sub('~>', '').to_f >= 10 || x == 'master' },
   ],
 ]

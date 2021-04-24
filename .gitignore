@@ -16,6 +16,7 @@ Gemfile.lock
 NOTES
 coverage
 gemfiles/*.lock
+gemfiles/.bundle
 pkg/*
 spec/dummy/
 spec/dummy_app/config/database.yml

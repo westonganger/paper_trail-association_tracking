@@ -29,10 +29,15 @@ It will store in the `version_associations` table additional information to corr
 # Install
 
 ```ruby
-# Gemfile
-
-gem 'paper_trail' # Minimum required version is v9.2.0
+gem 'paper_trail'
 gem 'paper_trail-association_tracking'
+```
+
+For PT v9.2 to v11.x you must use PT-AT v2
+
+```ruby
+gem 'paper_trail'#, ">=9.2.0", "< 12.0"
+gem 'paper_trail-association_tracking', "<= 2.1.3"
 ```
 
 Then run `rails generate paper_trail_association_tracking:install` which will do the following two things for you:
