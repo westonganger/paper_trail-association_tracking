@@ -6,23 +6,23 @@
 # > the version from the appraisal takes precedence.
 # > https://github.com/thoughtbot/appraisal
 
+### WHEN UPDATING THESE VERSIONS DONT FORGOT TO UPDATE .github/workflows/test.yml
 pt_versions = [
   '~>12.0', 
-  'master',
 ]
 
 ar_versions = [
   [
-    '~>5.2.0', 
+    '~>5.2', 
     pt_versions,
   ],
   [
-    '~>6.0.0', 
-    pt_versions.select{|x| x.sub('~>', '').to_f >= 10 || x == 'master' },
+    '~>6.0', 
+    pt_versions,
   ],
   [
-    '~>6.1.0', 
-    pt_versions.select{|x| x.sub('~>', '').to_f >= 10 || x == 'master' },
+    '~>6.1', 
+    pt_versions,
   ],
 ]
 
