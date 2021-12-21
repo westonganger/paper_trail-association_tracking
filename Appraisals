@@ -8,6 +8,9 @@
 
 ### WHEN UPDATING THESE VERSIONS DONT FORGOT TO UPDATE .github/workflows/test.yml
 pt_versions = [
+  #'~>9.2', ### Likely not compatible with the new PT 12 loading mechanism
+  #'~>10.0', ### Likely not compatible with the new PT 12 loading mechanism
+  #'~>11.0', ### Likely not compatible with the new PT 12 loading mechanism
   '~>12.0', 
 ]
 
@@ -22,6 +25,10 @@ ar_versions = [
   ],
   [
     '~>6.1', 
+    pt_versions,
+  ],
+  [
+    '~>7.0', 
     pt_versions,
   ],
 ]
