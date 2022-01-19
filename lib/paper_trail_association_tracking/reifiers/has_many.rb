@@ -94,12 +94,18 @@ module PaperTrailAssociationTracking
         # from the point in time identified by `tx_id` or `version_at`.
         # @api private
         def load_versions_for_hm_association(assoc, model, version_table, tx_id, version_at)
+          # For STI models, associations may be defined to reference superclasses, so looking up 
+          # based on only the child-most class is not appropriate.
+          sti_model_names =  model.class.ancestors
+                                  .select { |x| x <= model.class.base_class && x.method_defined?(assoc.name) }
+                                  .map(&:name)
+
           version_ids = ::PaperTrail::VersionAssociation.
             joins(model.class.version_association_name).
             select("MIN(version_id) as version_id").
             where("foreign_key_name = ?", assoc.foreign_key).
             where("foreign_key_id = ?", model.id).
-            where(foreign_type: [model.class.name, nil]).
+            where(foreign_type: sti_model_names + [nil]).
             where("#{version_table}.item_type = ?", assoc.klass.base_class.name).
             where("created_at >= ? OR transaction_id = ?", version_at, tx_id).
             group("item_id").

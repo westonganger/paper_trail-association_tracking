@@ -6,20 +6,30 @@
 # > the version from the appraisal takes precedence.
 # > https://github.com/thoughtbot/appraisal
 
+### WHEN UPDATING THESE VERSIONS DONT FORGOT TO UPDATE .github/workflows/test.yml
 pt_versions = [
-  '~>9.0', 
-  '~>10.0', 
-  'master',
+  #'~>9.2', ### Likely not compatible with the new PT 12 loading mechanism
+  #'~>10.0', ### Likely not compatible with the new PT 12 loading mechanism
+  #'~>11.0', ### Likely not compatible with the new PT 12 loading mechanism
+  '~>12.0', 
 ]
 
 ar_versions = [
   [
-    '~>5.2.0', 
+    '~>5.2', 
     pt_versions,
   ],
   [
-    '~>6.0.0', 
-    pt_versions.select{|x| x.sub('~>', '').to_f >= 10 || x == 'master' },
+    '~>6.0', 
+    pt_versions,
+  ],
+  [
+    '~>6.1', 
+    pt_versions,
+  ],
+  [
+    '~>7.0', 
+    pt_versions,
   ],
 ]
 

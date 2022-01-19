@@ -9,6 +9,11 @@ require "paper_trail_association_tracking/request"
 require "paper_trail_association_tracking/paper_trail"
 require "paper_trail_association_tracking/version_concern"
 
+if defined?(Rails)
+  require "paper_trail/frameworks/active_record"
+  require "paper_trail_association_tracking/frameworks/rails"
+end
+
 module PaperTrailAssociationTracking
   def self.version
     VERSION
@@ -52,16 +57,4 @@ module PaperTrail
     include ::PaperTrailAssociationTracking::VersionConcern
     prepend ::PaperTrailAssociationTracking::VersionConcern::ClassMethods
   end
-end
-
-# Require frameworks
-if defined?(::Rails)
-  # Rails module is sometimes defined by gems like rails-html-sanitizer so we check for presence of Rails.application.
-  if defined?(::Rails.application)
-    require "paper_trail_association_tracking/frameworks/rails"
-  else
-    ::Kernel.warn('PaperTrail has been loaded too early, before rails is loaded. This can happen when another gem defines the ::Rails namespace, then PT is loaded, all before rails is loaded. You may want to reorder your Gemfile, or defer the loading of PT by using `require: false` and a manual require elsewhere.')
-  end
-else
-  require "paper_trail_association_tracking/frameworks/active_record"
 end

@@ -158,4 +158,15 @@ RSpec.describe(::PaperTrail, versioning: true) do
       expect(order).to be_marked_for_destruction
     end
   end
+
+  describe "predator, reified superclass associations from before prey is added" do
+    it "has no prey" do
+      predator = Cat.create(name: "cat_0")
+      predator.update!(name: "cat_1")
+      predator.prey.create!(prey: Dog.new(name: "dog_0"))
+      predator0 = predator.versions.last.reify(has_many: true)
+      expect(predator0.prey).to(eq([]))
+      expect(predator.prey.reload).not_to(eq([]))
+    end
+  end
 end

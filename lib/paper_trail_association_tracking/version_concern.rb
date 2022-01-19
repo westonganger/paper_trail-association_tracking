@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 module PaperTrailAssociationTracking
-  # Originally, PaperTrail did not provide this module, and all of this
-  # functionality was in `PaperTrail::Version`. That model still exists (and is
-  # used by most apps) but by moving the functionality to this module, people
-  # can include this concern instead of sub-classing the `Version` model.
   module VersionConcern
     extend ::ActiveSupport::Concern
 
@@ -16,7 +12,7 @@ module PaperTrailAssociationTracking
         has_many :version_associations, dependent: :destroy
       end
 
-      scope(:within_transaction, ->(id) { where transaction_id: id })
+      scope :within_transaction, ->(id) { where(transaction_id: id) }
     end
 
     # Restore the item from this version.

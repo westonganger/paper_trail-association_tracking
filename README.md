@@ -1,7 +1,7 @@
 # PaperTrail-AssociationTracking
 
 <a href="https://badge.fury.io/rb/paper_trail-association_tracking" target="_blank"><img height="21" style='border:0px;height:21px;' border='0' src="https://badge.fury.io/rb/paper_trail-association_tracking.svg" alt="Gem Version"></a>
-<a href='https://travis-ci.com/westonganger/paper_trail-association_tracking' target='_blank'><img height='21' style='border:0px;height:21px;' src='https://api.travis-ci.com/westonganger/paper_trail-association_tracking.svg?branch=master' border='0' alt='Build Status' /></a>
+<a href='https://github.com/westonganger/paper_trail-association_tracking/actions' target='_blank'><img src="https://github.com/westonganger/paper_trail-association_tracking/workflows/Tests/badge.svg" style="max-width:100%;" height='21' style='border:0px;height:21px;' border='0' alt="CI Status"></a>
 <a href='https://rubygems.org/gems/paper_trail-association_tracking' target='_blank'><img height='21' style='border:0px;height:21px;' src='https://ruby-gem-downloads-badge.herokuapp.com/paper_trail-association_tracking?label=rubygems&type=total&total_label=downloads&color=brightgreen' border='0' alt='RubyGems Downloads' /></a>
 
 Plugin for the [PaperTrail](https://github.com/paper-trail-gem/paper_trail.git) gem to track and reify associations. This gem was extracted from PaperTrail for v9.2.0 to simplify things in PaperTrail and association tracking separately. 
@@ -23,15 +23,21 @@ It will store in the `version_associations` table additional information to corr
 - [Known Issues](#known-issues)
 - [Contributing](#contributing)
 - [Credits](#credits)
+- [Alternative Solution](#alternative-solution)
 
 
 # Install
 
 ```ruby
-# Gemfile
-
-gem 'paper_trail' # Minimum required version is v9.2.0
+gem 'paper_trail'
 gem 'paper_trail-association_tracking'
+```
+
+For PT v9.2 to v11.x you must use PT-AT v2
+
+```ruby
+gem 'paper_trail'#, ">=9.2.0", "< 12.0"
+gem 'paper_trail-association_tracking', "<= 2.1.3"
 ```
 
 Then run `rails generate paper_trail_association_tracking:install` which will do the following two things for you:
@@ -192,3 +198,9 @@ Maintained by [Weston Ganger](https://westonganger.com) - [@westonganger](https:
 Plugin authored by [Weston Ganger](https://westonganger.com) - [@westonganger](https://github.com/westonganger)
 
 Associations code originally contributed by Ben Atkins, Jared Beck, Andy Stewart & more
+
+# Alternative Solution
+
+Model Versioning and Restoration require concious thought, design, and understanding. You should understand your versioning and restoration process completely. Because PT-AT it is mostly a blackbox solution which encourages you to set it up and then assume its "Just Working". This can make for major data problems later.
+
+Instead I recommend a newer gem that I have created for handling snapshots of records and associations called [active_snapshot](https://github.com/westonganger/active_snapshot). This gem does not utilize `paper_trail` at all. The focus of this gem is to have a simple and fully understandable design is easy to customize and know inside and out for your projects needs.
