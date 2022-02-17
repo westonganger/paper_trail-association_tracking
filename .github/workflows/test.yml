@@ -13,7 +13,6 @@ jobs:
       matrix:
         include:
           ### TEST ALL RUBY VERSIONS, USE DEFAULT GEMFILE
-          - ruby: 2.5
           - ruby: 2.6
           - ruby: 2.7
           - ruby: 3.0
