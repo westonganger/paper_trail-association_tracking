@@ -40,13 +40,26 @@ module PaperTrailAssociationTracking
 
     def setup_habtm_change_callbacks(assoc)
       assoc_name = assoc.name
+
       %w[add remove].each do |verb|
-        @model_class.send(:"before_#{verb}_for_#{assoc_name}").send(
-          :<<,
-          lambda do |*args|
+        callback_name = :"before_#{verb}_for_#{assoc_name}"
+
+        if @model_class.respond_to?(callback_name)
+          @model_class.send(callback_name).send(
+            :<<,
+            lambda do |*args|
+              update_habtm_state(assoc_name, :"before_#{verb}", args[-2], args.last)
+            end
+          )
+        else
+          callback = lambda do |*args|
             update_habtm_state(assoc_name, :"before_#{verb}", args[-2], args.last)
           end
-        )
+
+          @model_class.send(
+            assoc.macro, assoc_name, **assoc.options.merge("before_{verb}" => callback)
+          )
+        end
       end
     end
 
