@@ -7,45 +7,35 @@
 # > https://github.com/thoughtbot/appraisal
 
 ### WHEN UPDATING THESE VERSIONS DONT FORGOT TO UPDATE .github/workflows/test.yml
-pt_versions = [
-  #'~>9.2', ### Likely not compatible with the new PT 12 loading mechanism
-  #'~>10.0', ### Likely not compatible with the new PT 12 loading mechanism
-  #'~>11.0', ### Likely not compatible with the new PT 12 loading mechanism
-  '~>12.0', 
+latest_pt_version = "~>12"
+
+latest_pt_supported_ar_versions = [
+  '~>5.2', 
+  '~>6.0', 
+  '~>6.1', 
+  '~>7.0', 
 ]
 
-ar_versions = [
-  [
-    '~>5.2', 
-    pt_versions,
-  ],
-  [
-    '~>6.0', 
-    pt_versions,
-  ],
-  [
-    '~>6.1', 
-    pt_versions,
-  ],
-  [
-    '~>7.0', 
-    pt_versions,
-  ],
+legacy_pt_versions = [
+  '~>9',
+  '~>10',
+  '~>11',
 ]
 
-ar_versions.each do |ar_ver, compatible_pt_versions|
-  compatible_pt_versions.each do |pt_ver|
-    appraise "ar_#{ar_ver.sub('~>','')} pt_#{pt_ver.sub('~>','')}" do
-      gem "activerecord", ar_ver
+latest_pt_supported_ar_versions.each do |ar_ver|
+  appraise "pt_#{latest_pt_version.sub('~>','')} ar_#{ar_ver.sub('~>','')}" do
+    gem "paper_trail", latest_pt_version
 
-      if pt_ver == 'master'
-        gem "paper_trail", git: 'https://github.com/paper-trail-gem/paper_trail.git'
-      else
-        gem "paper_trail", pt_ver
-      end
+    gem "activerecord", ar_ver
+    gem "rails-controller-testing"
+  end
+end
 
-      gem "rails-controller-testing"
-    end
+legacy_pt_versions.each do |pt_ver|
+  appraise "pt_#{pt_ver.sub('~>','')}" do
+    gem "paper_trail", pt_ver
 
+    gem "activerecord"
+    gem "rails-controller-testing"
   end
 end

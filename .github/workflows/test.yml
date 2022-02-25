@@ -21,13 +21,21 @@ jobs:
 
           ### RAILS VERSION TESTING
           - ruby: 2.6
-            gemfile: gemfiles/ar_5.2_pt_12.0.gemfile
+            gemfile: gemfiles/ar_5.2_pt_12.gemfile
           - ruby: 2.6
-            gemfile: gemfiles/ar_6.0_pt_12.0.gemfile
+            gemfile: gemfiles/ar_6.0_pt_12.gemfile
           - ruby: 2.6
-            gemfile: gemfiles/ar_6.1_pt_12.0.gemfile
+            gemfile: gemfiles/ar_6.1_pt_12.gemfile
           - ruby: 3.1
-            gemfile: gemfiles/ar_7.0_pt_12.0.gemfile
+            gemfile: gemfiles/ar_7.0_pt_12.gemfile
+
+          ### LEGACY PAPER_TRAIL VERSION TESTING
+          - ruby: 2.6
+            gemfile: gemfiles/pt_11.gemfile
+          - ruby: 2.6
+            gemfile: gemfiles/pt_10.gemfile
+          - ruby: 2.6
+            gemfile: gemfiles/pt_9.2.gemfile
 
     env:
       BUNDLE_GEMFILE: "${{ matrix.gemfile }}"
@@ -67,8 +75,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          ### RAILS VERSION TESTING
           ### DONT WORRY ABOUT TESTING ALL RUBY VERSIONS. THIS IS COVERED IN THE SQLITE3 TESTS
+        
+          ### RAILS VERSION TESTING
           - ruby: 2.6
             gemfile: gemfiles/ar_5.2_pt_12.0.gemfile
           - ruby: 2.6
@@ -77,6 +86,14 @@ jobs:
             gemfile: gemfiles/ar_6.1_pt_12.0.gemfile
           - ruby: 3.1
             gemfile: gemfiles/ar_7.0_pt_12.0.gemfile
+
+          ### LEGACY PAPER_TRAIL VERSION TESTING
+          - ruby: 2.6
+            gemfile: gemfiles/pt_11.gemfile
+          - ruby: 2.6
+            gemfile: gemfiles/pt_10.gemfile
+          - ruby: 2.6
+            gemfile: gemfiles/pt_9.2.gemfile
 
     env:
       BUNDLE_GEMFILE: "${{ matrix.gemfile }}"
@@ -119,8 +136,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          ### RAILS VERSION TESTING
           ### DONT WORRY ABOUT TESTING ALL RUBY VERSIONS. THIS IS COVERED IN THE SQLITE3 TESTS
+        
+          ### RAILS VERSION TESTING
           - ruby: 2.6
             gemfile: gemfiles/ar_5.2_pt_12.0.gemfile
           - ruby: 2.6
@@ -129,6 +147,14 @@ jobs:
             gemfile: gemfiles/ar_6.1_pt_12.0.gemfile
           - ruby: 3.1
             gemfile: gemfiles/ar_7.0_pt_12.0.gemfile
+
+          ### LEGACY PAPER_TRAIL VERSION TESTING
+          - ruby: 2.6
+            gemfile: gemfiles/pt_11.gemfile
+          - ruby: 2.6
+            gemfile: gemfiles/pt_10.gemfile
+          - ruby: 2.6
+            gemfile: gemfiles/pt_9.2.gemfile
 
     env:
       BUNDLE_GEMFILE: "${{ matrix.gemfile }}"
