@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.executables = []
   s.require_paths = ["lib"]
 
-  s.required_ruby_version = ">= 2.5.0"
+  s.required_ruby_version = ">= 2.6.0"
 
   s.add_runtime_dependency "paper_trail", ">= 12.0"
 
@@ -27,8 +27,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency "byebug"
   s.add_development_dependency "ffaker"
   s.add_development_dependency "generator_spec"
-  s.add_development_dependency "mysql2"
-  s.add_development_dependency "pg"
+  #s.add_development_dependency "mysql2"
+  #s.add_development_dependency "pg"
   s.add_development_dependency "rack-test"
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec-rails"

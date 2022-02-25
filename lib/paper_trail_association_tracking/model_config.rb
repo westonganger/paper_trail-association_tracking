@@ -38,15 +38,34 @@ module PaperTrailAssociationTracking
       habtm_assocs_not_skipped.each(&method(:setup_habtm_change_callbacks))
     end
 
-    def setup_habtm_change_callbacks(assoc)
-      assoc_name = assoc.name
-      %w[add remove].each do |verb|
-        @model_class.send(:"before_#{verb}_for_#{assoc_name}").send(
-          :<<,
-          lambda do |*args|
-            update_habtm_state(assoc_name, :"before_#{verb}", args[-2], args.last)
-          end
-        )
+    def setup_habtm_change_callbacks(association)
+      association_name = association.name
+
+      if ActiveRecord::VERSION::MAJOR >= 7
+        ### https://github.com/westonganger/paper_trail-association_tracking/pull/37#issuecomment-1067146121
+
+        before_add_callback = lambda do |*args|
+          update_habtm_state(association_name, :before_add, args[-2], args.last)
+        end
+
+        before_remove_callback = lambda do |*args|
+          update_habtm_state(association_name, :before_remove, args[-2], args.last)
+        end
+
+        assoc_opts = association.options.merge(before_add: before_add_callback, before_remove: before_remove_callback)
+
+        association.instance_variable_set(:@options, **assoc_opts)
+
+        ::ActiveRecord::Associations::Builder::CollectionAssociation.send(:define_callbacks, @model_class, association)
+      else
+        %w[add remove].each do |verb|
+          @model_class.send("before_#{verb}_for_#{association_name}").send(
+            :<<,
+            lambda do |*args|
+              update_habtm_state(association_name, :"before_#{verb}", args[-2], args.last)
+            end
+          )
+        end
       end
     end
 
