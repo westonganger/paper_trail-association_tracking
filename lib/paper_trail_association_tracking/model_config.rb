@@ -38,29 +38,26 @@ module PaperTrailAssociationTracking
       habtm_assocs_not_skipped.each(&method(:setup_habtm_change_callbacks))
     end
 
-    def setup_habtm_change_callbacks(assoc)
-      assoc_name = assoc.name
+    def setup_habtm_change_callbacks(association)
+      association_name = association.name
 
-      %w[add remove].each do |verb|
-        callback_name = :"before_#{verb}_for_#{assoc_name}"
-
-        if @model_class.respond_to?(callback_name)
-          @model_class.send(callback_name).send(
-            :<<,
-            lambda do |*args|
-              update_habtm_state(assoc_name, :"before_#{verb}", args[-2], args.last)
-            end
-          )
-        else
-          callback = lambda do |*args|
-            update_habtm_state(assoc_name, :"before_#{verb}", args[-2], args.last)
-          end
-
-          @model_class.send(
-            assoc.macro, assoc_name, **assoc.options.merge("before_{verb}" => callback)
-          )
-        end
+      before_add_callback = lambda do |*args|
+        update_habtm_state(association_name, :before_add, args[-2], args.last)
       end
+
+      before_remove_callback = lambda do |*args|
+        update_habtm_state(association_name, :before_remove, args[-2], args.last)
+      end
+
+      association.instance_variable_set(
+        :@options,
+        association.options.merge(before_add: before_add_callback, before_remove: before_remove_callback)
+      )
+      ::ActiveRecord::Associations::Builder::CollectionAssociation.send(
+        :define_callbacks,
+        @model_class,
+        association
+      )
     end
 
     # Reset the transaction id when the transaction is closed.

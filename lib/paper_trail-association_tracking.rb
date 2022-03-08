@@ -52,8 +52,4 @@ module PaperTrail
       prepend ::PaperTrailAssociationTracking::Request::ClassMethods
     end
   end
-
-  module VersionConcern
-    include ::PaperTrailAssociationTracking::VersionConcern
-  end
 end
