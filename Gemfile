@@ -5,5 +5,3 @@ gemspec
 gem 'rails-controller-testing'
 
 gem 'paper_trail', '~> 12.2'
-
-# gem 'paper_trail', git: 'https://github.com/paper-trail-gem/paper_trail.git'
