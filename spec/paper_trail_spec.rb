@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require "paper_trail/frameworks/rspec"
 
 RSpec.describe PaperTrail do
   context "default" do

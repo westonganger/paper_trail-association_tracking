@@ -8,7 +8,6 @@
 ### 2.1.3 - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.1.1...v2.1.3)
 
 - [PR #24](https://github.com/westonganger/paper_trail-association_tracking/pull/24) - Fix reification on STI models that have parent child relationships
-- Last version that is compatible with PT-v11 and below, due to the recent change in the PT loading mechanism
 
 ### 2.1.2
 

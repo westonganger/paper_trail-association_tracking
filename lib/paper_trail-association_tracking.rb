@@ -12,6 +12,9 @@ require "paper_trail_association_tracking/version_concern"
 if defined?(Rails)
   require "paper_trail/frameworks/active_record"
   require "paper_trail_association_tracking/frameworks/rails"
+elsif defined?(ActiveRecord)
+  require "paper_trail/frameworks/active_record"
+  require "paper_trail_association_tracking/frameworks/active_record"
 end
 
 module PaperTrailAssociationTracking
@@ -51,9 +54,5 @@ module PaperTrail
     class << self
       prepend ::PaperTrailAssociationTracking::Request::ClassMethods
     end
-  end
-
-  module VersionConcern
-    include ::PaperTrailAssociationTracking::VersionConcern
   end
 end

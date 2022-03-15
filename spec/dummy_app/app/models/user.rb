@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-class PostgresUser < ActiveRecord::Base
+class User < ActiveRecord::Base
   has_paper_trail
 end

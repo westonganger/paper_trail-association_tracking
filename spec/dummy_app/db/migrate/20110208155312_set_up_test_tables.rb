@@ -45,7 +45,7 @@ class SetUpTestTables < ::ActiveRecord::Migration::Current
       end
     end
 
-    create_table :versions, versions_table_options do |t|
+    create_table :versions, **versions_table_options do |t|
       t.string   :item_type, item_type_options
       t.integer  :item_id,   null: false
       t.string   :event,     null: false
