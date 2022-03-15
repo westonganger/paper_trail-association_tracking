@@ -1,6 +1,9 @@
 # CHANGELOG
 
-### Unreleased - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.1.3...master)
+### Unreleased - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.2.0...master)
+- Nothing yet
+
+### v2.2.0 - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.1.3...v2.2.0)
 
 - [PR #36](https://github.com/westonganger/paper_trail-association_tracking/pull/36) - Fix load order for paper_trail v12+
 - Drop support for Ruby 2.5
