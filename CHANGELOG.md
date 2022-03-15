@@ -2,7 +2,8 @@
 
 ### Unreleased - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.1.3...master)
 
-- TODO: Fix load order for PT@v12.x - Work started in #28, did not fully fix the issue tests still failing
+- [PR #36](https://github.com/westonganger/paper_trail-association_tracking/pull/36) - Fix load order for paper_trail v12+
+- Drop support for Ruby 2.5
 - Add Github Actions CI supporting multiple version of Ruby, Rails and multiple databases types
 
 ### 2.1.3 - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.1.1...v2.1.3)
