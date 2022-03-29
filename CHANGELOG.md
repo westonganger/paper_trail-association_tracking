@@ -1,7 +1,7 @@
 # CHANGELOG
 
 ### Unreleased - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.2.0...master)
-- Nothing yet
+- [PR #38](https://github.com/westonganger/paper_trail-association_tracking/pull/38) - Fix the issue where reifying has_one association with `dependent: :destroy` could destroy a live record
 
 ### v2.2.0 - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.1.3...v2.2.0)
 
