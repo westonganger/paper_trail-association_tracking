@@ -55,6 +55,11 @@ ActiveRecord::Schema.define(version: 20110208155312) do
     t.index ["foo_habtm_id"], name: "index_bar_habtms_foo_habtms_on_foo_habtm_id"
   end
 
+  create_table "bizzos", force: :cascade do |t|
+    t.integer "widget_id"
+    t.string "name"
+  end
+
   create_table "books", force: :cascade do |t|
     t.string "title"
   end

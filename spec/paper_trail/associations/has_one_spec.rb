@@ -17,6 +17,23 @@ RSpec.describe(::PaperTrail, versioning: true) do
     end
   end
 
+  describe "widget, reified from a version prior to creation of bizzo" do
+    before do
+      @widget = Widget.create(name: "widget_0")
+      @widget.update(name: "widget_1")
+      @widget.create_bizzo(name: "bizzo_0")
+      @reified = @widget.versions.last.reify(has_one: true)
+    end
+
+    it "has a nil bizzo" do
+      expect(@reified.bizzo).to be_nil
+    end
+
+    it 'does not destroy the live association' do
+      expect(@widget.reload.bizzo).not_to be_nil
+    end
+  end
+
   describe "widget, reified from a version after creation of wotsit" do
     it "has the expected wotsit" do
       widget = Widget.create(name: "widget_0")

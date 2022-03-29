@@ -56,9 +56,7 @@ module PaperTrailAssociationTracking
           if options[:mark_for_destruction]
             model.send(assoc.name).mark_for_destruction if model.send(assoc.name, true)
           else
-            model.paper_trail.appear_as_new_record do
-              model.send "#{assoc.name}=", nil
-            end
+            model.association(assoc.name).target = nil
           end
         end
 

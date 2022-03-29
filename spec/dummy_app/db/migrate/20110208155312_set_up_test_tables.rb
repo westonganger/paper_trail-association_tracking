@@ -85,6 +85,11 @@ class SetUpTestTables < ::ActiveRecord::Migration::Current
       t.timestamps null: true, limit: 6
     end
 
+    create_table :bizzos, force: true do |t|
+      t.integer :widget_id
+      t.string  :name
+    end
+
     create_table :fluxors, force: true do |t|
       t.integer :widget_id
       t.string  :name
