@@ -8,7 +8,7 @@ module PaperTrailAssociationTracking
       class << self
         # @api private
         def reify(pt_enabled, assoc, model, options, transaction_id)
-          version_ids = model.paper_trail.version_association_class.
+          version_ids = assoc.active_record.paper_trail.version_association_class.
             where("foreign_key_name = ?", assoc.name).
             where("version_id = ?", transaction_id).
             pluck(:foreign_key_id)

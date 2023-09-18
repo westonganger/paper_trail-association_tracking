@@ -100,7 +100,7 @@ module PaperTrailAssociationTracking
                                   .select { |x| x <= model.class.base_class && x.method_defined?(assoc.name) }
                                   .map(&:name)
 
-          version_ids = model.paper_trail.version_association_class.
+          version_ids = assoc.active_record.paper_trail.version_association_class.
             joins(model.class.version_association_name).
             select("MIN(version_id) as version_id").
             where("foreign_key_name = ?", assoc.foreign_key).
