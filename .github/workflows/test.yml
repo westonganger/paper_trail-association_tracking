@@ -1,31 +1,31 @@
 name: Tests
 on:
   push:
-    branches: ['*']
+    branches: ['master']
   pull_request:
-    branches: ['*']
 
 jobs:
   test_sqlite:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         include:
           ### TEST ALL RUBY VERSIONS, USE DEFAULT GEMFILE
-          - ruby: 2.6
-          - ruby: 2.7
-          - ruby: 3.0
-          - ruby: 3.1
+          - ruby: "2.6"
+          - ruby: "2.7"
+          - ruby: "3.0"
+          - ruby: "3.1"
+          - ruby: "3.2"
 
           ### RAILS VERSION TESTING
-          - ruby: 2.6
+          - ruby: "2.6"
             gemfile: gemfiles/sqlite3_ar_5.2_pt_12.0.gemfile
-          - ruby: 2.6
+          - ruby: "2.6"
             gemfile: gemfiles/sqlite3_ar_6.0_pt_12.0.gemfile
-          - ruby: 2.6
+          - ruby: "2.6"
             gemfile: gemfiles/sqlite3_ar_6.1_pt_12.0.gemfile
-          - ruby: 3.1
+          - ruby: "3.2"
             gemfile: gemfiles/sqlite3_ar_7.0_pt_12.0.gemfile
 
     env:
@@ -48,7 +48,7 @@ jobs:
 
 
   test_mysql:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     services:
       mysql:
         image: mariadb
@@ -64,13 +64,13 @@ jobs:
         include:
           ### RAILS VERSION TESTING
           ### DONT WORRY ABOUT TESTING ALL RUBY VERSIONS. THIS IS COVERED IN THE SQLITE3 TESTS
-          - ruby: 2.6
+          - ruby: "2.6"
             gemfile: gemfiles/mysql2_ar_5.2_pt_12.0.gemfile
-          - ruby: 2.6
+          - ruby: "2.6"
             gemfile: gemfiles/mysql2_ar_6.0_pt_12.0.gemfile
-          - ruby: 2.6
+          - ruby: "2.6"
             gemfile: gemfiles/mysql2_ar_6.1_pt_12.0.gemfile
-          - ruby: 3.1
+          - ruby: "3.2"
             gemfile: gemfiles/mysql2_ar_7.0_pt_12.0.gemfile
 
     env:
@@ -96,7 +96,7 @@ jobs:
 
 
   test_pg:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     services:
       postgres:
         image: postgres
@@ -112,13 +112,13 @@ jobs:
         include:
           ### RAILS VERSION TESTING
           ### DONT WORRY ABOUT TESTING ALL RUBY VERSIONS. THIS IS COVERED IN THE SQLITE3 TESTS
-          - ruby: 2.6
+          - ruby: "2.6"
             gemfile: gemfiles/pg_ar_5.2_pt_12.0.gemfile
-          - ruby: 2.6
+          - ruby: "2.6"
             gemfile: gemfiles/pg_ar_6.0_pt_12.0.gemfile
-          - ruby: 2.6
+          - ruby: "2.6"
             gemfile: gemfiles/pg_ar_6.1_pt_12.0.gemfile
-          - ruby: 3.1
+          - ruby: "3.2"
             gemfile: gemfiles/pg_ar_7.0_pt_12.0.gemfile
 
     env:
