@@ -12,19 +12,21 @@ PaperTrail-AssociationTracking can restore three types of associations: Has-One,
 
 It will store in the `version_associations` table additional information to correlate versions of the association and versions of the model when the associated record is changed. When reifying the model, it will utilize this table, together with the `transaction_id` to find the correct version of the association and reify it. The `transaction_id` is a unique id for version records created in the same transaction. It is used to associate the version of the model and the version of the association that are created in the same transaction.
 
-
-
-
 ## Table of Contents
 
+- [Alternative Solution](#alternative-solution)
 - [Install](#install)
 - [Usage](#usage)
 - [Limitations](#limitations)
 - [Known Issues](#known-issues)
 - [Contributing](#contributing)
 - [Credits](#credits)
-- [Alternative Solution](#alternative-solution)
 
+# Alternative Solution
+
+Model versioning and restoration require concious thought, design, and understanding. You should understand your versioning and restoration process completely. This gem paper_trail-association-tracking is mostly a blackbox solution which encourages you to set it up and then assume its Just Working<sup>TM</sup>. This can make for major data problems later.
+
+Instead I recommend a newer gem that I have created for handling snapshots of records and associations called [active_snapshot](https://github.com/westonganger/active_snapshot). This gem does not utilize `paper_trail` at all. The focus of the [active_snapshot](https://github.com/westonganger/active_snapshot) gem is to have a simple and fully understandable design is easy to customize and know inside and out for your projects needs.
 
 # Install
 
@@ -181,9 +183,3 @@ Maintained by [Weston Ganger](https://westonganger.com) - [@westonganger](https:
 Plugin authored by [Weston Ganger](https://westonganger.com) - [@westonganger](https://github.com/westonganger)
 
 Associations code originally contributed by Ben Atkins, Jared Beck, Andy Stewart & more
-
-# Alternative Solution
-
-Model Versioning and Restoration require concious thought, design, and understanding. You should understand your versioning and restoration process completely. Because PT-AT it is mostly a blackbox solution which encourages you to set it up and then assume its "Just Working". This can make for major data problems later.
-
-Instead I recommend a newer gem that I have created for handling snapshots of records and associations called [active_snapshot](https://github.com/westonganger/active_snapshot). This gem does not utilize `paper_trail` at all. The focus of this gem is to have a simple and fully understandable design is easy to customize and know inside and out for your projects needs.
