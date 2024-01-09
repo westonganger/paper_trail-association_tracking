@@ -10,8 +10,15 @@ module PaperTrailAssociationTracking
     def setup(options = {})
       super
 
+      @model_class.class_attribute :version_association_class_name
+      @model_class.version_association_class_name = options.dig(:version_associations, :class_name) || "PaperTrail::VersionAssociation"
+
       setup_transaction_callbacks
       setup_callbacks_for_habtm(options[:join_tables])
+    end
+
+    def version_association_class
+      @version_association_class ||= @model_class.version_association_class_name.constantize
     end
 
     private
