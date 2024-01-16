@@ -137,7 +137,7 @@ module PaperTrailAssociationTracking
             version_id: version.transaction_id,
             foreign_key_name: a.name,
             foreign_key_id: id,
-            foreign_type: a.klass
+            foreign_type: a.class_name.constantize
           )
         end
       end
@@ -174,9 +174,9 @@ module PaperTrailAssociationTracking
           assoc_version_args[:foreign_key_id] = @record.send(assoc.foreign_key)
           assoc_version_args[:foreign_type] = foreign_type
         end
-      elsif ::PaperTrail.request.enabled_for_model?(assoc.klass)
+      elsif ::PaperTrail.request.enabled_for_model?(assoc.class_name.constantize)
         assoc_version_args[:foreign_key_id] = @record.send(assoc.foreign_key)
-        assoc_version_args[:foreign_type] = assoc.klass
+        assoc_version_args[:foreign_type] = assoc.class_name.constantize
       end
 
       if assoc_version_args.key?(:foreign_key_id)
@@ -188,7 +188,7 @@ module PaperTrailAssociationTracking
     # @api private
     def save_habtm_association?(assoc)
       @record.class.paper_trail_save_join_tables.include?(assoc.name) ||
-        ::PaperTrail.request.enabled_for_model?(assoc.klass)
+        ::PaperTrail.request.enabled_for_model?(assoc.class_name.constantize)
     end
 
     def update_transaction_id(version)
