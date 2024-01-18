@@ -170,7 +170,7 @@ module PaperTrailAssociationTracking
 
       if assoc.options[:polymorphic]
         foreign_type = @record.send(assoc.foreign_type)
-        if foreign_type && ::PaperTrail.request.enabled_for_model?(foreign_type.constantize)
+        if foreign_type.present? && ::PaperTrail.request.enabled_for_model?(foreign_type.constantize)
           assoc_version_args[:foreign_key_id] = @record.send(assoc.foreign_key)
           assoc_version_args[:foreign_type] = foreign_type
         end

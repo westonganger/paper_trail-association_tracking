@@ -157,6 +157,16 @@ RSpec.describe(::PaperTrail, versioning: true) do
         it "not fail with a nil pointer on the polymorphic association" do
           @widget.save!
         end
+
+        context 'when polymorphic type is an empty string' do
+          before do
+            @widget.owner_type = ''
+          end
+
+          it 'not fail with an empty string as polymorphic type' do
+            @widget.save!
+          end
+        end
       end
 
       context "and then destroyed" do
