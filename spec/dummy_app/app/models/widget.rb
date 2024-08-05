@@ -7,5 +7,6 @@ class Widget < ActiveRecord::Base
   has_one :bizzo, dependent: :destroy
   has_many(:fluxors, -> { order(:name) })
   has_many :whatchamajiggers, as: :owner
+  has_many :notes, through: :bizzo
   validates :name, exclusion: { in: [EXCLUDED_NAME] }
 end
