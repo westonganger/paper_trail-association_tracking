@@ -432,4 +432,111 @@ RSpec.describe(::PaperTrail, versioning: true) do
       end
     end
   end
+
+  context "Widgets, bizzos, and notes" do
+    before { @widget = Widget.create(name: 'widget_0') }
+
+    context "before any associations are created" do
+      before { @widget.update(name: 'widget_1') }
+
+      it "not reify any associations" do
+        widget_v1 = @widget.versions[1].reify(has_many: true)
+        expect(widget_v1.name).to(eq('widget_0'))
+        expect(widget_v1.bizzo).to(eq(nil))
+        expect(widget_v1.notes).to(eq([]))
+      end
+    end
+
+    context "after the first has_many through relationship is created" do
+      before do
+        @widget.update(name: 'widget_1')
+        Timecop.travel(1.second.since)
+        @widget.create_bizzo(name: 'bizzo_1')
+        Timecop.travel(1.second.since)
+        @widget.bizzo.update(name: 'bizzo_2')
+        Timecop.travel(1.second.since)
+        @widget.update(name: 'widget_2')
+        Timecop.travel(1.second.since)
+        @widget.bizzo.update(name: "bizzo_3")
+      end
+
+      context "after creating a note" do
+        before do
+          @bizzo = @widget.bizzo
+          Timecop.travel(1.second.since)
+          @note = @bizzo.notes.create(body: "note1")
+        end
+
+        context "new widget version" do
+          it "have one note" do
+            initial_bizzo_name = @bizzo.name
+            initial_note_body = @note.body
+            Timecop.travel(1.second.since)
+            @widget.update(name: 'widget_4')
+            expect(@widget.versions.size).to(eq(4))
+            Timecop.travel(1.second.since)
+            @note.update(body: "note3")
+            widget_v3 = @widget.versions[3].reify(has_many: true)
+            expect(widget_v3.bizzo.name).to(eq(initial_bizzo_name))
+            notes = widget_v3.bizzo.notes
+            expect(notes.size).to(eq(1))
+            expect(notes.map(&:body)).to(eq([initial_note_body]))
+          end
+        end
+
+        context "the version before a bizzo is destroyed" do
+          it "have the bizzo and note" do
+            Timecop.travel(1.second.since)
+            @widget.update(name: 'widget_3')
+            expect(@widget.versions.size).to(eq(4))
+            Timecop.travel(1.second.since)
+            @bizzo.destroy
+            expect(@widget.versions.size).to(eq(4))
+            widget_v3 = @widget.versions[3].reify(has_many: true)
+            expect(widget_v3.name).to(eq('widget_2'))
+            expect(widget_v3.bizzo).to(eq(@bizzo))
+            expect(widget_v3.bizzo.notes).to(eq([@note]))
+            expect(widget_v3.notes).to(eq([@note]))
+          end
+        end
+
+        context "the version after a bizzo is destroyed" do
+          it "not have any bizzos or notes" do
+            @bizzo.destroy
+            Timecop.travel(1.second.since)
+            @widget.update(name: 'widget_5')
+            expect(@widget.versions.size).to(eq(4))
+            widget_v3 = @widget.versions[3].reify(has_many: true)
+            expect(widget_v3.bizzo).to(be_nil)
+            expect(widget_v3.notes.size).to(eq(0))
+          end
+        end
+
+        context "the version before a note is destroyed" do
+          it "have the one note" do
+            initial_note_body = @bizzo.notes.first.body
+            Timecop.travel(1.second.since)
+            @widget.update(name: 'widget_5')
+            Timecop.travel(1.second.since)
+            @note.destroy
+            widget_v3 = @widget.versions[3].reify(has_many: true)
+            notes = widget_v3.bizzo.notes
+            expect(notes.size).to(eq(1))
+            expect(notes.first.body).to(eq(initial_note_body))
+          end
+        end
+
+        context "the version after a note is destroyed" do
+          it "have no notes" do
+            @note.destroy
+            Timecop.travel(1.second.since)
+            @widget.update(name: 'widget_5')
+            widget_v3 = @widget.versions[3].reify(has_many: true)
+            expect(widget_v3.notes.size).to(eq(0))
+            expect(widget_v3.bizzo.notes).to(eq([]))
+          end
+        end
+      end
+    end
+  end
 end

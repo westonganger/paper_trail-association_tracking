@@ -11,7 +11,7 @@ module PaperTrailAssociationTracking
           # Load the collection of through-models. For example, if `model` is a
           # Chapter, having many Paragraphs through Sections, then
           # `through_collection` will contain Sections.
-          through_collection = model.send(assoc.options[:through])
+          through_collection = through_collection(assoc, model, options, transaction_id)
 
           # Now, given the collection of "through" models (e.g. sections), load
           # the collection of "target" models (e.g. paragraphs)
@@ -23,6 +23,27 @@ module PaperTrailAssociationTracking
         end
 
         private
+
+        # Examine the `through_reflection`, i.e., the "through:" option on the association.
+        #
+        # @api private
+        def through_collection(assoc, model, options, transaction_id)
+          through_reflection = assoc.through_reflection
+          # If the through association is has_many, we can just return the reified association
+          return model.send(assoc.options[:through]) if through_reflection.collection?
+
+          # If the model wasn't reified with belongs_to: true/has_one: true, then
+          # the through association hasn't been reified yet.
+          unless model.association(assoc.options[:through]).loaded?
+            if through_reflection.belongs_to?
+              BelongsTo.reify(through_reflection, model, options, transaction_id)
+            else
+              HasOne.reify(through_reflection, model, options, transaction_id)
+            end
+          end
+          # Wrap the association in a collection for `collection_through_has_many`
+          [*model.send(assoc.options[:through])]
+        end
 
         # Examine the `source_reflection`, i.e. the "source" of `assoc` the
         # `ThroughReflection`. The source can be a `BelongsToReflection`
