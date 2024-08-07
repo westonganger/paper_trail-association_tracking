@@ -1,30 +1,32 @@
 # PaperTrail-AssociationTracking
 
 <a href="https://badge.fury.io/rb/paper_trail-association_tracking" target="_blank"><img height="21" style='border:0px;height:21px;' border='0' src="https://badge.fury.io/rb/paper_trail-association_tracking.svg" alt="Gem Version"></a>
-<a href='https://github.com/westonganger/paper_trail-association_tracking/actions' target='_blank'><img src="https://github.com/westonganger/paper_trail-association_tracking/workflows/Tests/badge.svg" style="max-width:100%;" height='21' style='border:0px;height:21px;' border='0' alt="CI Status"></a>
+<a href='https://github.com/westonganger/paper_trail-association_tracking/actions' target='_blank'><img src="https://github.com/westonganger/paper_trail-association_tracking/actions/workflows/test.yml/badge.svg?branch=master" style="max-width:100%;" height='21' style='border:0px;height:21px;' border='0' alt="CI Status"></a>
 <a href='https://rubygems.org/gems/paper_trail-association_tracking' target='_blank'><img height='21' style='border:0px;height:21px;' src='https://img.shields.io/gem/dt/paper_trail-association_tracking?color=brightgreen&label=Rubygems%20Downloads' border='0' alt='RubyGems Downloads' /></a>
 
-Plugin for the [PaperTrail](https://github.com/paper-trail-gem/paper_trail.git) gem to track and reify associations. This gem was extracted from PaperTrail for v9.2.0 to simplify things in PaperTrail and association tracking separately. 
+Plugin for the [PaperTrail](https://github.com/paper-trail-gem/paper_trail.git) gem to track and reify associations. This gem was extracted from PaperTrail for v9.2.0 to simplify things in PaperTrail and association tracking separately.
 
 **PR's will happily be accepted**
 
-PaperTrail-AssociationTracking can restore three types of associations: Has-One, Has-Many, and Has-Many-Through. 
+PaperTrail-AssociationTracking can restore three types of associations: Has-One, Has-Many, and Has-Many-Through.
 
 It will store in the `version_associations` table additional information to correlate versions of the association and versions of the model when the associated record is changed. When reifying the model, it will utilize this table, together with the `transaction_id` to find the correct version of the association and reify it. The `transaction_id` is a unique id for version records created in the same transaction. It is used to associate the version of the model and the version of the association that are created in the same transaction.
 
-
-
-
 ## Table of Contents
 
+- [Alternative Solution](#alternative-solution)
 - [Install](#install)
 - [Usage](#usage)
 - [Limitations](#limitations)
 - [Known Issues](#known-issues)
 - [Contributing](#contributing)
 - [Credits](#credits)
-- [Alternative Solution](#alternative-solution)
 
+# Alternative Solution
+
+Model versioning and restoration require concious thought, design, and understanding. You should understand your versioning and restoration process completely. This gem paper_trail-association-tracking is mostly a blackbox solution which encourages you to set it up and then assume its Just Working<sup>TM</sup>. This can make for major data problems later.
+
+Instead I recommend a newer gem that I have created for handling snapshots of records and associations called [active_snapshot](https://github.com/westonganger/active_snapshot). This gem does not utilize `paper_trail` at all. The focus of the [active_snapshot](https://github.com/westonganger/active_snapshot) gem is to have a simple and fully understandable design is easy to customize and know inside and out for your projects needs.
 
 # Install
 
@@ -67,7 +69,7 @@ product = Product.first.versions.last.reify(has_many: true, has_one: true, belon
 product.save! ### now this will also save all reified photos
 ```
 
-If you do not set `autosave: true` true on the association then you will have to save/delete them manually. 
+If you do not set `autosave: true` true on the association then you will have to save/delete them manually.
 
 For example:
 
@@ -158,14 +160,14 @@ end
       has_many :books, through: :authorships
       has_paper_trail
     end
-    
+
     ### Each of the following will store authorship versions:
     @book.authors << @john
     @book.authors.create(name: 'Jack')
     @book.authorships.last.destroy
     @book.authorships.clear
     @book.author_ids = [@john.id, @joe.id]
-    
+
     ### But none of these will:
     @book.authors.delete @john
     @book.author_ids = []
@@ -196,9 +198,3 @@ Maintained by [Weston Ganger](https://westonganger.com) - [@westonganger](https:
 Plugin authored by [Weston Ganger](https://westonganger.com) - [@westonganger](https://github.com/westonganger)
 
 Associations code originally contributed by Ben Atkins, Jared Beck, Andy Stewart & more
-
-# Alternative Solution
-
-Model Versioning and Restoration require concious thought, design, and understanding. You should understand your versioning and restoration process completely. Because PT-AT it is mostly a blackbox solution which encourages you to set it up and then assume its "Just Working". This can make for major data problems later.
-
-Instead I recommend a newer gem that I have created for handling snapshots of records and associations called [active_snapshot](https://github.com/westonganger/active_snapshot). This gem does not utilize `paper_trail` at all. The focus of this gem is to have a simple and fully understandable design is easy to customize and know inside and out for your projects needs.
