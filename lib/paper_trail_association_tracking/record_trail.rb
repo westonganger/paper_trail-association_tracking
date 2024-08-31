@@ -133,7 +133,7 @@ module PaperTrailAssociationTracking
       @record.class.reflect_on_all_associations(:has_and_belongs_to_many).each do |a|
         next unless save_habtm_association?(a)
         habtm_assoc_ids(a).each do |id|
-          ::PaperTrail::VersionAssociation.create(
+          @record.class.paper_trail.version_association_class.create(
             version_id: version.transaction_id,
             foreign_key_name: a.name,
             foreign_key_id: id,
@@ -180,7 +180,7 @@ module PaperTrailAssociationTracking
       end
 
       if assoc_version_args.key?(:foreign_key_id)
-        ::PaperTrail::VersionAssociation.create(assoc_version_args)
+        @record.class.paper_trail.version_association_class.create(assoc_version_args)
       end
     end
 

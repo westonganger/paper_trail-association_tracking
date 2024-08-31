@@ -90,13 +90,17 @@ module PaperTrailAssociationTracking
         # @api private
         def load_versions(assoc, model, transaction_id, version_at, base_class_name)
           version_table_name = model.class.paper_trail.version_class.table_name
-          model.class.paper_trail.version_class.joins(:version_associations).
-            where("version_associations.foreign_key_name = ?", assoc.foreign_key).
-            where("version_associations.foreign_key_id = ?", model.id).
+
+          version_ids = model.class.paper_trail.version_association_class.
+            joins(model.class.version_association_name).
+            where("foreign_key_name = ?", assoc.foreign_key).
+            where("foreign_key_id = ?", model.id).
             where("#{version_table_name}.item_type = ?", base_class_name).
             where("created_at >= ? OR transaction_id = ?", version_at, transaction_id).
-            order("#{version_table_name}.id ASC").
-            load
+            order("version_id ASC").
+            pluck("version_id")
+
+          model.class.paper_trail.version_class.find(version_ids)
         end
 
         # @api private

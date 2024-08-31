@@ -121,6 +121,21 @@ t.amount                         # 100
 t.location.latitude              # 12.345, instead of 54.321
 ```
 
+# Configuration
+
+You can configure a different version association class by using the following configuration:
+
+```ruby
+class ProductionVersionAssociation < PaperTrail::VersionAssociation
+  # You can change the table name, i.e.:
+  self.table_name = "product_version_associations"
+end
+
+class Product < ActiveRecord::Base
+  has_paper_trail version_associations: { class_name: "ProductVersionAssociation" }
+end
+```
+
 # Limitations
 
 1. Only reifies the first level of associations. If you want to include nested associations simply add `:through` relationships to your model.

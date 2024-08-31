@@ -1,6 +1,7 @@
 # CHANGELOG
 
 ### Unreleased - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.2.1...master)
+- [#46](https://github.com/westonganger/paper_trail-association_tracking/pull/46) - Add support for custom version association class with separate database connection
 - [#49](https://github.com/westonganger/paper_trail-association_tracking/pull/49) - Fix has_many though associations when the through association is singular
 - [#48](https://github.com/westonganger/paper_trail-association_tracking/pull/48) - Fix belongs_to polymorphic associations with "empty string" type
 
