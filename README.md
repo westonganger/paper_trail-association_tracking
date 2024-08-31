@@ -168,14 +168,6 @@ t.location.latitude              # 12.345, instead of 54.321
 1. Not compatible with transactional tests, see [PT Issue #542](https://github.com/airblade/paper_trail/issues/542). However, apparently there has been some success by using the [transactional_capybara](https://rubygems.org/gems/transactional_capybara) gem.
 
 
-# Contributing
-
-We use the `appraisal` gem for testing multiple versions of `paper_trail` and `activerecord`. Please use the following steps to test using `appraisal`.
-
-1. `bundle exec appraisal install`
-2. `bundle exec appraisal rake test`
-
-
 # Credits
 
 Maintained by [Weston Ganger](https://westonganger.com) - [@westonganger](https://github.com/westonganger)

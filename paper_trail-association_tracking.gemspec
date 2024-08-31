@@ -23,15 +23,8 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency "paper_trail", ">= 12.0"
 
-  s.add_development_dependency "appraisal"
-  s.add_development_dependency "byebug"
-  s.add_development_dependency "ffaker"
   s.add_development_dependency "generator_spec"
-  #s.add_development_dependency "mysql2"
-  #s.add_development_dependency "pg"
-  s.add_development_dependency "rack-test"
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec-rails"
-  s.add_development_dependency "sqlite3"
   s.add_development_dependency "timecop"
 end

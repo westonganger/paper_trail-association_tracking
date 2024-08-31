@@ -4,5 +4,13 @@ gemspec
 
 gem 'rails-controller-testing'
 
-#gem 'paper_trail', '~>12.0'
-gem 'paper_trail', git: 'https://github.com/paper-trail-gem/paper_trail.git'
+def get_env(name)
+  (ENV[name] && !ENV[name].empty?) ? ENV[name] : nil
+end
+
+gem "rails", get_env("RAILS_VERSION")
+
+db_gem = get_env("DB_GEM") || "sqlite3"
+gem db_gem, get_env("DB_GEM_VERSION")
+
+gem 'paper_trail', get_env("PAPER_TRAIL_VERSION")
