@@ -1,13 +1,8 @@
 # frozen_string_literal: true
 
-ENV["RAILS_ENV"] ||= "test"
-ENV["DB"] ||= "sqlite"
+ENV["RAILS_ENV"] = "test"
 
-require "byebug"
-
-unless File.exist?(File.expand_path("dummy_app/config/database.yml", __dir__))
-  warn "WARNING: No database.yml detected for the dummy app, please run `rake prepare` first"
-end
+require File.expand_path("../dummy_app/config/environment", __FILE__)
 
 RSpec.configure do |config|
   config.example_status_persistence_file_path = ".rspec_results"
@@ -41,21 +36,15 @@ RSpec.configure do |config|
   Kernel.srand(config.seed)
 end
 
-require "active_record/railtie"
-
-require "rspec/rails"
-require "ffaker"
+#require "rspec/rails"
+#require "ffaker"
 require "timecop"
 
-require File.expand_path("../dummy_app/config/environment", __FILE__)
-
 # Run any available migration
-if ActiveRecord.gem_version >= Gem::Version.new("6.0")
+if ActiveRecord::VERSION::MAJOR == 6
   ActiveRecord::MigrationContext.new(File.expand_path("dummy_app/db/migrate/", __dir__), ActiveRecord::SchemaMigration).migrate
-elsif ActiveRecord.gem_version >= Gem::Version.new("5.2")
-  ActiveRecord::MigrationContext.new(File.expand_path("dummy_app/db/migrate/", __dir__)).migrate
 else
-  ActiveRecord::Migrator.migrate File.expand_path("dummy_app/db/migrate/", __dir__)
+  ActiveRecord::MigrationContext.new(File.expand_path("dummy_app/db/migrate/", __dir__)).migrate
 end
 
 require "rspec/core"
@@ -75,9 +64,4 @@ RSpec::Matchers.define :have_a_version_with_changes do |attributes|
     versions_association = actual.class.versions_association_name
     actual.send(versions_association).where_object_changes(attributes).any?
   end
-end
-
-RSpec.configure do |config|
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
-  config.use_transactional_fixtures = true
 end

@@ -38,8 +38,8 @@ RSpec.describe Person, type: :model, versioning: true do
 
   describe "#notes" do
     it "can be reified" do
-      person = Person.create!(id: 1, name: "Jessica")
-      book = Book.create!(id: 1, title: "La Chute")
+      person = Person.create!(name: "Jessica")
+      book = Book.create!(title: "La Chute")
       person_note = Note.create!(body: "Some note on person", object: person)
       book_note = Note.create!(body: "Some note on book", object: book)
 

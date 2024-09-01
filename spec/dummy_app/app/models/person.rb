@@ -52,5 +52,9 @@ class Person < ActiveRecord::Base
     end
   end
 
-  serialize :time_zone, TimeZoneSerializer.new
+  if Rails::VERSION::STRING.to_f <= 6.0
+    serialize :time_zone, TimeZoneSerializer
+  else
+    serialize :time_zone, coder: TimeZoneSerializer
+  end
 end

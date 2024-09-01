@@ -5,139 +5,93 @@ on:
   pull_request:
 
 jobs:
-  test_sqlite:
+  test:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         include:
-          ### TEST ALL RUBY VERSIONS, USE DEFAULT GEMFILE
+          ### TEST RUBY VERSIONS
           - ruby: "2.6"
           - ruby: "2.7"
           - ruby: "3.0"
+            db_gem_version: "~> 1.4" # fixes sqlite3 gem dependency issue
           - ruby: "3.1"
           - ruby: "3.2"
+          - ruby: "3.3"
 
-          ### RAILS VERSION TESTING
+          ### TEST RAILS VERSIONS
           - ruby: "2.6"
-            gemfile: gemfiles/sqlite3_ar_5.2_pt_12.0.gemfile
+            rails_version: "~> 5.2.0"
           - ruby: "2.6"
-            gemfile: gemfiles/sqlite3_ar_6.0_pt_12.0.gemfile
+            rails_version: "~> 6.0.0"
           - ruby: "2.6"
-            gemfile: gemfiles/sqlite3_ar_6.1_pt_12.0.gemfile
-          - ruby: "3.2"
-            gemfile: gemfiles/sqlite3_ar_7.0_pt_12.0.gemfile
+            rails_version: "~> 6.1.0"
+          - ruby: "3.3"
+            rails_version: "~> 7.0.0"
+            db_gem_version: "~> 1.4" # fixes sqlite3 gem dependency issue
+          - ruby: "3.3"
+            rails_version: "~> 7.1.0"
+          - ruby: "3.3"
+            rails_version: "~> 7.2.0"
 
-    env:
-      BUNDLE_GEMFILE: "${{ matrix.gemfile }}"
-      DB: sqlite
+          ### TEST PT VERSIONS
+          - ruby: "2.6"
+            paper_trail_version: "~> 12.0"
+          - ruby: "2.6"
+            paper_trail_version: "~> 13.0"
+          - ruby: "2.7"
+            paper_trail_version: "~> 14.0"
+          - ruby: "3.1"
+            paper_trail_version: "~> 15.0"
 
-    steps:
-    - uses: actions/checkout@v3
+          ### TEST NON-SQLITE DATABASES
+          - ruby: "3.3"
+            db_gem: "mysql2"
+          - ruby: "3.3"
+            db_gem: "pg"
 
-    - name: Install ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: "${{ matrix.ruby }}"
-        bundler-cache: true
-
-    - name: Run tests
-      run: |
-        #bundle exec rake db:test:prepare
-        bundle exec rake
-
-
-  test_mysql:
-    runs-on: ubuntu-latest
     services:
       mysql:
-        image: mariadb
+        image: ${{ (matrix.db_gem == 'mysql2' && 'mysql') || '' }} # conditional service
         env:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: test
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
         ports: ['3306:3306']
-
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          ### RAILS VERSION TESTING
-          ### DONT WORRY ABOUT TESTING ALL RUBY VERSIONS. THIS IS COVERED IN THE SQLITE3 TESTS
-          - ruby: "2.6"
-            gemfile: gemfiles/mysql2_ar_5.2_pt_12.0.gemfile
-          - ruby: "2.6"
-            gemfile: gemfiles/mysql2_ar_6.0_pt_12.0.gemfile
-          - ruby: "2.6"
-            gemfile: gemfiles/mysql2_ar_6.1_pt_12.0.gemfile
-          - ruby: "3.2"
-            gemfile: gemfiles/mysql2_ar_7.0_pt_12.0.gemfile
-
-    env:
-      BUNDLE_GEMFILE: "${{ matrix.gemfile }}"
-      DB: mysql
-
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: Install ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: "${{ matrix.ruby }}"
-        bundler-cache: true
-
-    - name: Run tests
-      env:
-        DATABASE_URL: mysql2://root:password@127.0.0.1:3306/test
-        RAILS_ENV: test
-      run: |
-        #bundle exec rake db:test:prepare
-        bundle exec rake
-
-
-  test_pg:
-    runs-on: ubuntu-latest
-    services:
       postgres:
-        image: postgres
+        image: ${{ (matrix.db_gem == 'pg' && 'postgres') || '' }} # conditional service
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
           POSTGRES_DB: test
         ports: ['5432:5432']
 
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          ### RAILS VERSION TESTING
-          ### DONT WORRY ABOUT TESTING ALL RUBY VERSIONS. THIS IS COVERED IN THE SQLITE3 TESTS
-          - ruby: "2.6"
-            gemfile: gemfiles/pg_ar_5.2_pt_12.0.gemfile
-          - ruby: "2.6"
-            gemfile: gemfiles/pg_ar_6.0_pt_12.0.gemfile
-          - ruby: "2.6"
-            gemfile: gemfiles/pg_ar_6.1_pt_12.0.gemfile
-          - ruby: "3.2"
-            gemfile: gemfiles/pg_ar_7.0_pt_12.0.gemfile
-
-    env:
-      BUNDLE_GEMFILE: "${{ matrix.gemfile }}"
-      DB: postgres
-
     steps:
     - uses: actions/checkout@v3
+
+    - name: Set env DATABASE_URL
+      run: |
+        if [[ "${{ matrix.db_gem }}" == 'mysql2' ]]; then
+          echo "DATABASE_URL=mysql2://root:password@127.0.0.1:3306/test" >> "$GITHUB_ENV"
+        elif [[ "${{ matrix.db_gem }}" == 'pg' ]]; then
+          echo "DATABASE_URL=postgres://postgres:password@localhost:5432/test" >> "$GITHUB_ENV"
+        fi
+
+    - name: Set env variables
+      run: |
+        echo "RAILS_VERSION=${{ matrix.rails_version }}" >> "$GITHUB_ENV"
+        echo "DB_GEM=${{ matrix.db_gem }}" >> "$GITHUB_ENV"
+        echo "DB_GEM_VERSION=${{ matrix.db_gem_version }}" >> "$GITHUB_ENV"
+        echo "PAPER_TRAIL_VERSION=${{ matrix.paper_trail_version }}" >> "$GITHUB_ENV"
 
     - name: Install ruby
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: "${{ matrix.ruby }}"
-        bundler-cache: true
+        bundler-cache: false ### not compatible with ENV-style Gemfile
 
     - name: Run tests
-      env:
-        DATABASE_URL: postgres://postgres:password@localhost:5432/test
-        RAILS_ENV: test
       run: |
-        #bundle exec rails db:test:prepare
-        bundle exec rake
+        bundle install
+        bundle exec rake test

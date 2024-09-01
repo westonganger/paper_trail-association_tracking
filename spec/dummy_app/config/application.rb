@@ -18,12 +18,6 @@ module Dummy
 
     config.secret_key_base = "A fox regularly kicked the screaming pile of biscuits."
 
-    if Rails::VERSION::MAJOR < 6
-      config.active_record.sqlite3.represent_boolean_as_integer = true
-    end
-
-    if Rails::VERSION::MAJOR == 6
-      config.active_record.legacy_connection_handling = false
-    end
+    config.active_record.use_yaml_unsafe_load = true
   end
 end
