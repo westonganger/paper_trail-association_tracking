@@ -1,24 +1,27 @@
 # CHANGELOG
 
-### Unreleased - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.2.1...master)
+### Unreleased - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.3.0...master)
+- Nothing yet
+
+### v2.3.0 - 2025-04-17 - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.2.1...v2.3.0)
 - [#46](https://github.com/westonganger/paper_trail-association_tracking/pull/46) - Add support for custom version association class with separate database connection
 - [#49](https://github.com/westonganger/paper_trail-association_tracking/pull/49) - Fix has_many though associations when the through association is singular
 - [#48](https://github.com/westonganger/paper_trail-association_tracking/pull/48) - Fix belongs_to polymorphic associations with "empty string" type
 
-### v2.2.1 - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.2.0...v2.2.1)
+### v2.2.1 - 2022-03-28 - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.2.0...v2.2.1)
 - [PR #38](https://github.com/westonganger/paper_trail-association_tracking/pull/38) - Fix the issue where reifying has_one association with `dependent: :destroy` could destroy a live record
 
-### v2.2.0 - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.1.3...v2.2.0)
+### v2.2.0 - 2022-03-14 - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.1.3...v2.2.0)
 
 - [PR #36](https://github.com/westonganger/paper_trail-association_tracking/pull/36) - Fix load order for paper_trail v12+
 - Drop support for Ruby 2.5
 - Add Github Actions CI supporting multiple version of Ruby, Rails and multiple databases types
 
-### 2.1.3 - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.1.1...v2.1.3)
+### 2.1.3 - 2021-04-20 - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.1.1...v2.1.3)
 
 - [PR #24](https://github.com/westonganger/paper_trail-association_tracking/pull/24) - Fix reification on STI models that have parent child relationships
 
-### 2.1.2
+### 2.1.2 - 2021-04-20
 
 - A late night oopsies, Release yanked immediately, had bug preventing installation.
 
