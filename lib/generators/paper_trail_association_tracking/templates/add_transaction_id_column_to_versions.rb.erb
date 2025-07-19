@@ -2,7 +2,7 @@
 # schema for tracking associations.
 class AddTransactionIdColumnToVersions < ActiveRecord::Migration<%= migration_version %>
   def self.up
-    add_column :versions, :transaction_id, :integer
+    add_column :versions, :transaction_id, :bigint
     add_index :versions, [:transaction_id]
   end
 
