@@ -10,9 +10,8 @@ require "paper_trail_association_tracking/paper_trail"
 require "paper_trail_association_tracking/version_concern"
 
 if defined?(Rails)
-  require "paper_trail/frameworks/active_record"
   require "paper_trail_association_tracking/frameworks/rails"
-elsif defined?(ActiveRecord)
+else
   require "paper_trail/frameworks/active_record"
   require "paper_trail_association_tracking/frameworks/active_record"
 end

@@ -10,7 +10,9 @@ module PaperTrailAssociationTracking
     end
 
     config.to_prepare do
-      ::PaperTrail::Version.include(::PaperTrailAssociationTracking::VersionConcern)
+      ActiveSupport.on_load(:active_record) do
+        ::PaperTrail::Version.include(::PaperTrailAssociationTracking::VersionConcern)
+      end
     end
 
   end
