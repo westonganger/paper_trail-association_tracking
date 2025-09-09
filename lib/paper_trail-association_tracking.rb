@@ -7,14 +7,14 @@ require "paper_trail_association_tracking/reifier"
 require "paper_trail_association_tracking/record_trail"
 require "paper_trail_association_tracking/request"
 require "paper_trail_association_tracking/paper_trail"
-require "paper_trail_association_tracking/version_concern"
 
 if defined?(Rails)
-  require "paper_trail/frameworks/active_record"
-  require "paper_trail_association_tracking/frameworks/rails"
-elsif defined?(ActiveRecord)
-  require "paper_trail/frameworks/active_record"
-  require "paper_trail_association_tracking/frameworks/active_record"
+  require "paper_trail_association_tracking/frameworks/rails/railtie"
+else
+  ActiveSupport.on_load(:active_record) do
+    require "paper_trail/frameworks/active_record"
+    require "paper_trail_association_tracking/frameworks/active_record"
+  end
 end
 
 module PaperTrailAssociationTracking

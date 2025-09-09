@@ -1,7 +1,8 @@
 # CHANGELOG
 
 ### Unreleased - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.3.0...master)
-- [#54](https://github.com/westonganger/paper_trail-association_tracking/pull/54) - Change migration for `versions.transaction_id` to BIGINT 
+- [#56](https://github.com/westonganger/paper_trail-association_tracking/pull/56) - Defer inclusion until after active record has fully loaded
+- [#54](https://github.com/westonganger/paper_trail-association_tracking/pull/54) - Change migration for `versions.transaction_id` to BIGINT
 
 ### v2.3.0 - 2025-04-17 - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.2.1...v2.3.0)
 - [#46](https://github.com/westonganger/paper_trail-association_tracking/pull/46) - Add support for custom version association class with separate database connection

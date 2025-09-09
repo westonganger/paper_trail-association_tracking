@@ -16,3 +16,5 @@ module PaperTrailAssociationTracking
     end
   end
 end
+
+PaperTrail::Version.include(PaperTrailAssociationTracking::VersionConcern)
