@@ -4,7 +4,7 @@
 <a href='https://github.com/westonganger/paper_trail-association_tracking/actions' target='_blank'><img src="https://github.com/westonganger/paper_trail-association_tracking/actions/workflows/test.yml/badge.svg?branch=master" style="max-width:100%;" height='21' style='border:0px;height:21px;' border='0' alt="CI Status"></a>
 <a href='https://rubygems.org/gems/paper_trail-association_tracking' target='_blank'><img height='21' style='border:0px;height:21px;' src='https://img.shields.io/gem/dt/paper_trail-association_tracking?color=brightgreen&label=Rubygems%20Downloads' border='0' alt='RubyGems Downloads' /></a>
 
-Plugin for the [PaperTrail](https://github.com/paper-trail-gem/paper_trail.git) gem to track and reify associations. This gem was extracted from PaperTrail for v9.2.0 to simplify things in PaperTrail and association tracking separately.
+Plugin for the [PaperTrail](https://github.com/paper-trail-gem/paper_trail.git) gem to track and reify associations. This gem was extracted from PaperTrail core.
 
 **PR's will happily be accepted**
 
