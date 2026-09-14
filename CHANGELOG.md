@@ -1,6 +1,7 @@
 # CHANGELOG
 
 ### Unreleased - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.3.0...master)
+- [#59](https://github.com/westonganger/paper_trail-association_tracking/pull/59) - Pass the version object when saving `belongs_to` association rows, so `VersionAssociation` no longer loads the parent version before each INSERT under `belongs_to_required_by_default`
 - [#56](https://github.com/westonganger/paper_trail-association_tracking/pull/56) - Defer inclusion until after active record has fully loaded
 - [#54](https://github.com/westonganger/paper_trail-association_tracking/pull/54) - Change migration for `versions.transaction_id` to BIGINT
 

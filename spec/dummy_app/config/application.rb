@@ -21,5 +21,9 @@ module Dummy
     config.secret_key_base = "A fox regularly kicked the screaming pile of biscuits."
 
     config.active_record.use_yaml_unsafe_load = true
+
+    # The Rails default since `load_defaults 5.0`, so `VersionAssociation`
+    # validates the presence of its `version` here as it does in most apps.
+    config.active_record.belongs_to_required_by_default = true
   end
 end

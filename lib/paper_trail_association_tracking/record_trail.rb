@@ -163,10 +163,9 @@ module PaperTrailAssociationTracking
     # Save a single `belongs_to` association.
     # @api private
     def save_bt_association(assoc, version)
-      assoc_version_args = {
-        version_id: version.id,
+      assoc_version_args = version_association_version_args(version).merge(
         foreign_key_name: assoc.foreign_key
-      }
+      )
 
       if assoc.options[:polymorphic]
         foreign_type = @record.send(assoc.foreign_type)
@@ -182,6 +181,22 @@ module PaperTrailAssociationTracking
       if assoc_version_args.key?(:foreign_key_id)
         @record.class.paper_trail.version_association_class.create(assoc_version_args)
       end
+    end
+
+    # Handing over the version object lets a required `belongs_to :version`
+    # validate presence from the loaded target instead of reloading the row it
+    # just wrote. Fall back to the id when the association class expects a
+    # different version class, so custom version classes keep working.
+    # @api private
+    def version_association_version_args(version)
+      reflection = @record.class.paper_trail.version_association_class.reflect_on_association(:version)
+      if reflection && version.persisted? && version.is_a?(reflection.klass)
+        { version: version }
+      else
+        { version_id: version.id }
+      end
+    rescue NameError
+      { version_id: version.id }
     end
 
     # Returns true if the given HABTM association should be saved.
