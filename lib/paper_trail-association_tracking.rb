@@ -8,15 +8,6 @@ require "paper_trail_association_tracking/record_trail"
 require "paper_trail_association_tracking/request"
 require "paper_trail_association_tracking/paper_trail"
 
-if defined?(Rails)
-  require "paper_trail_association_tracking/frameworks/rails/railtie"
-else
-  ActiveSupport.on_load(:active_record) do
-    require "paper_trail/frameworks/active_record"
-    require "paper_trail_association_tracking/frameworks/active_record"
-  end
-end
-
 module PaperTrailAssociationTracking
   def self.version
     VERSION
@@ -54,5 +45,14 @@ module PaperTrail
     class << self
       prepend ::PaperTrailAssociationTracking::Request::ClassMethods
     end
+  end
+end
+
+if defined?(Rails)
+  require "paper_trail_association_tracking/frameworks/rails/railtie"
+else
+  ActiveSupport.on_load(:active_record) do
+    require "paper_trail/frameworks/active_record"
+    require "paper_trail_association_tracking/frameworks/active_record"
   end
 end
