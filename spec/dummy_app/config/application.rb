@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require File.expand_path("../boot", __FILE__)
-
 require "logger" # Fix for Rails 7.0 and below, https://github.com/rails/rails/pull/54264
 
 # Pick the frameworks you want:
@@ -9,7 +7,6 @@ require "active_record/railtie"
 require "action_controller/railtie"
 
 Bundler.require(:default, Rails.env)
-require "paper_trail"
 
 module Dummy
   class Application < Rails::Application

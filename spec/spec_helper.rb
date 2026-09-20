@@ -36,8 +36,6 @@ RSpec.configure do |config|
   Kernel.srand(config.seed)
 end
 
-#require "rspec/rails"
-#require "ffaker"
 require "timecop"
 
 # Run any available migration

@@ -1,7 +1,7 @@
 # CHANGELOG
 
 ### Unreleased - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.4.0...master)
-- Nothing yet
+- [#60](https://github.com/westonganger/paper_trail-association_tracking/pull/60) - Fix initialization errors for non-Rails ActiveRecord only integrations
 
 ### v2.4.0 - 2026-09-16 - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.3.0...v2.4.0)
 - [#59](https://github.com/westonganger/paper_trail-association_tracking/pull/59) - Pass the version object when saving `belongs_to` association rows, so `VersionAssociation` no longer loads the parent version before each INSERT under `belongs_to_required_by_default`
