@@ -1,6 +1,9 @@
 # CHANGELOG
 
 ### Unreleased - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.4.0...master)
+- Nothing yet
+
+### v2.4.1 - 2026-09-20 - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.4.0...v2.4.1)
 - [#60](https://github.com/westonganger/paper_trail-association_tracking/pull/60) - Fix initialization errors for non-Rails ActiveRecord only integrations
 
 ### v2.4.0 - 2026-09-16 - [View Diff](https://github.com/westonganger/paper_trail-association_tracking/compare/v2.3.0...v2.4.0)
